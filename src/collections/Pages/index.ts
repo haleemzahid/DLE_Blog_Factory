@@ -12,6 +12,15 @@ import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
+import {
+  BlocksFeature,
+  FixedToolbarFeature,
+  HeadingFeature,
+  HorizontalRuleFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 
 import {
   MetaDescriptionField,
@@ -59,6 +68,11 @@ export const Pages: CollectionConfig<'pages'> = {
       name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        components: {
+          Field: '@ai-stack/payloadcms/fields#ComposeField',
+        },
+      },
     },
     {
       type: 'tabs',

@@ -91,10 +91,7 @@ export const plugins: Plugin[] = [
     },
   }),
   payloadAiPlugin({
-    collections: {
-      posts: true,
-      pages: true,
-    },
+    collections: 'all',
     debugging: false,
   }),
 ]

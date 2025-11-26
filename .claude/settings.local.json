@@ -9,7 +9,9 @@
       "Bash(curl:*)",
       "Bash(findstr:*)",
       "Bash(pnpm generate:types:*)",
-      "Bash(pnpm generate:importmap:*)"
+      "Bash(pnpm generate:importmap:*)",
+      "Bash(pnpm dev)",
+      "Bash(pnpm payload migrate:*)"
     ],
     "deny": [],
     "ask": []

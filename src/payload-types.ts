@@ -869,9 +869,7 @@ export interface PluginAiInstruction {
    */
   'field-type'?: ('text' | 'textarea' | 'upload' | 'richText') | null;
   'relation-to'?: string | null;
-  'model-id'?:
-    | ('Oai-text' | 'dall-e' | 'gpt-image-1' | 'tts' | 'Oai-object' | 'ANTH-C-text' | 'ANTH-C-object' | '11Labs-m-v2')
-    | null;
+  'model-id'?: ('Oai-text' | 'dall-e' | 'gpt-image-1' | 'tts' | 'Oai-object') | null;
   /**
    * Please reload your collection after applying the changes
    */
@@ -927,47 +925,6 @@ export interface PluginAiInstruction {
     maxTokens?: number | null;
     temperature?: number | null;
     extractAttachments?: boolean | null;
-  };
-  'ANTH-C-text-settings'?: {
-    model?:
-      | (
-          | 'claude-opus-4-1'
-          | 'claude-opus-4-0'
-          | 'claude-sonnet-4-0'
-          | 'claude-3-opus-latest'
-          | 'claude-3-5-haiku-latest'
-          | 'claude-3-5-sonnet-latest'
-          | 'claude-3-7-sonnet-latest'
-        )
-      | null;
-    maxTokens?: number | null;
-    temperature?: number | null;
-    extractAttachments?: boolean | null;
-  };
-  'ANTH-C-object-settings'?: {
-    model?:
-      | (
-          | 'claude-opus-4-1'
-          | 'claude-opus-4-0'
-          | 'claude-sonnet-4-0'
-          | 'claude-3-opus-latest'
-          | 'claude-3-5-haiku-latest'
-          | 'claude-3-5-sonnet-latest'
-          | 'claude-3-7-sonnet-latest'
-        )
-      | null;
-    maxTokens?: number | null;
-    temperature?: number | null;
-    extractAttachments?: boolean | null;
-  };
-  '11Labs-settings'?: {
-    stability: number;
-    similarity_boost: number;
-    style?: number | null;
-    use_speaker_boost?: boolean | null;
-    seed?: number | null;
-    previous_text?: string | null;
-    next_text?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -1730,33 +1687,6 @@ export interface PluginAiInstructionsSelect<T extends boolean = true> {
         maxTokens?: T;
         temperature?: T;
         extractAttachments?: T;
-      };
-  'ANTH-C-text-settings'?:
-    | T
-    | {
-        model?: T;
-        maxTokens?: T;
-        temperature?: T;
-        extractAttachments?: T;
-      };
-  'ANTH-C-object-settings'?:
-    | T
-    | {
-        model?: T;
-        maxTokens?: T;
-        temperature?: T;
-        extractAttachments?: T;
-      };
-  '11Labs-settings'?:
-    | T
-    | {
-        stability?: T;
-        similarity_boost?: T;
-        style?: T;
-        use_speaker_boost?: T;
-        seed?: T;
-        previous_text?: T;
-        next_text?: T;
       };
   updatedAt?: T;
   createdAt?: T;

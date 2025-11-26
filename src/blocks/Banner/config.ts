@@ -5,6 +5,7 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
 
 export const Banner: Block = {
   slug: 'banner',
@@ -26,7 +27,12 @@ export const Banner: Block = {
       type: 'richText',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
-          return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
+          return [
+            ...rootFeatures,
+            FixedToolbarFeature(),
+            InlineToolbarFeature(),
+            PayloadAiPluginLexicalEditorFeature(),
+          ]
         },
       }),
       label: false,

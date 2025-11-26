@@ -20,6 +20,11 @@ export const Categories: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        components: {
+          Field: '@ai-stack/payloadcms/fields#ComposeField',
+        },
+      },
     },
     slugField({
       position: undefined,
