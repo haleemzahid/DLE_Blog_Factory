@@ -26,6 +26,15 @@ export const Categories: CollectionConfig = {
         },
       },
     },
+    {
+      name: 'description',
+      type: 'textarea',
+      admin: {
+        components: {
+          Field: '@ai-stack/payloadcms/fields#ComposeField',
+        },
+      },
+    },
     slugField({
       position: undefined,
     }),

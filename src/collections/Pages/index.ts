@@ -12,7 +12,6 @@ import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
-import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
 import {
   BlocksFeature,
   FixedToolbarFeature,
@@ -74,9 +73,6 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'textarea',
       admin: {
         description: 'AI-enabled field for page description',
-        components: {
-          Field: '@ai-stack/payloadcms/fields#ComposeField',
-        },
       },
     },
     {

@@ -14,7 +14,8 @@
       "Bash(pnpm payload migrate:*)",
       "Bash(grep:*)",
       "Bash(cat:*)",
-      "Bash(timeout /t 5)"
+      "Bash(timeout /t 5)",
+      "Bash(d:)"
     ],
     "deny": [],
     "ask": []
