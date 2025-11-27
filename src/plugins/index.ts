@@ -96,7 +96,7 @@ export const plugins: Plugin[] = [
   payloadAiPlugin({
     collections: {
       pages: {
-        fields: ['title', 'description', 'meta.title', 'meta.description'],
+        fields: ['title', 'meta.title', 'meta.description'],
       },
       posts: {
         fields: ['title', 'meta.title', 'meta.description'],

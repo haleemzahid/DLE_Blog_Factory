@@ -69,13 +69,6 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
     },
     {
-      name: 'description',
-      type: 'textarea',
-      admin: {
-        description: 'AI-enabled field for page description',
-      },
-    },
-    {
       type: 'tabs',
       tabs: [
         {
