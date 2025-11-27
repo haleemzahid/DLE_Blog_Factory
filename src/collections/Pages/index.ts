@@ -68,7 +68,12 @@ export const Pages: CollectionConfig<'pages'> = {
       name: 'title',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'description',
+      type: 'textarea',
       admin: {
+        description: 'AI-enabled field for page description',
         components: {
           Field: '@ai-stack/payloadcms/fields#ComposeField',
         },

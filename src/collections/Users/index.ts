@@ -20,6 +20,11 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      admin: {
+        components: {
+          Field: '@ai-stack/payloadcms/fields#ComposeField',
+        },
+      },
     },
   ],
   timestamps: true,

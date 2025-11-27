@@ -29,6 +29,11 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       //required: true,
+      admin: {
+        components: {
+          Field: '@ai-stack/payloadcms/fields#ComposeField',
+        },
+      },
     },
     {
       name: 'caption',

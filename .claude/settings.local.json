@@ -11,7 +11,10 @@
       "Bash(pnpm generate:types:*)",
       "Bash(pnpm generate:importmap:*)",
       "Bash(pnpm dev)",
-      "Bash(pnpm payload migrate:*)"
+      "Bash(pnpm payload migrate:*)",
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(timeout /t 5)"
     ],
     "deny": [],
     "ask": []
