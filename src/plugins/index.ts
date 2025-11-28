@@ -95,13 +95,11 @@ export const plugins: Plugin[] = [
   }),
   payloadAiPlugin({
     collections: {
-      pages: {
-        fields: ['title', 'meta.title', 'meta.description'],
-      },
-      posts: {
-        fields: ['title', 'meta.title', 'meta.description'],
-      },
+      pages: true,
+      posts: true,
+      media: true,
     },
+    uploadCollectionSlug: 'media',
     debugging: true,
   }),
 ]

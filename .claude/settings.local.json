@@ -15,7 +15,8 @@
       "Bash(grep:*)",
       "Bash(cat:*)",
       "Bash(timeout /t 5)",
-      "Bash(d:)"
+      "Bash(d:)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []
