@@ -71,11 +71,6 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
-      admin: {
-        components: {
-          Field: '@ai-stack/payloadcms/fields#ComposeField',
-        },
-      },
     },
     {
       type: 'tabs',
