@@ -62,6 +62,8 @@
 .payloadai-compose-document,
 .payloadai-compose:not(.voice-compose-actions .payloadai-compose) {
   position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .voice-btn-document {
@@ -79,6 +81,7 @@
   transition: all 0.2s;
   margin-left: 8px;
   vertical-align: middle;
+  order: 999;
 }
 
 .voice-btn-document:hover {
