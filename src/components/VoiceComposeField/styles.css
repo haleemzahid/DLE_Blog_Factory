@@ -74,8 +74,8 @@
   height: 28px;
   padding: 0;
   border-radius: 4px;
-  border: 1px solid var(--theme-elevation-150, #ddd);
-  background-color: var(--theme-elevation-50, #f5f5f5);
+  border: none;
+  background-color: transparent;
   color: inherit;
   cursor: pointer;
   transition: all 0.2s;
@@ -85,8 +85,7 @@
 }
 
 .voice-btn-document:hover {
-  background-color: var(--theme-elevation-100, #eee);
-  border-color: var(--theme-elevation-200, #ccc);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .voice-btn-document.recording {
