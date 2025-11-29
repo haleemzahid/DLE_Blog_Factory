@@ -67,6 +67,11 @@ export const Pages: CollectionConfig<'pages'> = {
       name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        components: {
+          Field: '@/components/VoiceComposeField#VoiceComposeField',
+        },
+      },
     },
     {
       type: 'tabs',

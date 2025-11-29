@@ -22,7 +22,7 @@ export const Categories: CollectionConfig = {
       required: true,
       admin: {
         components: {
-          Field: '@ai-stack/payloadcms/fields#ComposeField',
+          Description: '@/components/VoiceComposeField#VoiceComposeField',
         },
       },
     },
@@ -31,7 +31,7 @@ export const Categories: CollectionConfig = {
       type: 'textarea',
       admin: {
         components: {
-          Field: '@ai-stack/payloadcms/fields#ComposeField',
+          Description: '@/components/VoiceComposeField#VoiceComposeField',
         },
       },
     },

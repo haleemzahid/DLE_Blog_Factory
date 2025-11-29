@@ -22,7 +22,7 @@ export const Users: CollectionConfig = {
       type: 'text',
       admin: {
         components: {
-          Field: '@ai-stack/payloadcms/fields#ComposeField',
+          Description: '@/components/VoiceComposeField#VoiceComposeField',
         },
       },
     },

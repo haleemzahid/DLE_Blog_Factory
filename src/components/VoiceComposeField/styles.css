@@ -1,0 +1,58 @@
+.voice-compose-field-wrapper {
+  width: 100%;
+}
+
+.voice-compose-field-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.voice-compose-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.voice-compose-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.voice-compose-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.voice-compose-btn.recording {
+  background-color: #ef4444;
+  color: white;
+}
+
+.voice-compose-btn.recording:hover {
+  background-color: #dc2626;
+}
+
+/* Hide the label from TextField since we render our own */
+.voice-compose-field-wrapper > .field-type > .field-label {
+  display: none;
+}
+
+/* Style the ComposeField to only show the button */
+.voice-compose-actions .payloadai-compose {
+  display: flex;
+}
+
+.voice-compose-actions .payloadai-compose__label-wrapper {
+  display: none;
+}

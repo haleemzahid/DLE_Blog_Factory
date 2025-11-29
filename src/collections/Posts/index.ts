@@ -71,6 +71,11 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        components: {
+          Field: '@/components/VoiceComposeField#VoiceComposeField',
+        },
+      },
     },
     {
       type: 'tabs',
