@@ -16,22 +16,23 @@
 }
 
 .voice-compose-btn {
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
   width: 28px;
   height: 28px;
   padding: 0;
   border-radius: 4px;
-  border: none;
-  background-color: transparent;
+  border: 1px solid var(--theme-elevation-150, #ddd);
+  background-color: var(--theme-elevation-50, #f5f5f5);
   color: inherit;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .voice-compose-btn:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--theme-elevation-100, #eee);
+  border-color: var(--theme-elevation-200, #ccc);
 }
 
 .voice-compose-btn.recording {
@@ -55,4 +56,41 @@
 
 .voice-compose-actions .payloadai-compose__label-wrapper {
   display: none;
+}
+
+/* Style for document-level voice button (next to plugin's Compose button) */
+.payloadai-compose-document,
+.payloadai-compose:not(.voice-compose-actions .payloadai-compose) {
+  position: relative;
+}
+
+.voice-btn-document {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  border: 1px solid var(--theme-elevation-150, #ddd);
+  background-color: var(--theme-elevation-50, #f5f5f5);
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.voice-btn-document:hover {
+  background-color: var(--theme-elevation-100, #eee);
+  border-color: var(--theme-elevation-200, #ccc);
+}
+
+.voice-btn-document.recording {
+  background-color: #ef4444;
+  color: white;
+}
+
+.voice-btn-document.recording:hover {
+  background-color: #dc2626;
 }

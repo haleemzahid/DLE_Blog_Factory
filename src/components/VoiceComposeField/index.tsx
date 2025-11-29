@@ -92,6 +92,11 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
           path={path}
         />
         <div className="voice-compose-actions">
+          {/* Compose Button */}
+          <ComposeField
+            {...props}
+            schemaPath={finalSchemaPath}
+          />
           {/* Voice Button */}
           <button
             type="button"
@@ -105,11 +110,6 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
               <line x1="12" x2="12" y1="19" y2="22"/>
             </svg>
           </button>
-          {/* Compose Button */}
-          <ComposeField
-            {...props}
-            schemaPath={finalSchemaPath}
-          />
         </div>
       </div>
       <TextField
