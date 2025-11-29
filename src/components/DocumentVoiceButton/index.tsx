@@ -28,7 +28,7 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
         '.payloadai-compose-document',
         '.payloadai-compose',
         '[class*="payloadai-compose"]',
-        '.lexical-ai-compose',
+        '[class*="compose"]',
       ]
 
       for (const selector of selectors) {
@@ -43,10 +43,22 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
           return
         }
       }
+
+      // Fallback: Find by looking for elements containing "Compose" text
+      const allElements = document.querySelectorAll('button, span, div')
+      for (const el of allElements) {
+        if (el.textContent?.trim() === 'Compose' && !el.closest('.voice-compose-field-wrapper')) {
+          const parent = el.parentElement
+          if (parent && !parent.querySelector('.voice-btn-document')) {
+            setPortalTarget(parent as HTMLElement)
+            return
+          }
+        }
+      }
     }
 
-    // Initial check
-    findComposeButton()
+    // Initial check with delay to allow DOM to render
+    const timeout = setTimeout(findComposeButton, 500)
 
     // Use MutationObserver to detect when the compose button is added
     const observer = new MutationObserver(() => {
@@ -58,7 +70,10 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
       subtree: true,
     })
 
-    return () => observer.disconnect()
+    return () => {
+      clearTimeout(timeout)
+      observer.disconnect()
+    }
   }, [])
 
   const handleVoiceClick = () => {

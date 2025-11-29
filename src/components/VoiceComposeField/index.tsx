@@ -1,9 +1,8 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
-import { useDocumentInfo, useField, FieldLabel } from '@payloadcms/ui'
+import React, { useState, useRef } from 'react'
+import { useField, FieldLabel } from '@payloadcms/ui'
 import { TextField } from '@payloadcms/ui'
-import { ComposeField } from '@ai-stack/payloadcms/fields'
 import './styles.css'
 
 // Extend Window interface for Web Speech API
@@ -25,14 +24,9 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
   const [isRecording, setIsRecording] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const { collectionSlug } = useDocumentInfo()
 
   const { path, field } = props
   const { value, setValue } = useField<string>({ path: path || '' })
-
-  // Calculate schemaPath like ComposeField does
-  const finalSchemaPath = props?.schemaPath ??
-    (collectionSlug ? `${collectionSlug}.${props?.path ?? ''}` : (props?.path ?? ''))
 
   const handleVoiceClick = () => {
     if (recognitionRef.current) {
@@ -91,26 +85,19 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
           required={field?.required}
           path={path}
         />
-        <div className="voice-compose-actions">
-          {/* Compose Button */}
-          <ComposeField
-            {...props}
-            schemaPath={finalSchemaPath}
-          />
-          {/* Voice Button */}
-          <button
-            type="button"
-            onClick={handleVoiceClick}
-            title={isRecording ? 'Stop Recording' : 'Voice Record'}
-            className={`voice-compose-btn ${isRecording ? 'recording' : ''}`}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-              <line x1="12" x2="12" y1="19" y2="22"/>
-            </svg>
-          </button>
-        </div>
+        {/* Voice Button */}
+        <button
+          type="button"
+          onClick={handleVoiceClick}
+          title={isRecording ? 'Stop Recording' : 'Voice Record'}
+          className={`voice-compose-btn ${isRecording ? 'recording' : ''}`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" x2="12" y1="19" y2="22"/>
+          </svg>
+        </button>
       </div>
       <TextField
         field={field}

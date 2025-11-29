@@ -5,7 +5,7 @@
 .voice-compose-field-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
   margin-bottom: 8px;
 }
 
@@ -23,16 +23,15 @@
   height: 28px;
   padding: 0;
   border-radius: 4px;
-  border: 1px solid var(--theme-elevation-150, #ddd);
-  background-color: var(--theme-elevation-50, #f5f5f5);
+  border: none;
+  background-color: transparent;
   color: inherit;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .voice-compose-btn:hover {
-  background-color: var(--theme-elevation-100, #eee);
-  border-color: var(--theme-elevation-200, #ccc);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .voice-compose-btn.recording {
@@ -49,13 +48,10 @@
   display: none;
 }
 
-/* Style the ComposeField to only show the button */
+/* Style the ComposeField */
 .voice-compose-actions .payloadai-compose {
   display: flex;
-}
-
-.voice-compose-actions .payloadai-compose__label-wrapper {
-  display: none;
+  align-items: center;
 }
 
 /* Style for document-level voice button (next to plugin's Compose button) */
