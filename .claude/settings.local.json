@@ -16,7 +16,18 @@
       "Bash(cat:*)",
       "Bash(timeout /t 5)",
       "Bash(d:)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(dir node_modules@ai-stackpayloadcms /b)",
+      "Bash(dir:*)",
+      "Bash(npm view:*)",
+      "Bash(cd:*)",
+      "Bash(pnpm update:*)",
+      "Bash(pnpm dev:*)",
+      "Bash(timeout /t 10)",
+      "Bash(taskkill:*)",
+      "Bash(tasklist:*)",
+      "Bash(netstat:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []
