@@ -2,6 +2,14 @@
   width: 100%;
 }
 
+/* Container for Compose + Voice buttons */
+.voice-compose-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
 .voice-compose-field-header {
   display: flex;
   align-items: center;
@@ -90,5 +98,34 @@
 }
 
 .voice-btn-document.recording:hover {
+  background-color: #dc2626;
+}
+
+/* Style for title field voice button (next to Compose button) */
+.voice-btn-title {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.voice-btn-title:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.voice-btn-title.recording {
+  background-color: #ef4444;
+  color: white;
+}
+
+.voice-btn-title.recording:hover {
   background-color: #dc2626;
 }

@@ -21,44 +21,24 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
   useEffect(() => {
-    // Find the document-level compose button container
+    // Find the document-level compose button container (for description/content rich text field)
     const findComposeButton = () => {
-      // Try multiple selectors for the compose button container
-      const selectors = [
-        '.payloadai-compose-document',
-        '.payloadai-compose',
-        '[class*="payloadai-compose"]',
-        '[class*="compose"]',
-      ]
+      // Find payloadai-compose__actions containers NOT inside the title field
+      const containers = document.querySelectorAll('[class*="payloadai-compose__actions"]')
 
-      for (const selector of selectors) {
-        const containers = document.querySelectorAll(selector)
-        for (const container of containers) {
-          // Skip if it's inside the voice-compose-field-wrapper (title field)
-          if (container.closest('.voice-compose-field-wrapper')) continue
-          // Skip if already has voice button
-          if (container.querySelector('.voice-btn-document')) continue
+      for (const container of containers) {
+        // Skip if it's inside the voice-compose-field-wrapper (title field)
+        if (container.closest('.voice-compose-field-wrapper')) continue
+        // Skip if already has voice button
+        if (container.querySelector('.voice-btn-document')) continue
 
-          setPortalTarget(container as HTMLElement)
-          return
-        }
-      }
-
-      // Fallback: Find by looking for elements containing "Compose" text
-      const allElements = document.querySelectorAll('button, span, div')
-      for (const el of allElements) {
-        if (el.textContent?.trim() === 'Compose' && !el.closest('.voice-compose-field-wrapper')) {
-          const parent = el.parentElement
-          if (parent && !parent.querySelector('.voice-btn-document')) {
-            setPortalTarget(parent as HTMLElement)
-            return
-          }
-        }
+        setPortalTarget(container as HTMLElement)
+        return
       }
     }
 
     // Initial check with delay to allow DOM to render
-    const timeout = setTimeout(findComposeButton, 500)
+    const timeout = setTimeout(findComposeButton, 300)
 
     // Use MutationObserver to detect when the compose button is added
     const observer = new MutationObserver(() => {
