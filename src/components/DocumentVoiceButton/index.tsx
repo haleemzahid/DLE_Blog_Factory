@@ -112,25 +112,65 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
     recognition.start()
   }
 
-  const voiceButton = (
-    <button
-      type="button"
-      onClick={handleVoiceClick}
-      title={isRecording ? 'Stop Recording' : 'Voice Record'}
-      className={`voice-btn-document ${isRecording ? 'recording' : ''}`}
-    >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" x2="12" y1="19" y2="22"/>
-      </svg>
-    </button>
+  const handleUndo = () => {
+    const lexicalEditor = document.querySelector('[contenteditable="true"]') as HTMLElement
+    if (lexicalEditor) {
+      lexicalEditor.focus()
+      document.execCommand('undo', false)
+    }
+  }
+
+  const handleRedo = () => {
+    const lexicalEditor = document.querySelector('[contenteditable="true"]') as HTMLElement
+    if (lexicalEditor) {
+      lexicalEditor.focus()
+      document.execCommand('redo', false)
+    }
+  }
+
+  const actionButtons = (
+    <>
+      <button
+        type="button"
+        onClick={handleVoiceClick}
+        title={isRecording ? 'Stop Recording' : 'Voice Record'}
+        className={`voice-btn-document ${isRecording ? 'recording' : ''}`}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" x2="12" y1="19" y2="22"/>
+        </svg>
+      </button>
+      <button
+        type="button"
+        onClick={handleUndo}
+        title="Undo"
+        className="undo-redo-btn"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 7v6h6" />
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        onClick={handleRedo}
+        title="Redo"
+        className="undo-redo-btn"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 7v6h-6" />
+          <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
+        </svg>
+      </button>
+    </>
   )
 
   return (
     <>
       {children}
-      {portalTarget && createPortal(voiceButton, portalTarget)}
+      {portalTarget && createPortal(actionButtons, portalTarget)}
     </>
   )
 }
