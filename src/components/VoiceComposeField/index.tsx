@@ -37,7 +37,9 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
       if (!containerRef.current) return
 
       // Find the payloadai-compose__actions element within this field wrapper
-      const composeContainer = containerRef.current.querySelector('[class*="payloadai-compose__actions"]')
+      const composeContainer = containerRef.current.querySelector(
+        '[class*="payloadai-compose__actions"]',
+      )
       if (composeContainer && !composeContainer.querySelector('.voice-btn-title')) {
         setPortalTarget(composeContainer as HTMLElement)
       }
@@ -120,22 +122,28 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
       title={isRecording ? 'Stop Recording' : 'Voice Record'}
       className={`voice-btn-title ${isRecording ? 'recording' : ''}`}
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" x2="12" y1="19" y2="22"/>
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+        <line x1="12" x2="12" y1="19" y2="22" />
       </svg>
     </button>
   )
 
   return (
     <div ref={containerRef} className="voice-compose-field-wrapper">
-      <TextField
-        field={field}
-        path={path || ''}
-      />
-      <ComposeField field={field} path={path} schemaPath={props.schemaPath} />
+      <TextField field={field} path={path || ''} />
       {portalTarget && createPortal(voiceButton, portalTarget)}
+      <ComposeField field={field} path={path} schemaPath={props.schemaPath} />
     </div>
   )
 }
