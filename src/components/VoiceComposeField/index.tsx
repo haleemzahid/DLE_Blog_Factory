@@ -25,11 +25,50 @@ type VoiceComposeFieldProps = {
 export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
   const [isRecording, setIsRecording] = useState(false)
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null)
+  const [history, setHistory] = useState<string[]>([''])
+  const [historyIndex, setHistoryIndex] = useState(0)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const isUndoRedoRef = useRef(false)
 
   const { path, field } = props
   const { value, setValue } = useField<string>({ path: path || '' })
+
+  // Track value changes for undo/redo history
+  useEffect(() => {
+    if (isUndoRedoRef.current) {
+      isUndoRedoRef.current = false
+      return
+    }
+    const currentValue = value || ''
+    if (currentValue !== history[historyIndex]) {
+      const newHistory = history.slice(0, historyIndex + 1)
+      newHistory.push(currentValue)
+      setHistory(newHistory)
+      setHistoryIndex(newHistory.length - 1)
+    }
+  }, [value])
+
+  const canUndo = historyIndex > 0
+  const canRedo = historyIndex < history.length - 1
+
+  const handleUndo = () => {
+    if (canUndo) {
+      isUndoRedoRef.current = true
+      const newIndex = historyIndex - 1
+      setHistoryIndex(newIndex)
+      setValue(history[newIndex])
+    }
+  }
+
+  const handleRedo = () => {
+    if (canRedo) {
+      isUndoRedoRef.current = true
+      const newIndex = historyIndex + 1
+      setHistoryIndex(newIndex)
+      setValue(history[newIndex])
+    }
+  }
 
   // Find the compose button container to inject voice button next to it
   useEffect(() => {
@@ -115,34 +154,78 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
     }
   }
 
-  const voiceButton = (
-    <button
-      type="button"
-      onClick={handleVoiceClick}
-      title={isRecording ? 'Stop Recording' : 'Voice Record'}
-      className={`voice-btn-title ${isRecording ? 'recording' : ''}`}
-    >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+  const actionButtons = (
+    <>
+      <button
+        type="button"
+        onClick={handleVoiceClick}
+        title={isRecording ? 'Stop Recording' : 'Voice Record'}
+        className={`voice-btn-title ${isRecording ? 'recording' : ''}`}
       >
-        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-        <line x1="12" x2="12" y1="19" y2="22" />
-      </svg>
-    </button>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+          <line x1="12" x2="12" y1="19" y2="22" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        onClick={handleUndo}
+        title="Undo"
+        className={`undo-redo-btn ${!canUndo ? 'disabled' : ''}`}
+        disabled={!canUndo}
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 7v6h6" />
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        onClick={handleRedo}
+        title="Redo"
+        className={`undo-redo-btn ${!canRedo ? 'disabled' : ''}`}
+        disabled={!canRedo}
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M21 7v6h-6" />
+          <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
+        </svg>
+      </button>
+    </>
   )
 
   return (
     <div ref={containerRef} className="voice-compose-field-wrapper">
       <TextField field={field} path={path || ''} />
-      {portalTarget && createPortal(voiceButton, portalTarget)}
+      {portalTarget && createPortal(actionButtons, portalTarget)}
       <ComposeField field={field} path={path} schemaPath={props.schemaPath} />
     </div>
   )

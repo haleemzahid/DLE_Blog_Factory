@@ -140,3 +140,29 @@
 .voice-btn-title.recording:hover {
   background-color: #dc2626;
 }
+
+/* Undo/Redo buttons */
+.undo-redo-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  order: 1000;
+}
+
+.undo-redo-btn:hover:not(.disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.undo-redo-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
