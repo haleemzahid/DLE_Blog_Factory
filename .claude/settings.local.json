@@ -30,7 +30,8 @@
       "Bash(rm:*)",
       "Bash(ls:*)",
       "Bash(find:*)",
-      "Bash(xargs ls:*)"
+      "Bash(xargs ls:*)",
+      "Bash(pnpm list:*)"
     ],
     "deny": [],
     "ask": []
