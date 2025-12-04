@@ -1,5 +1,6 @@
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+import importExportPlugin from 'payload-plugin-import-export'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -76,6 +77,10 @@ export default buildConfig({
         media: true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+    importExportPlugin({
+      enabled: true,
+      excludeCollections: ['users'], // Exclude users collection from import/export
     }),
   ],
   secret: process.env.PAYLOAD_SECRET,
