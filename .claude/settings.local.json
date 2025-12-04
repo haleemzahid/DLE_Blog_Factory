@@ -27,7 +27,10 @@
       "Bash(taskkill:*)",
       "Bash(tasklist:*)",
       "Bash(netstat:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(xargs ls:*)"
     ],
     "deny": [],
     "ask": []
