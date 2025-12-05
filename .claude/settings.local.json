@@ -31,7 +31,10 @@
       "Bash(ls:*)",
       "Bash(find:*)",
       "Bash(xargs ls:*)",
-      "Bash(pnpm list:*)"
+      "Bash(pnpm list:*)",
+      "Bash(pnpm why:*)",
+      "Bash(pnpm install)",
+      "Bash(cmd /c \"taskkill /F /IM node.exe\")"
     ],
     "deny": [],
     "ask": []

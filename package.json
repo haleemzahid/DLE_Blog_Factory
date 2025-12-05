@@ -91,7 +91,10 @@
       "sharp",
       "esbuild",
       "unrs-resolver"
-    ]
+    ],
+    "overrides": {
+      "@payloadcms/db-sqlite": "3.63.0"
+    }
   },
   "packageManager": "pnpm@10.20.0"
 }

@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@payloadcms/db-sqlite': 3.63.0
+
 importers:
 
   .:

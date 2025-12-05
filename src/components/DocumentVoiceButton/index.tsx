@@ -47,6 +47,7 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
   const [isSpeaking, setIsSpeaking] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const languageMenuRef = useRef<HTMLDivElement>(null)
+  const portalTargetRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     // Find the document-level compose button container (for description/content rich text field)
@@ -60,27 +61,31 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
         // Skip if already has voice button
         if (container.querySelector('.voice-btn-document')) continue
 
+        portalTargetRef.current = container as HTMLElement
         setPortalTarget(container as HTMLElement)
-        return
+        return true
       }
+      return false
     }
 
-    // Initial check with delay to allow DOM to render
-    const timeout = setTimeout(findComposeButton, 300)
+    // Check periodically until we find the target (handles tab switching)
+    const interval = setInterval(() => {
+      // Check if current portal target is still in DOM
+      if (portalTargetRef.current && !document.body.contains(portalTargetRef.current)) {
+        portalTargetRef.current = null
+        setPortalTarget(null)
+      }
+      // Try to find a new target if we don't have one
+      if (!portalTargetRef.current) {
+        findComposeButton()
+      }
+    }, 1000)
 
-    // Use MutationObserver to detect when the compose button is added
-    const observer = new MutationObserver(() => {
-      findComposeButton()
-    })
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    })
+    // Initial check
+    findComposeButton()
 
     return () => {
-      clearTimeout(timeout)
-      observer.disconnect()
+      clearInterval(interval)
     }
   }, [])
 
