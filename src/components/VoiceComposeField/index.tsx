@@ -52,12 +52,47 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
   const [selectedLanguage, setSelectedLanguage] = useState('en-US')
   const [showLanguageMenu, setShowLanguageMenu] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
+  const [history, setHistory] = useState<string[]>([''])
+  const [historyIndex, setHistoryIndex] = useState(0)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const languageMenuRef = useRef<HTMLDivElement>(null)
+  const isUndoRedoRef = useRef(false)
 
   const { path, field } = props
   const { value, setValue } = useField<string>({ path: path || '' })
+
+  // Track value changes for undo/redo
+  useEffect(() => {
+    if (isUndoRedoRef.current) {
+      isUndoRedoRef.current = false
+      return
+    }
+    if (value !== history[historyIndex]) {
+      const newHistory = history.slice(0, historyIndex + 1)
+      newHistory.push(value || '')
+      setHistory(newHistory)
+      setHistoryIndex(newHistory.length - 1)
+    }
+  }, [value])
+
+  const handleUndo = () => {
+    if (historyIndex > 0) {
+      isUndoRedoRef.current = true
+      const newIndex = historyIndex - 1
+      setHistoryIndex(newIndex)
+      setValue(history[newIndex])
+    }
+  }
+
+  const handleRedo = () => {
+    if (historyIndex < history.length - 1) {
+      isUndoRedoRef.current = true
+      const newIndex = historyIndex + 1
+      setHistoryIndex(newIndex)
+      setValue(history[newIndex])
+    }
+  }
 
   // Close language menu when clicking outside
   useEffect(() => {
@@ -260,6 +295,34 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
               <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
             </>
           )}
+        </svg>
+      </button>
+
+      {/* Undo Button */}
+      <button
+        type="button"
+        onClick={handleUndo}
+        title="Undo"
+        className={`undo-redo-btn ${historyIndex <= 0 ? 'disabled' : ''}`}
+        disabled={historyIndex <= 0}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 7v6h6" />
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+        </svg>
+      </button>
+
+      {/* Redo Button */}
+      <button
+        type="button"
+        onClick={handleRedo}
+        title="Redo"
+        className={`undo-redo-btn ${historyIndex >= history.length - 1 ? 'disabled' : ''}`}
+        disabled={historyIndex >= history.length - 1}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 7v6h-6" />
+          <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7" />
         </svg>
       </button>
     </>
