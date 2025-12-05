@@ -41,52 +41,61 @@ type DocumentVoiceButtonProps = {
 
 export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ children }) => {
   const [isRecording, setIsRecording] = useState(false)
-  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null)
   const [selectedLanguage, setSelectedLanguage] = useState('en-US')
   const [showLanguageMenu, setShowLanguageMenu] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
+  const [canUndo, setCanUndo] = useState(false)
+  const [canRedo, setCanRedo] = useState(false)
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const languageMenuRef = useRef<HTMLDivElement>(null)
-  const portalTargetRef = useRef<HTMLElement | null>(null)
 
+  // Find the content area Compose button to inject our buttons next to it
   useEffect(() => {
-    // Find the document-level compose button container (for description/content rich text field)
-    const findComposeButton = () => {
-      // Find payloadai-compose__actions containers NOT inside the title field
-      const containers = document.querySelectorAll('[class*="payloadai-compose__actions"]')
+    const findContentComposeButton = () => {
+      // Find all payloadai-compose__actions elements
+      const allComposeActions = document.querySelectorAll('[class*="payloadai-compose__actions"]')
 
-      for (const container of containers) {
-        // Skip if it's inside the voice-compose-field-wrapper (title field)
-        if (container.closest('.voice-compose-field-wrapper')) continue
-        // Skip if already has voice button
-        if (container.querySelector('.voice-btn-document')) continue
-
-        portalTargetRef.current = container as HTMLElement
-        setPortalTarget(container as HTMLElement)
-        return true
+      // We want the content/description area compose, not the title one
+      // The content area is typically in a richText field, not a text field
+      // Look for the one that's inside a richText editor container
+      for (const composeContainer of allComposeActions) {
+        // Check if this is inside a richText field (content area)
+        const richTextParent = composeContainer.closest('.rich-text-lexical')
+        if (richTextParent && !composeContainer.querySelector('.voice-btn-content')) {
+          setPortalTarget(composeContainer as HTMLElement)
+          return
+        }
       }
-      return false
     }
 
-    // Check periodically until we find the target (handles tab switching)
-    const interval = setInterval(() => {
-      // Check if current portal target is still in DOM
-      if (portalTargetRef.current && !document.body.contains(portalTargetRef.current)) {
-        portalTargetRef.current = null
-        setPortalTarget(null)
-      }
-      // Try to find a new target if we don't have one
-      if (!portalTargetRef.current) {
-        findComposeButton()
-      }
-    }, 1000)
+    // Initial check with delay
+    const timeout = setTimeout(findContentComposeButton, 300)
 
-    // Initial check
-    findComposeButton()
+    // Use MutationObserver to detect when the compose button is added
+    const observer = new MutationObserver(() => {
+      findContentComposeButton()
+    })
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    })
 
     return () => {
-      clearInterval(interval)
+      clearTimeout(timeout)
+      observer.disconnect()
     }
+  }, [])
+
+  // Check undo/redo availability
+  useEffect(() => {
+    const checkUndoRedo = () => {
+      setCanUndo(document.queryCommandEnabled('undo'))
+      setCanRedo(document.queryCommandEnabled('redo'))
+    }
+    const interval = setInterval(checkUndoRedo, 500)
+    return () => clearInterval(interval)
   }, [])
 
   const handleVoiceClick = () => {
@@ -120,13 +129,11 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
       }
 
       if (finalTranscript) {
-        // Find the Lexical editor and insert text
-        const lexicalEditor = document.querySelector('[contenteditable="true"]') as HTMLElement
+        // Find the Lexical editor in the content area and insert text
+        const richTextContainer = portalTarget?.closest('.rich-text-lexical')
+        const lexicalEditor = richTextContainer?.querySelector('[contenteditable="true"]') as HTMLElement
         if (lexicalEditor) {
-          // Focus the editor
           lexicalEditor.focus()
-
-          // Use execCommand to insert text at cursor position
           document.execCommand('insertText', false, finalTranscript + ' ')
         }
       }
@@ -156,14 +163,15 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Text-to-Speech preview - reads content from the Lexical editor
+  // Text-to-Speech preview
   const handleTextToSpeech = () => {
     if (isSpeaking) {
       window.speechSynthesis.cancel()
       setIsSpeaking(false)
       return
     }
-    const lexicalEditor = document.querySelector('[contenteditable="true"]') as HTMLElement
+    const richTextContainer = portalTarget?.closest('.rich-text-lexical')
+    const lexicalEditor = richTextContainer?.querySelector('[contenteditable="true"]') as HTMLElement
     const text = lexicalEditor?.innerText || ''
     if (!text.trim()) return
     const utterance = new SpeechSynthesisUtterance(text)
@@ -172,6 +180,24 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
     utterance.onerror = () => setIsSpeaking(false)
     setIsSpeaking(true)
     window.speechSynthesis.speak(utterance)
+  }
+
+  const handleUndo = () => {
+    const richTextContainer = portalTarget?.closest('.rich-text-lexical')
+    const lexicalEditor = richTextContainer?.querySelector('[contenteditable="true"]') as HTMLElement
+    if (lexicalEditor) {
+      lexicalEditor.focus()
+      document.execCommand('undo', false)
+    }
+  }
+
+  const handleRedo = () => {
+    const richTextContainer = portalTarget?.closest('.rich-text-lexical')
+    const lexicalEditor = richTextContainer?.querySelector('[contenteditable="true"]') as HTMLElement
+    if (lexicalEditor) {
+      lexicalEditor.focus()
+      document.execCommand('redo', false)
+    }
   }
 
   const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === selectedLanguage)
@@ -216,7 +242,7 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
         type="button"
         onClick={handleVoiceClick}
         title={isRecording ? 'Stop Recording' : 'Voice Record'}
-        className={`voice-btn-document ${isRecording ? 'recording' : ''}`}
+        className={`voice-btn-content ${isRecording ? 'recording' : ''}`}
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
@@ -245,6 +271,32 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
               <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
             </>
           )}
+        </svg>
+      </button>
+
+      {/* Undo Button */}
+      <button
+        type="button"
+        onClick={handleUndo}
+        title="Undo"
+        className={`undo-redo-btn ${!canUndo ? 'disabled' : ''}`}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 7v6h6" />
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+        </svg>
+      </button>
+
+      {/* Redo Button */}
+      <button
+        type="button"
+        onClick={handleRedo}
+        title="Redo"
+        className={`undo-redo-btn ${!canRedo ? 'disabled' : ''}`}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 7v6h-6" />
+          <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7" />
         </svg>
       </button>
     </>
