@@ -174,22 +174,6 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
     window.speechSynthesis.speak(utterance)
   }
 
-  const handleUndo = () => {
-    const lexicalEditor = document.querySelector('[contenteditable="true"]') as HTMLElement
-    if (lexicalEditor) {
-      lexicalEditor.focus()
-      document.execCommand('undo', false)
-    }
-  }
-
-  const handleRedo = () => {
-    const lexicalEditor = document.querySelector('[contenteditable="true"]') as HTMLElement
-    if (lexicalEditor) {
-      lexicalEditor.focus()
-      document.execCommand('redo', false)
-    }
-  }
-
   const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === selectedLanguage)
 
   const actionButtons = (
@@ -262,26 +246,6 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
             </>
           )}
         </svg>
-      </button>
-
-      {/* Undo Button */}
-      <button
-        type="button"
-        onClick={handleUndo}
-        title="Undo"
-        className="undo-redo-btn-text"
-      >
-        Undo
-      </button>
-
-      {/* Redo Button */}
-      <button
-        type="button"
-        onClick={handleRedo}
-        title="Redo"
-        className="undo-redo-btn-text"
-      >
-        Redo
       </button>
     </>
   )
