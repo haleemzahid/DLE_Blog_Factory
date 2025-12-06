@@ -123,15 +123,19 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
 
   // Find the compose button container to inject voice button next to it
   useEffect(() => {
+    let foundTarget = false
+
     const findComposeButton = () => {
-      if (!containerRef.current) return
+      if (!containerRef.current || foundTarget) return
 
       // Find the payloadai-compose__actions element within this field wrapper
       const composeContainer = containerRef.current.querySelector(
         '[class*="payloadai-compose__actions"]',
       )
-      if (composeContainer && !composeContainer.querySelector('.voice-btn-title')) {
+      if (composeContainer) {
+        foundTarget = true
         setPortalTarget(composeContainer as HTMLElement)
+        observer.disconnect() // Stop observing once found
       }
     }
 
@@ -140,7 +144,9 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
 
     // Use MutationObserver to detect when the compose button is added
     const observer = new MutationObserver(() => {
-      findComposeButton()
+      if (!foundTarget) {
+        findComposeButton()
+      }
     })
 
     if (containerRef.current) {
