@@ -142,7 +142,15 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'media',
             }),
 
-            MetaDescriptionField({}),
+            MetaDescriptionField({
+              overrides: {
+                admin: {
+                  components: {
+                    Field: '@/components/VoiceComposeField#VoiceComposeField',
+                  },
+                },
+              },
+            }),
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,

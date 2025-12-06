@@ -96,7 +96,15 @@ export const Pages: CollectionConfig<'pages'> = {
               relationTo: 'media',
             }),
 
-            MetaDescriptionField({}),
+            MetaDescriptionField({
+              overrides: {
+                admin: {
+                  components: {
+                    Field: '@/components/VoiceComposeField#VoiceComposeField',
+                  },
+                },
+              },
+            }),
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,
