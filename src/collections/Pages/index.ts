@@ -47,6 +47,16 @@ export const Pages: CollectionConfig<'pages'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     useAsTitle: 'title',
+    livePreview: {
+      url: ({ data, req }) => {
+        const path = data?.slug === 'home' ? '' : data?.slug
+        return `${req.protocol}//${req.host}/${path || ''}`
+      },
+    },
+    preview: (data, { req }) => {
+      const path = data?.slug === 'home' ? '' : data?.slug
+      return `${req.protocol}//${req.host}/${path || ''}`
+    },
   },
   fields: [
     {

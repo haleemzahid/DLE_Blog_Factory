@@ -51,6 +51,14 @@ export const Posts: CollectionConfig<'posts'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     useAsTitle: 'title',
+    livePreview: {
+      url: ({ data, req }) => {
+        return `${req.protocol}//${req.host}/posts/${data?.slug || ''}`
+      },
+    },
+    preview: (data, { req }) => {
+      return `${req.protocol}//${req.host}/posts/${data?.slug || ''}`
+    },
   },
   fields: [
     {
