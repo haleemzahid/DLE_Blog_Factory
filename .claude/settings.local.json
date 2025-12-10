@@ -34,7 +34,8 @@
       "Bash(pnpm list:*)",
       "Bash(pnpm why:*)",
       "Bash(pnpm install)",
-      "Bash(cmd /c \"taskkill /F /IM node.exe\")"
+      "Bash(cmd /c \"taskkill /F /IM node.exe\")",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
