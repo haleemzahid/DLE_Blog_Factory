@@ -10,8 +10,8 @@ import './styles.css'
 // Extend Window interface for Web Speech API
 declare global {
   interface Window {
-    SpeechRecognition: typeof SpeechRecognition
-    webkitSpeechRecognition: typeof SpeechRecognition
+    SpeechRecognition: any
+    webkitSpeechRecognition: any
   }
 }
 
@@ -54,7 +54,7 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [history, setHistory] = useState<string[]>([''])
   const [historyIndex, setHistoryIndex] = useState(0)
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const recognitionRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const languageMenuRef = useRef<HTMLDivElement>(null)
   const isUndoRedoRef = useRef(false)
@@ -182,7 +182,7 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
 
       recognition.onstart = () => setIsRecording(true)
 
-      recognition.onresult = (event: SpeechRecognitionEvent) => {
+      recognition.onresult = (event: any) => {
         let finalTranscript = ''
         for (let i = event.resultIndex; i < event.results.length; i++) {
           if (event.results[i].isFinal) {

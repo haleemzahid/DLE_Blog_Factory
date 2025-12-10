@@ -7,8 +7,8 @@ import '../VoiceComposeField/styles.css'
 // Extend Window interface for Web Speech API
 declare global {
   interface Window {
-    SpeechRecognition: typeof SpeechRecognition
-    webkitSpeechRecognition: typeof SpeechRecognition
+    SpeechRecognition: any
+    webkitSpeechRecognition: any
   }
 }
 
@@ -46,7 +46,7 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
   const [selectedLanguage, setSelectedLanguage] = useState('en-US')
   const [showLanguageMenu, setShowLanguageMenu] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const recognitionRef = useRef<any>(null)
   const languageMenuRef = useRef<HTMLDivElement>(null)
   const editorRef = useRef<HTMLElement | null>(null)
 
@@ -165,7 +165,7 @@ export const DocumentVoiceButton: React.FC<DocumentVoiceButtonProps> = ({ childr
 
       recognition.onstart = () => setIsRecording(true)
 
-      recognition.onresult = (event: SpeechRecognitionEvent) => {
+      recognition.onresult = (event: any) => {
         let finalTranscript = ''
         for (let i = event.resultIndex; i < event.results.length; i++) {
           if (event.results[i].isFinal) {
