@@ -49,7 +49,7 @@ export const Posts: CollectionConfig<'posts'> = {
     },
   },
   admin: {
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'postType', 'showOnHomepage', 'slug', 'updatedAt'],
     useAsTitle: 'title',
     livePreview: {
       url: ({ data, req }) => {
@@ -199,6 +199,77 @@ export const Posts: CollectionConfig<'posts'> = {
       },
       hasMany: true,
       relationTo: 'users',
+    },
+    // Blog Type Configuration
+    {
+      name: 'postType',
+      type: 'select',
+      defaultValue: 'main',
+      required: true,
+      options: [
+        { label: 'Main Website Blog', value: 'main' },
+        { label: 'Agent Blog', value: 'agent' },
+        { label: 'Syndicated (Multi-Agent)', value: 'syndicated' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Select where this post should appear',
+      },
+    },
+    {
+      name: 'showOnHomepage',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Show on Homepage',
+      admin: {
+        position: 'sidebar',
+        description: 'Display this post on the main website homepage',
+        condition: (data) => data.postType === 'agent' || data.postType === 'syndicated',
+      },
+    },
+    {
+      name: 'agent',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+        description: 'Associate this post with a specific agent\'s super page blog',
+        condition: (data) => data.postType === 'agent',
+      },
+      relationTo: 'agents',
+      label: 'Agent',
+    },
+    {
+      name: 'syndicatedAgents',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+        description: 'Select multiple agents to syndicate/copy this post to their pages',
+        condition: (data) => data.postType === 'syndicated',
+      },
+      hasMany: true,
+      relationTo: 'agents',
+      label: 'Syndicated to Agents',
+    },
+    {
+      name: 'isFeatured',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Featured Post',
+      admin: {
+        position: 'sidebar',
+        description: 'Highlight this post as featured',
+      },
+    },
+    {
+      name: 'relatedPages',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+        description: 'Display this post on specific pages (e.g., Google SEO Services page)',
+      },
+      hasMany: true,
+      relationTo: 'pages',
+      label: 'Show on Pages',
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy

@@ -47,6 +47,8 @@ const SUPPORTED_LANGUAGES = [
 ]
 
 export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
+  console.log('[VoiceComposeField] Rendering with props:', { path: props.path, field: props.field?.name })
+
   const [isRecording, setIsRecording] = useState(false)
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null)
   const [selectedLanguage, setSelectedLanguage] = useState('en-US')
@@ -62,35 +64,48 @@ export const VoiceComposeField: React.FC<VoiceComposeFieldProps> = (props) => {
   const { path, field } = props
   const { value, setValue } = useField<string>({ path: path || '' })
 
+  console.log('[VoiceComposeField] Field value:', value)
+
   // Track value changes for undo/redo
+  // Using refs to avoid infinite loops with history state
+  const historyRef = useRef<string[]>([''])
+  const historyIndexRef = useRef(0)
+
   useEffect(() => {
     if (isUndoRedoRef.current) {
       isUndoRedoRef.current = false
       return
     }
-    if (value !== history[historyIndex]) {
-      const newHistory = history.slice(0, historyIndex + 1)
+    const currentHistory = historyRef.current
+    const currentIndex = historyIndexRef.current
+
+    if (value !== currentHistory[currentIndex]) {
+      const newHistory = currentHistory.slice(0, currentIndex + 1)
       newHistory.push(value || '')
+      historyRef.current = newHistory
+      historyIndexRef.current = newHistory.length - 1
       setHistory(newHistory)
       setHistoryIndex(newHistory.length - 1)
     }
   }, [value])
 
   const handleUndo = () => {
-    if (historyIndex > 0) {
+    if (historyIndexRef.current > 0) {
       isUndoRedoRef.current = true
-      const newIndex = historyIndex - 1
+      const newIndex = historyIndexRef.current - 1
+      historyIndexRef.current = newIndex
       setHistoryIndex(newIndex)
-      setValue(history[newIndex])
+      setValue(historyRef.current[newIndex])
     }
   }
 
   const handleRedo = () => {
-    if (historyIndex < history.length - 1) {
+    if (historyIndexRef.current < historyRef.current.length - 1) {
       isUndoRedoRef.current = true
-      const newIndex = historyIndex + 1
+      const newIndex = historyIndexRef.current + 1
+      historyIndexRef.current = newIndex
       setHistoryIndex(newIndex)
-      setValue(history[newIndex])
+      setValue(historyRef.current[newIndex])
     }
   }
 

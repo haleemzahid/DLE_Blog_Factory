@@ -12,6 +12,10 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
+import { Agents } from './collections/Agents'
+import { States } from './collections/States'
+import { Designations } from './collections/Designations'
+import { Testimonials } from './collections/Testimonials'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -55,7 +59,7 @@ export default buildConfig({
       max: 10, // Limit pool size
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Users, Agents, States, Designations, Testimonials],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

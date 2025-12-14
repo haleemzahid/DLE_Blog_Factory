@@ -7,6 +7,20 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { HomeValueForm } from '../../blocks/HomeValueForm/config'
+import { TestimonialsBlock } from '../../blocks/TestimonialsBlock/config'
+import { ServicesGrid } from '../../blocks/ServicesGrid/config'
+import { AgentGallery } from '../../blocks/AgentGallery/config'
+import { FAQBlock } from '../../blocks/FAQBlock/config'
+import { AgentBlog } from '../../blocks/AgentBlog/config'
+import { AgentContact } from '../../blocks/AgentContact/config'
+import { DirectoryListing } from '../../blocks/DirectoryListing/config'
+import { HomepageBlog } from '../../blocks/HomepageBlog/config'
+import { VideoEmbed } from '../../blocks/VideoEmbed/config'
+import { TeamSection } from '../../blocks/TeamSection/config'
+import { PartnersLogos } from '../../blocks/PartnersLogos/config'
+import { FeaturedAgents } from '../../blocks/FeaturedAgents/config'
+import { PageBlog } from '../../blocks/PageBlog/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -81,7 +95,27 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                HomeValueForm,
+                TestimonialsBlock,
+                ServicesGrid,
+                AgentGallery,
+                FAQBlock,
+                AgentBlog,
+                AgentContact,
+                DirectoryListing,
+                HomepageBlog,
+                VideoEmbed,
+                TeamSection,
+                PartnersLogos,
+                FeaturedAgents,
+                PageBlog,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,
