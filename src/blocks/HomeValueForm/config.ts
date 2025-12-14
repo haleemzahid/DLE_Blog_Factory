@@ -17,7 +17,8 @@ export const HomeValueForm: Block = {
     {
       name: 'description',
       type: 'textarea',
-      defaultValue: 'Get instant access to all the homes that sold in your neighborhood from the most Exclusive Real Estate Network.',
+      defaultValue:
+        'Get instant access to all the homes that sold in your neighborhood from the most Exclusive Real Estate Network.',
     },
     {
       name: 'inputPlaceholder',

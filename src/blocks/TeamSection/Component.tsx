@@ -53,18 +53,11 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
         {/* Team Grid */}
         <div className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto">
           {members.map((member, index) => (
-            <div
-              key={member.id || index}
-              className="group text-center"
-            >
+            <div key={member.id || index} className="group text-center">
               {/* Photo */}
               <div className="relative w-48 h-48 mx-auto mb-4 rounded-lg overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow">
                 {member.photo && typeof member.photo === 'object' && (
-                  <Media
-                    resource={member.photo}
-                    fill
-                    className="object-cover"
-                  />
+                  <Media resource={member.photo} fill className="object-cover" />
                 )}
                 {/* LinkedIn Overlay */}
                 {member.linkedIn && (
@@ -86,13 +79,9 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
               </div>
 
               {/* Info */}
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                {member.name}
-              </h3>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
               {member.role && (
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  {member.role}
-                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{member.role}</p>
               )}
             </div>
           ))}
@@ -107,7 +96,12 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
             >
               {ctaLabel}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </Link>
           </div>

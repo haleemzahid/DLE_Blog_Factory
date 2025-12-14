@@ -17,7 +17,7 @@ const toSlug = (str: string): string => {
  */
 export const seedDirectory = async (payload: Payload) => {
   console.log('Seeding States...')
-  
+
   // US States
   const usStates = [
     { name: 'Alabama', abbreviation: 'AL' },
@@ -74,12 +74,30 @@ export const seedDirectory = async (payload: Payload) => {
 
   // Unincorporated areas
   const unincorporatedAreas = [
-    'Tennessee', 'Texas (Part-1)', 'Texas (Part-2)', 'Utah', 'Vermont',
-    'Virginia (Part 1)', 'Virginia (Part 2)', 'Virginia (Part 3)',
-    'Washington', 'West Virginia (Part 1)', 'West Virginia (Part 2)', 'West Virginia (Part 3)',
-    'Wisconsin (Part 1)', 'Wisconsin (Part 2)', 'Wyoming',
-    'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-    'Missouri (Part 1)', 'Missouri (Part 2)', 'Montana', 'Nebraska',
+    'Tennessee',
+    'Texas (Part-1)',
+    'Texas (Part-2)',
+    'Utah',
+    'Vermont',
+    'Virginia (Part 1)',
+    'Virginia (Part 2)',
+    'Virginia (Part 3)',
+    'Washington',
+    'West Virginia (Part 1)',
+    'West Virginia (Part 2)',
+    'West Virginia (Part 3)',
+    'Wisconsin (Part 1)',
+    'Wisconsin (Part 2)',
+    'Wyoming',
+    'Maryland',
+    'Massachusetts',
+    'Michigan',
+    'Minnesota',
+    'Mississippi',
+    'Missouri (Part 1)',
+    'Missouri (Part 2)',
+    'Montana',
+    'Nebraska',
   ]
 
   // Create regular states
@@ -151,62 +169,214 @@ export const seedDirectory = async (payload: Payload) => {
   // Main Designations (shown in dropdown)
   const designations = [
     // SEO designations
-    { title: 'Mr. SEO™', prefix: 'mr' as const, category: 'seo' as const, sortOrder: 1, featured: true },
-    { title: 'Mrs. Seo™', prefix: 'mrs' as const, category: 'seo' as const, sortOrder: 2, featured: true },
-    
+    {
+      title: 'Mr. SEO™',
+      prefix: 'mr' as const,
+      category: 'seo' as const,
+      sortOrder: 1,
+      featured: true,
+    },
+    {
+      title: 'Mrs. Seo™',
+      prefix: 'mrs' as const,
+      category: 'seo' as const,
+      sortOrder: 2,
+      featured: true,
+    },
+
     // New Build
-    { title: 'Mr. New Build™', prefix: 'mr' as const, category: 'new-build' as const, sortOrder: 3, featured: true },
-    { title: 'Mrs. New build™', prefix: 'mrs' as const, category: 'new-build' as const, sortOrder: 4, featured: true },
-    
+    {
+      title: 'Mr. New Build™',
+      prefix: 'mr' as const,
+      category: 'new-build' as const,
+      sortOrder: 3,
+      featured: true,
+    },
+    {
+      title: 'Mrs. New build™',
+      prefix: 'mrs' as const,
+      category: 'new-build' as const,
+      sortOrder: 4,
+      featured: true,
+    },
+
     // Title
-    { title: 'Mr. Title™', prefix: 'mr' as const, category: 'title' as const, sortOrder: 5, featured: true },
-    { title: 'Mrs. Title™', prefix: 'mrs' as const, category: 'title' as const, sortOrder: 6, featured: true },
-    
+    {
+      title: 'Mr. Title™',
+      prefix: 'mr' as const,
+      category: 'title' as const,
+      sortOrder: 5,
+      featured: true,
+    },
+    {
+      title: 'Mrs. Title™',
+      prefix: 'mrs' as const,
+      category: 'title' as const,
+      sortOrder: 6,
+      featured: true,
+    },
+
     // Escrow
-    { title: 'Mr. Escrow™', prefix: 'mr' as const, category: 'title' as const, sortOrder: 7, featured: true },
-    { title: 'Mrs. Escrow™', prefix: 'mrs' as const, category: 'title' as const, sortOrder: 8, featured: true },
-    
+    {
+      title: 'Mr. Escrow™',
+      prefix: 'mr' as const,
+      category: 'title' as const,
+      sortOrder: 7,
+      featured: true,
+    },
+    {
+      title: 'Mrs. Escrow™',
+      prefix: 'mrs' as const,
+      category: 'title' as const,
+      sortOrder: 8,
+      featured: true,
+    },
+
     // Mobile Home
-    { title: 'Mr. Mobile home™', prefix: 'mr' as const, category: 'mobile-home' as const, sortOrder: 9, featured: true },
-    { title: 'Mrs. Mobile home™', prefix: 'mrs' as const, category: 'mobile-home' as const, sortOrder: 10, featured: true },
-    
+    {
+      title: 'Mr. Mobile home™',
+      prefix: 'mr' as const,
+      category: 'mobile-home' as const,
+      sortOrder: 9,
+      featured: true,
+    },
+    {
+      title: 'Mrs. Mobile home™',
+      prefix: 'mrs' as const,
+      category: 'mobile-home' as const,
+      sortOrder: 10,
+      featured: true,
+    },
+
     // Listings (parent for sub-items)
-    { title: 'Mr. Listings™', prefix: 'mr' as const, category: 'listings' as const, sortOrder: 11, featured: true, isParent: true },
-    { title: 'Ms. Listings™', prefix: 'ms' as const, category: 'listings' as const, sortOrder: 12, featured: true, isParent: true },
-    
+    {
+      title: 'Mr. Listings™',
+      prefix: 'mr' as const,
+      category: 'listings' as const,
+      sortOrder: 11,
+      featured: true,
+      isParent: true,
+    },
+    {
+      title: 'Ms. Listings™',
+      prefix: 'ms' as const,
+      category: 'listings' as const,
+      sortOrder: 12,
+      featured: true,
+      isParent: true,
+    },
+
     // Luxury
-    { title: 'Mr. Luxury™', prefix: 'mr' as const, category: 'luxury' as const, sortOrder: 13, featured: true },
-    { title: 'Ms. Luxury™', prefix: 'ms' as const, category: 'luxury' as const, sortOrder: 14, featured: true },
-    
+    {
+      title: 'Mr. Luxury™',
+      prefix: 'mr' as const,
+      category: 'luxury' as const,
+      sortOrder: 13,
+      featured: true,
+    },
+    {
+      title: 'Ms. Luxury™',
+      prefix: 'ms' as const,
+      category: 'luxury' as const,
+      sortOrder: 14,
+      featured: true,
+    },
+
     // Appraisal
-    { title: 'Mr. Appraisal™', prefix: 'mr' as const, category: 'appraisal' as const, sortOrder: 15, featured: true },
-    { title: 'Ms. Appraisal™', prefix: 'ms' as const, category: 'appraisal' as const, sortOrder: 16, featured: true },
-    
+    {
+      title: 'Mr. Appraisal™',
+      prefix: 'mr' as const,
+      category: 'appraisal' as const,
+      sortOrder: 15,
+      featured: true,
+    },
+    {
+      title: 'Ms. Appraisal™',
+      prefix: 'ms' as const,
+      category: 'appraisal' as const,
+      sortOrder: 16,
+      featured: true,
+    },
+
     // Open House
-    { title: 'Mr. Open House™', prefix: 'mr' as const, category: 'open-house' as const, sortOrder: 17, featured: true },
-    
+    {
+      title: 'Mr. Open House™',
+      prefix: 'mr' as const,
+      category: 'open-house' as const,
+      sortOrder: 17,
+      featured: true,
+    },
+
     // Offers
-    { title: 'Mr. Offers™', prefix: 'mr' as const, category: 'offers' as const, sortOrder: 18, featured: true },
-    
+    {
+      title: 'Mr. Offers™',
+      prefix: 'mr' as const,
+      category: 'offers' as const,
+      sortOrder: 18,
+      featured: true,
+    },
+
     // Nationwide
-    { title: 'Mr. Nationwide™', prefix: 'mr' as const, category: 'nationwide' as const, sortOrder: 19, featured: true },
-    
+    {
+      title: 'Mr. Nationwide™',
+      prefix: 'mr' as const,
+      category: 'nationwide' as const,
+      sortOrder: 19,
+      featured: true,
+    },
+
     // Fix & Flip
-    { title: 'Mr. Fix & Flip™', prefix: 'mr' as const, category: 'fix-flip' as const, sortOrder: 20, featured: true },
-    { title: 'Ms. Fix & Flip™', prefix: 'ms' as const, category: 'fix-flip' as const, sortOrder: 21, featured: true },
-    
+    {
+      title: 'Mr. Fix & Flip™',
+      prefix: 'mr' as const,
+      category: 'fix-flip' as const,
+      sortOrder: 20,
+      featured: true,
+    },
+    {
+      title: 'Ms. Fix & Flip™',
+      prefix: 'ms' as const,
+      category: 'fix-flip' as const,
+      sortOrder: 21,
+      featured: true,
+    },
+
     // Marketing
-    { title: 'Mr. Marketing™', prefix: 'mr' as const, category: 'marketing' as const, sortOrder: 22, featured: true },
-    { title: 'Ms. Marketing™', prefix: 'ms' as const, category: 'marketing' as const, sortOrder: 23, featured: true },
-    
+    {
+      title: 'Mr. Marketing™',
+      prefix: 'mr' as const,
+      category: 'marketing' as const,
+      sortOrder: 22,
+      featured: true,
+    },
+    {
+      title: 'Ms. Marketing™',
+      prefix: 'ms' as const,
+      category: 'marketing' as const,
+      sortOrder: 23,
+      featured: true,
+    },
+
     // Efficiency
-    { title: 'Mr. Efficiency™', prefix: 'mr' as const, category: 'efficiency' as const, sortOrder: 24, featured: true },
-    { title: 'Mrs. Efficiency™', prefix: 'mrs' as const, category: 'efficiency' as const, sortOrder: 25, featured: true },
+    {
+      title: 'Mr. Efficiency™',
+      prefix: 'mr' as const,
+      category: 'efficiency' as const,
+      sortOrder: 24,
+      featured: true,
+    },
+    {
+      title: 'Mrs. Efficiency™',
+      prefix: 'mrs' as const,
+      category: 'efficiency' as const,
+      sortOrder: 25,
+      featured: true,
+    },
   ]
 
   // Create parent designations first (Mr. Listings, Ms. Listings)
   const parentDesignationIds: Record<string, number> = {}
-  
+
   for (const designation of designations) {
     if ((designation as any).isParent) {
       try {
@@ -253,8 +423,18 @@ export const seedDirectory = async (payload: Payload) => {
 
   // Create child designations (those that appear under Mr. Listings / Ms. Listings)
   const childDesignations = [
-    { title: 'Mr. Marketing™ (under Listings)', prefix: 'mr' as const, category: 'marketing' as const, parent: 'Mr. Listings™' },
-    { title: 'Mr. luxury™', prefix: 'mr' as const, category: 'luxury' as const, parent: 'Mr. Listings™' },
+    {
+      title: 'Mr. Marketing™ (under Listings)',
+      prefix: 'mr' as const,
+      category: 'marketing' as const,
+      parent: 'Mr. Listings™',
+    },
+    {
+      title: 'Mr. luxury™',
+      prefix: 'mr' as const,
+      category: 'luxury' as const,
+      parent: 'Mr. Listings™',
+    },
   ]
 
   for (const child of childDesignations) {

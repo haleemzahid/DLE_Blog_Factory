@@ -232,7 +232,7 @@ export const Posts: CollectionConfig<'posts'> = {
       type: 'relationship',
       admin: {
         position: 'sidebar',
-        description: 'Associate this post with a specific agent\'s super page blog',
+        description: "Associate this post with a specific agent's super page blog",
         condition: (data) => data.postType === 'agent',
       },
       relationTo: 'agents',

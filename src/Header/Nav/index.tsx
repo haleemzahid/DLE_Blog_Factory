@@ -33,14 +33,16 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
         {label}
         <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
-      
+
       {isOpen && (
         <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50 max-h-[70vh] overflow-y-auto">
           {items.map((item, i) => (
             <div
               key={i}
               className="relative"
-              onMouseEnter={() => item.children && item.children.length > 0 && setActiveSubmenu(item.label)}
+              onMouseEnter={() =>
+                item.children && item.children.length > 0 && setActiveSubmenu(item.label)
+              }
               onMouseLeave={() => setActiveSubmenu(null)}
             >
               <Link
@@ -48,11 +50,9 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
                 className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 {item.label}
-                {item.children && item.children.length > 0 && (
-                  <ChevronRight className="w-4 h-4" />
-                )}
+                {item.children && item.children.length > 0 && <ChevronRight className="w-4 h-4" />}
               </Link>
-              
+
               {/* Submenu */}
               {item.children && item.children.length > 0 && activeSubmenu === item.label && (
                 <div className="absolute left-full top-0 ml-1 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
@@ -82,8 +82,8 @@ interface HeaderNavProps {
   states?: State[]
 }
 
-export const HeaderNav: React.FC<HeaderNavProps> = ({ 
-  data, 
+export const HeaderNav: React.FC<HeaderNavProps> = ({
+  data,
   designations = [],
   childDesignations = [],
   states = [],
@@ -95,9 +95,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
     // Find children of this designation
     const children = childDesignations
       .filter((child) => {
-        const parentId = typeof child.parentDesignation === 'object' 
-          ? child.parentDesignation?.id 
-          : child.parentDesignation
+        const parentId =
+          typeof child.parentDesignation === 'object'
+            ? child.parentDesignation?.id
+            : child.parentDesignation
         return parentId === designation.id
       })
       .map((child) => ({
@@ -124,50 +125,41 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         // Handle dropdown type
         if (item.type === 'dropdown') {
           let dropdownItems: DropdownMenuProps['items'] = []
-          
+
           // Add manual dropdown items
           if (item.dropdownItems && item.dropdownItems.length > 0) {
             dropdownItems = item.dropdownItems.map((di) => {
-              const href = di.link?.type === 'custom' 
-                ? di.link?.url || '#'
-                : di.link?.reference && typeof di.link.reference.value === 'object'
-                  ? `/${(di.link.reference.value as { slug: string }).slug}`
-                  : '#'
+              const href =
+                di.link?.type === 'custom'
+                  ? di.link?.url || '#'
+                  : di.link?.reference && typeof di.link.reference.value === 'object'
+                    ? `/${(di.link.reference.value as { slug: string }).slug}`
+                    : '#'
               return {
                 label: di.label,
                 href,
               }
             })
           }
-          
+
           // Auto-include designations with nested children if flag is set
           if (item.includeDesignations && designations.length > 0) {
             dropdownItems = [...dropdownItems, ...designationDropdownItems]
           }
-          
+
           // Auto-include states if flag is set
           if (item.includeStates && states.length > 0) {
             dropdownItems = [...dropdownItems, ...stateDropdownItems]
           }
-          
+
           if (dropdownItems.length > 0) {
-            return (
-              <DropdownMenu
-                key={i}
-                label={item.label}
-                items={dropdownItems}
-              />
-            )
+            return <DropdownMenu key={i} label={item.label} items={dropdownItems} />
           }
         }
-        
+
         // Handle single link type
         return (
-          <CMSLink 
-            key={i} 
-            {...item.link} 
-            appearance="link"
-          >
+          <CMSLink key={i} {...item.link} appearance="link">
             {item.label}
           </CMSLink>
         )

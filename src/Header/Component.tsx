@@ -7,10 +7,10 @@ import React from 'react'
 import type { Header, Designation, State } from '@/payload-types'
 
 export async function Header() {
-  const headerData = await getCachedGlobal('header', 1)() as Header
-  
+  const headerData = (await getCachedGlobal('header', 1)()) as Header
+
   const payload = await getPayload({ config: configPromise })
-  
+
   // Fetch parent designations (top-level) with their children
   const designationsResult = await payload.find({
     collection: 'designations',
@@ -20,7 +20,7 @@ export async function Header() {
     limit: 50,
     sort: 'sortOrder',
   })
-  
+
   // Fetch child designations
   const childDesignationsResult = await payload.find({
     collection: 'designations',
@@ -30,7 +30,7 @@ export async function Header() {
     limit: 100,
     sort: 'sortOrder',
   })
-  
+
   // Fetch all US states for networks dropdown
   const statesResult = await payload.find({
     collection: 'states',
@@ -41,15 +41,15 @@ export async function Header() {
     limit: 60,
     sort: 'name',
   })
-  
+
   const designations = designationsResult.docs as Designation[]
   const childDesignations = childDesignationsResult.docs as Designation[]
   const states = statesResult.docs as State[]
 
   return (
-    <HeaderClient 
-      data={headerData} 
-      designations={designations} 
+    <HeaderClient
+      data={headerData}
+      designations={designations}
       childDesignations={childDesignations}
       states={states}
     />

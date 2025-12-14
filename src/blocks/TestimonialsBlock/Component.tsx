@@ -36,10 +36,7 @@ const TestimonialCard: React.FC<{
       <div className="flex items-start gap-4 mb-4">
         {showPhotos && testimonial.clientPhoto && typeof testimonial.clientPhoto === 'object' && (
           <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-            <Media
-              resource={testimonial.clientPhoto}
-              className="w-full h-full object-cover"
-            />
+            <Media resource={testimonial.clientPhoto} className="w-full h-full object-cover" />
           </div>
         )}
         <div className="flex-1">
@@ -48,28 +45,28 @@ const TestimonialCard: React.FC<{
             <span className="text-xs text-gray-500 flex items-center gap-1">
               Local Guide
               <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
               </svg>
             </span>
           )}
         </div>
       </div>
-      
+
       {showRatings && testimonial.rating && (
         <div className="mb-3">
           <StarRating rating={testimonial.rating} />
         </div>
       )}
-      
-      <p className="text-gray-600 flex-1 text-sm leading-relaxed">
-        {testimonial.review}
-      </p>
-      
+
+      <p className="text-gray-600 flex-1 text-sm leading-relaxed">{testimonial.review}</p>
+
       {showSource && testimonial.source && (
         <div className="mt-4 pt-4 border-t border-gray-100">
-          <span className="text-xs text-gray-400 capitalize">
-            via {testimonial.source}
-          </span>
+          <span className="text-xs text-gray-400 capitalize">via {testimonial.source}</span>
         </div>
       )}
     </div>
@@ -88,14 +85,12 @@ export const TestimonialsBlockComponent: React.FC<Props> = async ({
   showSource = true,
 }) => {
   const payload = await getPayload({ config: configPromise })
-  
+
   let testimonials: Testimonial[] = []
-  
+
   if (manualTestimonials && manualTestimonials.length > 0) {
     // Use manually selected testimonials
-    testimonials = manualTestimonials.filter(
-      (t): t is Testimonial => typeof t === 'object'
-    )
+    testimonials = manualTestimonials.filter((t): t is Testimonial => typeof t === 'object')
   } else if (agent) {
     // Fetch testimonials for specific agent
     const agentId = typeof agent === 'object' ? agent.id : agent
@@ -135,18 +130,16 @@ export const TestimonialsBlockComponent: React.FC<Props> = async ({
               {subtitle}
             </span>
           )}
-          {title && (
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
-              {title}
-            </h2>
-          )}
+          {title && <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">{title}</h2>}
         </div>
-        
-        <div className={`
+
+        <div
+          className={`
           ${layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : ''}
           ${layout === 'list' ? 'space-y-6 max-w-3xl mx-auto' : ''}
           ${layout === 'carousel' ? 'flex overflow-x-auto gap-6 snap-x snap-mandatory pb-4' : ''}
-        `}>
+        `}
+        >
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}

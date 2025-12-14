@@ -37,14 +37,14 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
   } = props
 
   const payload = await getPayload({ config: configPromise })
-  
+
   let agents: Agent[] = []
 
   if (displayMode === 'manual' && selectedAgents && selectedAgents.length > 0) {
     // Manual selection - agents are already populated or need to be fetched
-    agents = selectedAgents.map((agent) => 
-      typeof agent === 'object' ? agent : null
-    ).filter((a): a is Agent => a !== null)
+    agents = selectedAgents
+      .map((agent) => (typeof agent === 'object' ? agent : null))
+      .filter((a): a is Agent => a !== null)
   } else if (displayMode === 'designation' && designation) {
     // By designation
     const designationId = typeof designation === 'object' ? designation.id : designation
@@ -101,9 +101,9 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
           <div className="relative">
             <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
               {agents.map((agent) => (
-                <AgentCard 
-                  key={agent.id} 
-                  agent={agent} 
+                <AgentCard
+                  key={agent.id}
+                  agent={agent}
                   showDesignation={showDesignation || false}
                 />
               ))}
@@ -112,11 +112,7 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {agents.map((agent) => (
-              <AgentCard 
-                key={agent.id} 
-                agent={agent} 
-                showDesignation={showDesignation || false}
-              />
+              <AgentCard key={agent.id} agent={agent} showDesignation={showDesignation || false} />
             ))}
           </div>
         )}
@@ -130,7 +126,12 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
             >
               {ctaLabel}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </Link>
           </div>
@@ -143,15 +144,13 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
 function AgentCard({ agent, showDesignation }: { agent: Agent; showDesignation: boolean }) {
   // Get the first designation from the array
   const designations = agent.designation as (Designation | number)[] | null
-  const firstDesignation = designations && designations.length > 0 && typeof designations[0] === 'object' 
-    ? designations[0] as Designation 
-    : null
-  
+  const firstDesignation =
+    designations && designations.length > 0 && typeof designations[0] === 'object'
+      ? (designations[0] as Designation)
+      : null
+
   return (
-    <Link
-      href={`/agents/${agent.slug}`}
-      className="group flex-shrink-0 w-64 snap-start"
-    >
+    <Link href={`/agents/${agent.slug}`} className="group flex-shrink-0 w-64 snap-start">
       <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
         {/* Photo */}
         <div className="relative aspect-[4/5] overflow-hidden">
@@ -171,7 +170,7 @@ function AgentCard({ agent, showDesignation }: { agent: Agent; showDesignation: 
             </div>
           )}
         </div>
-        
+
         {/* Info */}
         <div className="p-4 text-center">
           <h3 className="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -179,7 +178,8 @@ function AgentCard({ agent, showDesignation }: { agent: Agent; showDesignation: 
           </h3>
           {agent.city && agent.state && (
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              {agent.city}, {typeof agent.state === 'object' ? agent.state.abbreviation : agent.state}
+              {agent.city},{' '}
+              {typeof agent.state === 'object' ? agent.state.abbreviation : agent.state}
             </p>
           )}
         </div>

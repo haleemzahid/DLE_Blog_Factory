@@ -41,7 +41,7 @@ export const ServicesGridBlock: React.FC<Props> = ({
             {title}
           </h2>
         )}
-        
+
         <div className={`grid ${getGridCols()} gap-8`}>
           {services.map((service, index) => (
             <div
@@ -53,23 +53,18 @@ export const ServicesGridBlock: React.FC<Props> = ({
             >
               {showIcons && service.icon && typeof service.icon === 'object' && (
                 <div className="w-16 h-16 mb-6">
-                  <Media
-                    resource={service.icon}
-                    className="w-full h-full object-contain"
-                  />
+                  <Media resource={service.icon} className="w-full h-full object-contain" />
                 </div>
               )}
-              
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                {service.title}
-              </h3>
-              
+
+              <h3 className="text-xl font-bold text-gray-900 mb-4">{service.title}</h3>
+
               {service.description && (
                 <div className="text-gray-600 mb-4">
                   <RichText data={service.description} />
                 </div>
               )}
-              
+
               {service.link?.type !== 'none' && service.link?.label && (
                 <div className="mt-4">
                   {service.link.type === 'external' && service.link.url ? (
@@ -80,18 +75,40 @@ export const ServicesGridBlock: React.FC<Props> = ({
                       className="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center gap-2"
                     >
                       {service.link.label}
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
                       </svg>
                     </a>
                   ) : service.link.type === 'internal' && service.link.page ? (
                     <Link
-                      href={typeof service.link.page === 'object' ? `/${service.link.page.slug}` : '#'}
+                      href={
+                        typeof service.link.page === 'object' ? `/${service.link.page.slug}` : '#'
+                      }
                       className="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center gap-2"
                     >
                       {service.link.label}
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
                       </svg>
                     </Link>
                   ) : null}
