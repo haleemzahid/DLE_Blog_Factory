@@ -36,7 +36,12 @@
       "Bash(pnpm install)",
       "Bash(cmd /c \"taskkill /F /IM node.exe\")",
       "Bash(git push:*)",
-      "Bash(pnpm build:*)"
+      "Bash(pnpm build:*)",
+      "Bash(cmd /c \"taskkill /F /PID 43704\")",
+      "Bash(cmd /c \"tasklist /FI \"\"PID eq 43704\"\"\")",
+      "Bash(cmd /c \"tasklist | findstr 43704\")",
+      "Bash(cmd /c \"netstat -ano | findstr :3000 | findstr LISTENING\")",
+      "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :30\")"
     ],
     "deny": [],
     "ask": []
