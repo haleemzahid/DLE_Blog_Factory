@@ -28,7 +28,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { state: stateSlug } = await params
-  
+
   const payload = await getPayload({ config: configPromise })
   const states = await payload.find({
     collection: 'states',
@@ -51,9 +51,9 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 
 export default async function StateNetworkPage({ params }: Args) {
   const { state: stateSlug } = await params
-  
+
   const payload = await getPayload({ config: configPromise })
-  
+
   // Fetch the state
   const states = await payload.find({
     collection: 'states',
@@ -89,13 +89,12 @@ export default async function StateNetworkPage({ params }: Args) {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            {state.name} Network
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">{state.name} Network</h1>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Browse {state.name} Designated Local Expert agents. Find trademark-protected real estate SEO experts in your city.
+            Browse {state.name} Designated Local Expert agents. Find trademark-protected real estate
+            SEO experts in your city.
           </p>
-          
+
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/apply"
@@ -122,15 +121,18 @@ export default async function StateNetworkPage({ params }: Args) {
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
                 {state.name} Designated Local Experts ({agents.totalDocs})
               </h2>
-              
+
               {agents.docs.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {agents.docs.map((agent) => {
                     const photo = typeof agent.profilePhoto === 'object' ? agent.profilePhoto : null
                     const photoUrl = photo?.url ? getMediaUrl(photo.url) : null
                     const designations = Array.isArray(agent.designation) ? agent.designation : []
-                    const firstDesignation = designations.length > 0 && typeof designations[0] === 'object' ? designations[0] : null
-                    
+                    const firstDesignation =
+                      designations.length > 0 && typeof designations[0] === 'object'
+                        ? designations[0]
+                        : null
+
                     return (
                       <Link
                         key={agent.id}
@@ -148,7 +150,7 @@ export default async function StateNetworkPage({ params }: Args) {
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400">
                               <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                               </svg>
                             </div>
                           )}
@@ -176,7 +178,8 @@ export default async function StateNetworkPage({ params }: Args) {
                     No Agents Yet in {state.name}
                   </h3>
                   <p className="text-gray-600 mb-6">
-                    Be the first Designated Local Expert in {state.name}! Apply now to claim your city.
+                    Be the first Designated Local Expert in {state.name}! Apply now to claim your
+                    city.
                   </p>
                   <Link
                     href="/apply"
@@ -207,12 +210,15 @@ export default async function StateNetworkPage({ params }: Args) {
                     </li>
                   ))}
                 </ul>
-                
+
                 <div className="mt-6 pt-4 border-t">
                   <h4 className="font-bold text-gray-900 mb-2">Other Networks</h4>
                   <ul className="space-y-1 text-sm">
                     <li>
-                      <Link href="/networks/california" className="text-gray-600 hover:text-blue-600">
+                      <Link
+                        href="/networks/california"
+                        className="text-gray-600 hover:text-blue-600"
+                      >
                         California Network
                       </Link>
                     </li>

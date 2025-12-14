@@ -20,43 +20,40 @@ const PostCard: React.FC<{
     <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
       {post.heroImage && typeof post.heroImage === 'object' && (
         <Link href={`/posts/${post.slug}`} className="block relative aspect-video">
-          <Media
-            resource={post.heroImage}
-            fill
-            className="object-cover"
-          />
+          <Media resource={post.heroImage} fill className="object-cover" />
         </Link>
       )}
-      
+
       <div className="p-5">
         <Link href={`/posts/${post.slug}`}>
           <h3 className="font-bold text-lg text-gray-900 hover:text-blue-600 transition-colors mb-2 line-clamp-2">
             {post.title}
           </h3>
         </Link>
-        
+
         {showExcerpt && post.meta?.description && (
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-            {post.meta.description}
-          </p>
+          <p className="text-gray-600 text-sm mb-3 line-clamp-2">{post.meta.description}</p>
         )}
-        
+
         <div className="flex items-center gap-4 text-sm text-gray-500">
           {showAuthor && post.populatedAuthors && post.populatedAuthors.length > 0 && (
             <span>{post.populatedAuthors[0]?.name}</span>
           )}
-          {showDate && post.publishedAt && (
-            <span>{formatDateTime(post.publishedAt)}</span>
-          )}
+          {showDate && post.publishedAt && <span>{formatDateTime(post.publishedAt)}</span>}
         </div>
-        
+
         <Link
           href={`/posts/${post.slug}`}
           className="inline-flex items-center text-red-600 font-semibold text-sm mt-3 hover:text-red-700"
         >
           Read more
           <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
           </svg>
         </Link>
       </div>
@@ -76,37 +73,32 @@ export const AgentBlogBlock: React.FC<Props> = async ({
   showExcerpt = true,
 }) => {
   const payload = await getPayload({ config: configPromise })
-  
+
   // Build query - find posts for this agent (either direct or syndicated)
   const where: Record<string, any> = {
     _status: { equals: 'published' },
   }
-  
+
   if (agent) {
     const agentId = typeof agent === 'object' ? agent.id : agent
     // Find posts that are either:
     // 1. Directly assigned to this agent (postType: 'agent')
     // 2. Syndicated to this agent (postType: 'syndicated' and agent is in syndicatedAgents)
-    where.or = [
-      { agent: { equals: agentId } },
-      { syndicatedAgents: { contains: agentId } },
-    ]
+    where.or = [{ agent: { equals: agentId } }, { syndicatedAgents: { contains: agentId } }]
   }
-  
+
   if (categories && categories.length > 0) {
-    const categoryIds = categories.map((cat) => 
-      typeof cat === 'object' ? cat.id : cat
-    )
+    const categoryIds = categories.map((cat) => (typeof cat === 'object' ? cat.id : cat))
     where.categories = { in: categoryIds }
   }
-  
+
   const result = await payload.find({
     collection: 'posts',
     where,
     limit: limit || 6,
     sort: '-publishedAt',
   })
-  
+
   const posts = result.docs
 
   if (posts.length === 0) {
@@ -121,18 +113,14 @@ export const AgentBlogBlock: React.FC<Props> = async ({
             {title}
           </h2>
         )}
-        
+
         {layout === 'featured' && posts.length > 0 && (
           <div className="mb-8">
             <article className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="md:flex">
                 {posts[0].heroImage && typeof posts[0].heroImage === 'object' && (
                   <div className="md:w-1/2 relative aspect-video md:aspect-auto">
-                    <Media
-                      resource={posts[0].heroImage}
-                      fill
-                      className="object-cover"
-                    />
+                    <Media resource={posts[0].heroImage} fill className="object-cover" />
                   </div>
                 )}
                 <div className="md:w-1/2 p-8 flex flex-col justify-center">
@@ -142,9 +130,7 @@ export const AgentBlogBlock: React.FC<Props> = async ({
                     </h3>
                   </Link>
                   {showExcerpt && posts[0].meta?.description && (
-                    <p className="text-gray-600 mb-4">
-                      {posts[0].meta.description}
-                    </p>
+                    <p className="text-gray-600 mb-4">{posts[0].meta.description}</p>
                   )}
                   <Link
                     href={`/posts/${posts[0].slug}`}
@@ -157,11 +143,13 @@ export const AgentBlogBlock: React.FC<Props> = async ({
             </article>
           </div>
         )}
-        
-        <div className={`
+
+        <div
+          className={`
           ${layout === 'grid' || layout === 'featured' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : ''}
           ${layout === 'list' ? 'space-y-6 max-w-3xl mx-auto' : ''}
-        `}>
+        `}
+        >
           {(layout === 'featured' ? posts.slice(1) : posts).map((post) => (
             <PostCard
               key={post.id}
@@ -172,7 +160,7 @@ export const AgentBlogBlock: React.FC<Props> = async ({
             />
           ))}
         </div>
-        
+
         {showLoadMore && result.hasNextPage && (
           <div className="text-center mt-12">
             <Link

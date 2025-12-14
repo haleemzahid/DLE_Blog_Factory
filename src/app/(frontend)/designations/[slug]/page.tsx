@@ -29,7 +29,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { slug } = await params
-  
+
   const payload = await getPayload({ config: configPromise })
   const designations = await payload.find({
     collection: 'designations',
@@ -52,9 +52,9 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 
 export default async function DesignationPage({ params }: Args) {
   const { slug } = await params
-  
+
   const payload = await getPayload({ config: configPromise })
-  
+
   // Fetch the designation
   const designations = await payload.find({
     collection: 'designations',
@@ -107,15 +107,13 @@ export default async function DesignationPage({ params }: Args) {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            {designation.title}
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">{designation.title}</h1>
           {designation.description && (
             <div className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
               <RichText data={designation.description} enableGutter={false} />
             </div>
           )}
-          
+
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/apply"
@@ -142,7 +140,7 @@ export default async function DesignationPage({ params }: Args) {
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
                 {designation.title} Directory ({agents.totalDocs} Agents)
               </h2>
-              
+
               {agents.docs.length > 0 ? (
                 <div className="space-y-8">
                   {Object.entries(agentsByState)
@@ -154,10 +152,11 @@ export default async function DesignationPage({ params }: Args) {
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                           {stateAgents.map((agent) => {
-                            const photo = typeof agent.profilePhoto === 'object' ? agent.profilePhoto : null
+                            const photo =
+                              typeof agent.profilePhoto === 'object' ? agent.profilePhoto : null
                             const photoUrl = photo?.url ? getMediaUrl(photo.url) : null
                             const state = typeof agent.state === 'object' ? agent.state : null
-                            
+
                             return (
                               <Link
                                 key={agent.id}
@@ -174,8 +173,12 @@ export default async function DesignationPage({ params }: Args) {
                                     />
                                   ) : (
                                     <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                      <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                      <svg
+                                        className="w-16 h-16"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                                       </svg>
                                     </div>
                                   )}
@@ -185,7 +188,8 @@ export default async function DesignationPage({ params }: Args) {
                                     {agent.displayName || agent.name}
                                   </h4>
                                   <p className="text-gray-600 text-sm mt-1">
-                                    {agent.city}{state ? `, ${state.abbreviation}` : ''}
+                                    {agent.city}
+                                    {state ? `, ${state.abbreviation}` : ''}
                                   </p>
                                 </div>
                               </Link>
@@ -201,7 +205,8 @@ export default async function DesignationPage({ params }: Args) {
                     No {designation.title} Agents Yet
                   </h3>
                   <p className="text-gray-600 mb-6">
-                    Be the first {designation.title}! Apply now to claim this designation in your city.
+                    Be the first {designation.title}! Apply now to claim this designation in your
+                    city.
                   </p>
                   <Link
                     href="/apply"
@@ -232,7 +237,7 @@ export default async function DesignationPage({ params }: Args) {
                     </li>
                   ))}
                 </ul>
-                
+
                 <div className="mt-6 pt-4 border-t">
                   <Link
                     href="/directory"

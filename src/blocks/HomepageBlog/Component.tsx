@@ -19,46 +19,43 @@ interface HomepageBlogBlockProps {
 }
 
 export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props) => {
-  const { 
-    title, 
-    subtitle, 
-    limit = 6, 
-    showMainBlog = true, 
+  const {
+    title,
+    subtitle,
+    limit = 6,
+    showMainBlog = true,
     showSyndicatedOnHomepage = true,
     showFeaturedOnly = false,
     layout = 'grid',
   } = props
 
   const payload = await getPayload({ config: configPromise })
-  
+
   // Build the where clause
   const orConditions: any[] = []
-  
+
   if (showMainBlog) {
     orConditions.push({ postType: { equals: 'main' } })
   }
-  
+
   if (showSyndicatedOnHomepage) {
     orConditions.push({
-      and: [
-        { postType: { equals: 'syndicated' } },
-        { showOnHomepage: { equals: true } },
-      ],
+      and: [{ postType: { equals: 'syndicated' } }, { showOnHomepage: { equals: true } }],
     })
   }
-  
+
   const where: Record<string, any> = {
     _status: { equals: 'published' },
   }
-  
+
   if (orConditions.length > 0) {
     where.or = orConditions
   }
-  
+
   if (showFeaturedOnly) {
     where.isFeatured = { equals: true }
   }
-  
+
   const posts = await payload.find({
     collection: 'posts',
     limit: limit || 6,
@@ -84,29 +81,20 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
             </h2>
           )}
           {subtitle && (
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              {subtitle}
-            </p>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">{subtitle}</p>
           )}
         </div>
 
         {/* Featured Layout */}
         {layout === 'featured' && featuredPost && (
           <div className="mb-12">
-            <Link 
-              href={`/posts/${featuredPost.slug}`}
-              className="block group"
-            >
+            <Link href={`/posts/${featuredPost.slug}`} className="block group">
               <article className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Featured Image */}
                   <div className="relative aspect-[16/10] md:aspect-auto">
                     {featuredPost.heroImage && typeof featuredPost.heroImage === 'object' && (
-                      <Media
-                        resource={featuredPost.heroImage}
-                        fill
-                        className="object-cover"
-                      />
+                      <Media resource={featuredPost.heroImage} fill className="object-cover" />
                     )}
                     {(featuredPost as Post & { isFeatured?: boolean }).isFeatured && (
                       <span className="absolute top-4 left-4 bg-yellow-500 text-black text-xs font-semibold px-3 py-1 rounded-full">
@@ -114,7 +102,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                       </span>
                     )}
                   </div>
-                  
+
                   {/* Content */}
                   <div className="p-8 flex flex-col justify-center">
                     <div className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-2">
@@ -130,8 +118,18 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                     )}
                     <span className="text-blue-600 dark:text-blue-400 font-medium inline-flex items-center gap-2">
                       Read More
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <svg
+                        className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
                       </svg>
                     </span>
                   </div>
@@ -142,34 +140,28 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
         )}
 
         {/* Grid/List Layout */}
-        <div className={
-          layout === 'list' 
-            ? 'space-y-6' 
-            : 'grid md:grid-cols-2 lg:grid-cols-3 gap-8'
-        }>
+        <div
+          className={layout === 'list' ? 'space-y-6' : 'grid md:grid-cols-2 lg:grid-cols-3 gap-8'}
+        >
           {gridPosts.map((post) => (
-            <Link 
-              key={post.id}
-              href={`/posts/${post.slug}`}
-              className="block group"
-            >
-              <article className={
-                layout === 'list'
-                  ? 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow flex flex-col md:flex-row'
-                  : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow h-full flex flex-col'
-              }>
-                {/* Image */}
-                <div className={
+            <Link key={post.id} href={`/posts/${post.slug}`} className="block group">
+              <article
+                className={
                   layout === 'list'
-                    ? 'relative w-full md:w-64 aspect-[16/10] md:aspect-auto md:h-48 flex-shrink-0'
-                    : 'relative aspect-[16/10]'
-                }>
+                    ? 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow flex flex-col md:flex-row'
+                    : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow h-full flex flex-col'
+                }
+              >
+                {/* Image */}
+                <div
+                  className={
+                    layout === 'list'
+                      ? 'relative w-full md:w-64 aspect-[16/10] md:aspect-auto md:h-48 flex-shrink-0'
+                      : 'relative aspect-[16/10]'
+                  }
+                >
                   {post.heroImage && typeof post.heroImage === 'object' && (
-                    <Media
-                      resource={post.heroImage}
-                      fill
-                      className="object-cover"
-                    />
+                    <Media resource={post.heroImage} fill className="object-cover" />
                   )}
                   {(post as Post & { isFeatured?: boolean }).isFeatured && layout !== 'list' && (
                     <span className="absolute top-3 left-3 bg-yellow-500 text-black text-xs font-semibold px-2 py-1 rounded-full">
@@ -177,7 +169,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                     </span>
                   )}
                 </div>
-                
+
                 {/* Content */}
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-2">
@@ -193,8 +185,18 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                   )}
                   <span className="text-blue-600 dark:text-blue-400 font-medium text-sm inline-flex items-center gap-2 mt-4">
                     Read More
-                    <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      className="w-3 h-3 group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </span>
                 </div>
@@ -205,7 +207,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
 
         {/* View All Link */}
         <div className="text-center mt-12">
-          <Link 
+          <Link
             href="/posts"
             className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors"
           >

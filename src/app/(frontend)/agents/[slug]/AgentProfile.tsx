@@ -20,13 +20,13 @@ export const AgentProfile: React.FC<Props> = ({ agent }) => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-6">
               Realtor in {agent.city}
             </h2>
-            
+
             {agent.bio && (
               <div className="prose prose-lg max-w-none text-gray-600">
                 <RichText data={agent.bio} />
               </div>
             )}
-            
+
             {/* Certifications */}
             {agent.certifications && agent.certifications.length > 0 && (
               <div className="mt-8">
@@ -44,16 +44,17 @@ export const AgentProfile: React.FC<Props> = ({ agent }) => {
                 </ul>
               </div>
             )}
-            
+
             {/* Experience */}
             {agent.experience && (
               <div className="mt-6">
                 <p className="text-gray-600">
-                  <span className="text-green-500">✓</span> Over {agent.experience} years of full-time experience
+                  <span className="text-green-500">✓</span> Over {agent.experience} years of
+                  full-time experience
                 </p>
               </div>
             )}
-            
+
             {/* Home Value Button */}
             {agent.homeValueWidgetUrl && (
               <div className="mt-8">
@@ -68,18 +69,15 @@ export const AgentProfile: React.FC<Props> = ({ agent }) => {
               </div>
             )}
           </div>
-          
+
           {/* Image/Logo Section */}
           <div className="flex flex-col items-center gap-8">
             {agent.profilePhoto && typeof agent.profilePhoto === 'object' && (
               <div className="w-full max-w-md">
-                <Media
-                  resource={agent.profilePhoto}
-                  className="w-full rounded-lg shadow-lg"
-                />
+                <Media resource={agent.profilePhoto} className="w-full rounded-lg shadow-lg" />
               </div>
             )}
-            
+
             {/* Brokerage Logo */}
             {agent.brokerage?.logo && typeof agent.brokerage.logo === 'object' && (
               <div className="bg-gray-50 p-6 rounded-lg">
@@ -87,10 +85,7 @@ export const AgentProfile: React.FC<Props> = ({ agent }) => {
                   {agent.brokerage.name || 'Brokerage'}
                 </p>
                 <div className="w-48">
-                  <Media
-                    resource={agent.brokerage.logo}
-                    className="w-full object-contain"
-                  />
+                  <Media resource={agent.brokerage.logo} className="w-full object-contain" />
                 </div>
               </div>
             )}

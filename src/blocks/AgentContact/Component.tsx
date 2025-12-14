@@ -20,7 +20,12 @@ const SocialIcon: React.FC<{ platform: string }> = ({ platform }) => {
     instagram: (
       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path
+          d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        />
         <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" strokeWidth="2" />
       </svg>
     ),
@@ -87,10 +92,10 @@ export const AgentContactBlock: React.FC<Props> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
-    
+
     // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1000))
-    
+
     // Reset form
     setFormData({ name: '', email: '', message: '' })
     setSubmitting(false)
@@ -109,46 +114,52 @@ export const AgentContactBlock: React.FC<Props> = ({
     <section className={`py-16 ${bgClass}`}>
       <div className="container mx-auto px-4">
         {title && (
-          <h2 className={`text-3xl md:text-4xl font-bold mb-12 text-center ${backgroundColor === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+          <h2
+            className={`text-3xl md:text-4xl font-bold mb-12 text-center ${backgroundColor === 'dark' ? 'text-white' : 'text-gray-900'}`}
+          >
             {title}
           </h2>
         )}
-        
-        <div className={`
+
+        <div
+          className={`
           ${layout === 'twoColumn' ? 'grid md:grid-cols-2 gap-12' : ''}
           ${layout === 'sidebar' ? 'flex flex-col md:flex-row gap-8' : ''}
           ${layout === 'fullWidth' ? 'max-w-4xl mx-auto' : ''}
-        `}>
+        `}
+        >
           {/* Agent Info */}
           <div className={layout === 'sidebar' ? 'md:w-1/3' : ''}>
             {showPhoto && agent.profilePhoto && typeof agent.profilePhoto === 'object' && (
               <div className="w-32 h-32 rounded-full overflow-hidden mb-6 mx-auto md:mx-0">
-                <Media
-                  resource={agent.profilePhoto}
-                  className="w-full h-full object-cover"
-                />
+                <Media resource={agent.profilePhoto} className="w-full h-full object-cover" />
               </div>
             )}
-            
+
             <h3 className="text-xl font-bold mb-2">{agent.displayName}</h3>
-            
+
             {agent.dreLicense && (
-              <p className={`text-sm mb-4 ${backgroundColor === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p
+                className={`text-sm mb-4 ${backgroundColor === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}
+              >
                 {agent.dreLicense}
               </p>
             )}
-            
+
             {showBio && agent.shortBio && (
-              <p className={`mb-6 ${backgroundColor === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p
+                className={`mb-6 ${backgroundColor === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}
+              >
                 {agent.shortBio}
               </p>
             )}
-            
+
             {/* Contact Info */}
             <div className="space-y-2 mb-6">
               {agent.address?.street && (
                 <p className={backgroundColor === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
-                  📍 {agent.address.street}, {agent.address.city}, {agent.address.state} {agent.address.zip}
+                  📍 {agent.address.street}, {agent.address.city}, {agent.address.state}{' '}
+                  {agent.address.zip}
                 </p>
               )}
               {agent.phone && (
@@ -166,12 +177,14 @@ export const AgentContactBlock: React.FC<Props> = ({
                 </p>
               )}
             </div>
-            
+
             {/* Working Hours */}
             {showWorkingHours && agent.workingHours && agent.workingHours.length > 0 && (
               <div className="mb-6">
                 <h4 className="font-semibold mb-2">Working Hours</h4>
-                <ul className={`text-sm space-y-1 ${backgroundColor === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                <ul
+                  className={`text-sm space-y-1 ${backgroundColor === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}
+                >
                   {agent.workingHours.map((wh, index) => (
                     <li key={index} className="flex justify-between">
                       <span className="capitalize">{wh.day}:</span>
@@ -181,7 +194,7 @@ export const AgentContactBlock: React.FC<Props> = ({
                 </ul>
               </div>
             )}
-            
+
             {/* Social Links */}
             {showSocialLinks && socialLinks && (
               <div className="flex gap-3">
@@ -206,13 +219,15 @@ export const AgentContactBlock: React.FC<Props> = ({
               </div>
             )}
           </div>
-          
+
           {/* Contact Form */}
           {showContactForm && (
             <div className={layout === 'sidebar' ? 'md:w-2/3' : ''}>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${backgroundColor === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${backgroundColor === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}
+                  >
                     Your Name
                   </label>
                   <input
@@ -223,9 +238,11 @@ export const AgentContactBlock: React.FC<Props> = ({
                     required
                   />
                 </div>
-                
+
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${backgroundColor === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${backgroundColor === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}
+                  >
                     Your Email
                   </label>
                   <input
@@ -236,9 +253,11 @@ export const AgentContactBlock: React.FC<Props> = ({
                     required
                   />
                 </div>
-                
+
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${backgroundColor === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${backgroundColor === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}
+                  >
                     Your Message
                   </label>
                   <textarea
@@ -249,7 +268,7 @@ export const AgentContactBlock: React.FC<Props> = ({
                     required
                   />
                 </div>
-                
+
                 <button
                   type="submit"
                   disabled={submitting}

@@ -53,7 +53,7 @@ export const Agents: CollectionConfig<'agents'> = {
       required: true,
       label: 'Full Name',
       admin: {
-        description: 'Agent\'s full legal name (e.g., Anthony Grynchal)',
+        description: "Agent's full legal name (e.g., Anthony Grynchal)",
       },
     },
     {
@@ -100,7 +100,8 @@ export const Agents: CollectionConfig<'agents'> = {
               hasMany: true,
               label: 'Designation Types',
               admin: {
-                description: 'Select the designation types for this agent (e.g., Mr. SEO, Mr. Luxury)',
+                description:
+                  'Select the designation types for this agent (e.g., Mr. SEO, Mr. Luxury)',
               },
             },
             {

@@ -40,22 +40,14 @@ export const PartnersLogosBlock: React.FC<PartnersLogosBlockProps> = ({
         `}
       >
         {partner.logo && typeof partner.logo === 'object' && (
-          <Media
-            resource={partner.logo}
-            className="object-contain max-h-full max-w-full"
-          />
+          <Media resource={partner.logo} className="object-contain max-h-full max-w-full" />
         )}
       </div>
     )
 
     if (partner.url) {
       return (
-        <a
-          href={partner.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={partner.name}
-        >
+        <a href={partner.url} target="_blank" rel="noopener noreferrer" title={partner.name}>
           {content}
         </a>
       )

@@ -102,7 +102,8 @@ export const Designations: CollectionConfig = {
     {
       name: 'homeValueFormDescription',
       type: 'textarea',
-      defaultValue: 'Get instant access to all the homes that sold in your neighborhood from the most Exclusive Real Estate Network.',
+      defaultValue:
+        'Get instant access to all the homes that sold in your neighborhood from the most Exclusive Real Estate Network.',
       label: 'Home Value Form Description',
     },
     slugField({

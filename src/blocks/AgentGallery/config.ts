@@ -19,7 +19,8 @@ export const AgentGallery: Block = {
       relationTo: 'agents',
       label: 'Agent',
       admin: {
-        description: 'Auto-populate gallery from agent profile. Leave blank to use manual selection.',
+        description:
+          'Auto-populate gallery from agent profile. Leave blank to use manual selection.',
       },
     },
     {

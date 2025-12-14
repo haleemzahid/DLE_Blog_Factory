@@ -1,7 +1,10 @@
 'use client'
 
 import React, { useState } from 'react'
-import type { AgentGalleryBlock as AgentGalleryBlockType, Media as MediaType } from '@/payload-types'
+import type {
+  AgentGalleryBlock as AgentGalleryBlockType,
+  Media as MediaType,
+} from '@/payload-types'
 import { Media } from '@/components/Media'
 
 type Props = AgentGalleryBlockType & {
@@ -64,13 +67,13 @@ export const AgentGalleryBlock: React.FC<Props> = ({
             {title}
           </h2>
         )}
-        
+
         <div className={`grid ${getGridCols()} gap-4`}>
           {galleryImages.map((item, index) => {
             const imageData = typeof item.image === 'object' ? item.image : null
-            
+
             if (!imageData) return null
-            
+
             return (
               <div
                 key={imageData.id || index}
@@ -82,11 +85,7 @@ export const AgentGalleryBlock: React.FC<Props> = ({
                 onClick={() => openLightbox(index)}
               >
                 <div className="aspect-square relative">
-                  <Media
-                    resource={imageData}
-                    fill
-                    className="object-cover"
-                  />
+                  <Media resource={imageData} fill className="object-cover" />
                 </div>
                 {item.caption && (
                   <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-3 text-sm">
@@ -106,33 +105,37 @@ export const AgentGalleryBlock: React.FC<Props> = ({
           onClick={closeLightbox}
         >
           <button
-            onClick={(e) => { e.stopPropagation(); prevImage() }}
+            onClick={(e) => {
+              e.stopPropagation()
+              prevImage()
+            }}
             className="absolute left-4 text-white text-4xl hover:text-gray-300 z-10"
             aria-label="Previous image"
           >
             ‹
           </button>
-          
-          <div
-            className="max-w-4xl max-h-[90vh] relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {galleryImages[currentIndex]?.image && typeof galleryImages[currentIndex].image === 'object' && (
-              <Media
-                resource={galleryImages[currentIndex].image as MediaType}
-                className="max-h-[90vh] w-auto"
-              />
-            )}
+
+          <div className="max-w-4xl max-h-[90vh] relative" onClick={(e) => e.stopPropagation()}>
+            {galleryImages[currentIndex]?.image &&
+              typeof galleryImages[currentIndex].image === 'object' && (
+                <Media
+                  resource={galleryImages[currentIndex].image as MediaType}
+                  className="max-h-[90vh] w-auto"
+                />
+              )}
           </div>
-          
+
           <button
-            onClick={(e) => { e.stopPropagation(); nextImage() }}
+            onClick={(e) => {
+              e.stopPropagation()
+              nextImage()
+            }}
             className="absolute right-4 text-white text-4xl hover:text-gray-300 z-10"
             aria-label="Next image"
           >
             ›
           </button>
-          
+
           <button
             onClick={closeLightbox}
             className="absolute top-4 right-4 text-white text-2xl hover:text-gray-300"

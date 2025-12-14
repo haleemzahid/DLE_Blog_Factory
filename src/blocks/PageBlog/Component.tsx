@@ -43,7 +43,7 @@ export const PageBlogBlock: React.FC<PageBlogBlockProps> = async (props) => {
   } = props
 
   const payload = await getPayload({ config: configPromise })
-  
+
   let posts: Post[] = []
 
   if (displayMode === 'manual' && selectedPosts && selectedPosts.length > 0) {
@@ -53,9 +53,7 @@ export const PageBlogBlock: React.FC<PageBlogBlockProps> = async (props) => {
       .filter((p): p is Post => p !== null)
   } else if (displayMode === 'category' && categories && categories.length > 0) {
     // By category
-    const categoryIds = categories.map((cat) => 
-      typeof cat === 'object' ? cat.id : cat
-    )
+    const categoryIds = categories.map((cat) => (typeof cat === 'object' ? cat.id : cat))
     const result = await payload.find({
       collection: 'posts',
       where: {
@@ -111,13 +109,15 @@ export const PageBlogBlock: React.FC<PageBlogBlockProps> = async (props) => {
         </div>
 
         {/* Posts Grid/List */}
-        <div className={
-          layout === 'grid' 
-            ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-8'
-            : layout === 'list'
-              ? 'space-y-6 max-w-4xl mx-auto'
-              : 'grid md:grid-cols-2 lg:grid-cols-3 gap-4'
-        }>
+        <div
+          className={
+            layout === 'grid'
+              ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-8'
+              : layout === 'list'
+                ? 'space-y-6 max-w-4xl mx-auto'
+                : 'grid md:grid-cols-2 lg:grid-cols-3 gap-4'
+          }
+        >
           {posts.map((post) => (
             <PostCard
               key={post.id}
@@ -139,7 +139,12 @@ export const PageBlogBlock: React.FC<PageBlogBlockProps> = async (props) => {
             >
               {ctaLabel}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </Link>
           </div>
@@ -210,8 +215,18 @@ function PostCard({ post, layout, showReadMore, showDate, showExcerpt }: PostCar
             {showReadMore && (
               <span className="text-red-600 font-medium mt-4 inline-flex items-center gap-1">
                 Read More
-                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </span>
             )}
@@ -247,8 +262,18 @@ function PostCard({ post, layout, showReadMore, showDate, showExcerpt }: PostCar
           {showReadMore && (
             <span className="text-red-600 font-medium mt-4 inline-flex items-center gap-1 text-sm">
               Read More
-              <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                className="w-3 h-3 group-hover:translate-x-1 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </span>
           )}

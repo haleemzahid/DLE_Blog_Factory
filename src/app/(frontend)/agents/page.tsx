@@ -9,12 +9,13 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 export const metadata: Metadata = {
   title: 'Our Agents | Designated Local Expert',
-  description: 'Browse our network of trademark-protected Designated Local Expert real estate agents.',
+  description:
+    'Browse our network of trademark-protected Designated Local Expert real estate agents.',
 }
 
 export default async function AgentsPage() {
   const payload = await getPayload({ config: configPromise })
-  
+
   // Fetch all published agents
   const agents = await payload.find({
     collection: 'agents',
@@ -48,13 +49,12 @@ export default async function AgentsPage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Our Agents
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Agents</h1>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Browse our network of trademark-protected Designated Local Expert real estate agents across the nation.
+            Browse our network of trademark-protected Designated Local Expert real estate agents
+            across the nation.
           </p>
-          
+
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/apply"
@@ -83,16 +83,19 @@ export default async function AgentsPage() {
                   All Agents ({agents.totalDocs})
                 </h2>
               </div>
-              
+
               {agents.docs.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {agents.docs.map((agent) => {
                     const photo = typeof agent.profilePhoto === 'object' ? agent.profilePhoto : null
                     const photoUrl = photo?.url ? getMediaUrl(photo.url) : null
                     const designations = Array.isArray(agent.designation) ? agent.designation : []
-                    const firstDesignation = designations.length > 0 && typeof designations[0] === 'object' ? designations[0] : null
+                    const firstDesignation =
+                      designations.length > 0 && typeof designations[0] === 'object'
+                        ? designations[0]
+                        : null
                     const state = typeof agent.state === 'object' ? agent.state : null
-                    
+
                     return (
                       <Link
                         key={agent.id}
@@ -110,7 +113,7 @@ export default async function AgentsPage() {
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400">
                               <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                               </svg>
                             </div>
                           )}
@@ -125,7 +128,8 @@ export default async function AgentsPage() {
                             </p>
                           )}
                           <p className="text-gray-600 text-sm mt-1">
-                            {agent.city}{state ? `, ${state.abbreviation}` : ''}
+                            {agent.city}
+                            {state ? `, ${state.abbreviation}` : ''}
                           </p>
                           {agent.tagline && (
                             <p className="text-gray-500 text-sm mt-2 line-clamp-2">
@@ -139,11 +143,10 @@ export default async function AgentsPage() {
                 </div>
               ) : (
                 <div className="bg-white rounded-lg shadow-md p-8 text-center">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    Coming Soon
-                  </h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Coming Soon</h3>
                   <p className="text-gray-600 mb-6">
-                    Our agent network is growing! Check back soon or apply to become a Designated Local Expert.
+                    Our agent network is growing! Check back soon or apply to become a Designated
+                    Local Expert.
                   </p>
                   <Link
                     href="/apply"
@@ -190,9 +193,7 @@ export default async function AgentsPage() {
 
                 {/* By State */}
                 <div>
-                  <h3 className="font-bold text-lg text-gray-900 mb-4 border-b pb-2">
-                    By State
-                  </h3>
+                  <h3 className="font-bold text-lg text-gray-900 mb-4 border-b pb-2">By State</h3>
                   <ul className="space-y-2 max-h-64 overflow-y-auto">
                     {states.docs.slice(0, 15).map((state) => (
                       <li key={state.id}>
