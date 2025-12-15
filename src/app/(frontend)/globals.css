@@ -17,6 +17,9 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
+    /* Header accent color (red like designatedlocalexpert.com) */
+    --header-accent: 0 84% 44%;
+
     --card: 240 5% 96%;
     --card-foreground: 222.2 84% 4.9%;
 
