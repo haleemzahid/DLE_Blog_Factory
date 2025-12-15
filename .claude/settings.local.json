@@ -46,7 +46,8 @@
       "Bash(cmd /c \"taskkill /F /PID 93964\")",
       "Bash(cmd /c \"dir d:\\payloadcms /a /b\")",
       "Bash(cmd /c \"cd /d d:\\payloadcms && dir /a /b\")",
-      "Bash(powershell -Command \"Get-ChildItem d:\\payloadcms -Force | Select-Object Name\")"
+      "Bash(powershell -Command \"Get-ChildItem d:\\payloadcms -Force | Select-Object Name\")",
+      "Bash(git merge:*)"
     ],
     "deny": [],
     "ask": []
