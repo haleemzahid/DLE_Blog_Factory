@@ -15,15 +15,29 @@ export const Logo = (props: Props) => {
 
   return (
     /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Designated Local Expert Logo"
-      width={150}
-      height={150}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('w-[60px] h-[60px] object-contain', className)}
-      src="/logo.png"
-    />
+    <div className={clsx('relative w-[70px] h-[70px]', className)}>
+      {/* Light mode logo */}
+      <img
+        src="https://designatedlocalexpert.com/wp-content/uploads/2022/07/cropped-cropped-fav-150x150.png"
+        alt="Designated Local Expert Logo"
+        width={150}
+        height={150}
+        loading={loading}
+        fetchPriority={priority}
+        decoding="async"
+        className="object-contain dark:hidden"
+      />
+      {/* Dark mode logo */}
+      <img
+        src="https://designatedlocalexpert.com/wp-content/uploads/2022/07/DleImg.png"
+        alt="Designated Local Expert Logo"
+        width={150}
+        height={150}
+        loading={loading}
+        fetchPriority={priority}
+        decoding="async"
+        className="hidden dark:block object-contain brightness-200 contrast-150"
+      />
+    </div>
   )
 }
