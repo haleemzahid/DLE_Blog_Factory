@@ -55,6 +55,34 @@ export const Header: GlobalConfig = {
               appearances: false,
               disableLabel: true,
             }),
+            {
+              name: 'hasSubmenu',
+              type: 'checkbox',
+              label: 'Has Sub-menu',
+              admin: {
+                description: 'Enable to add nested sub-items',
+              },
+            },
+            {
+              name: 'subItems',
+              type: 'array',
+              label: 'Sub-menu Items',
+              admin: {
+                condition: (_, siblingData) => siblingData?.hasSubmenu === true,
+              },
+              fields: [
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                },
+                link({
+                  appearances: false,
+                  disableLabel: true,
+                }),
+              ],
+              maxRows: 15,
+            },
           ],
           maxRows: 20,
         },

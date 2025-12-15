@@ -239,18 +239,37 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
       if (item.type === 'dropdown') {
         let dropdownItems: DropdownItem[] = []
 
-        // Add manual dropdown items
+        // Add manual dropdown items with optional sub-items
         if (item.dropdownItems && item.dropdownItems.length > 0) {
-          dropdownItems = item.dropdownItems.map((di) => {
+          dropdownItems = item.dropdownItems.map((di: any) => {
             const href =
               di.link?.type === 'custom'
                 ? di.link?.url || '#'
                 : di.link?.reference && typeof di.link.reference.value === 'object'
                   ? `/${(di.link.reference.value as { slug: string }).slug}`
                   : '#'
+
+            // Handle sub-items if hasSubmenu is enabled
+            let children: Array<{ label: string; href: string }> | undefined
+            if (di.hasSubmenu && di.subItems && di.subItems.length > 0) {
+              children = di.subItems.map((sub: any) => {
+                const subHref =
+                  sub.link?.type === 'custom'
+                    ? sub.link?.url || '#'
+                    : sub.link?.reference && typeof sub.link.reference.value === 'object'
+                      ? `/${(sub.link.reference.value as { slug: string }).slug}`
+                      : '#'
+                return {
+                  label: sub.label,
+                  href: subHref,
+                }
+              })
+            }
+
             return {
               label: di.label,
               href,
+              children,
             }
           })
         }
@@ -312,7 +331,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex gap-6 items-center">
+      <nav className="hidden md:flex gap-6 items-center">
         {renderNavItems(false)}
         <Link href="/search" className="hover:text-header-accent transition-colors">
           <span className="sr-only">Search</span>
@@ -322,7 +341,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 
       {/* Mobile Menu Toggle */}
       <button
-        className="lg:hidden p-2 text-primary hover:text-header-accent transition-colors"
+        className="md:hidden p-2 text-primary hover:text-header-accent transition-colors"
         onClick={() => setMobileMenuOpen?.(!mobileMenuOpen)}
         aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
       >
@@ -331,7 +350,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-[80px] bg-white dark:bg-gray-900 z-50 overflow-y-auto">
+        <div className="md:hidden fixed inset-0 top-[80px] bg-white dark:bg-gray-900 z-50 overflow-y-auto">
           <div className="flex flex-col">
             {renderNavItems(true)}
 

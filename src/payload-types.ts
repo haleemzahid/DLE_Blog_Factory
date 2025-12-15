@@ -2986,6 +2986,30 @@ export interface Header {
                     } | null);
                 url?: string | null;
               };
+              /**
+               * Enable to add nested sub-items
+               */
+              hasSubmenu?: boolean | null;
+              subItems?:
+                | {
+                    label: string;
+                    link?: {
+                      type?: ('reference' | 'custom') | null;
+                      newTab?: boolean | null;
+                      reference?:
+                        | ({
+                            relationTo: 'pages';
+                            value: number | Page;
+                          } | null)
+                        | ({
+                            relationTo: 'posts';
+                            value: number | Post;
+                          } | null);
+                      url?: string | null;
+                    };
+                    id?: string | null;
+                  }[]
+                | null;
               id?: string | null;
             }[]
           | null;
@@ -3061,6 +3085,21 @@ export interface HeaderSelect<T extends boolean = true> {
                     newTab?: T;
                     reference?: T;
                     url?: T;
+                  };
+              hasSubmenu?: T;
+              subItems?:
+                | T
+                | {
+                    label?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                        };
+                    id?: T;
                   };
               id?: T;
             };
