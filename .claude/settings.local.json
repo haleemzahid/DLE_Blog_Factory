@@ -43,7 +43,10 @@
       "Bash(cmd /c \"netstat -ano | findstr :3000 | findstr LISTENING\")",
       "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :30\")",
       "Bash(cmd /c \"cd /d d:\\DLE\\CMS\\Blog Factory && pnpm list @payloadcms/richtext-lexical\")",
-      "Bash(cmd /c \"taskkill /F /PID 93964\")"
+      "Bash(cmd /c \"taskkill /F /PID 93964\")",
+      "Bash(cmd /c \"dir d:\\payloadcms /a /b\")",
+      "Bash(cmd /c \"cd /d d:\\payloadcms && dir /a /b\")",
+      "Bash(powershell -Command \"Get-ChildItem d:\\payloadcms -Force | Select-Object Name\")"
     ],
     "deny": [],
     "ask": []
