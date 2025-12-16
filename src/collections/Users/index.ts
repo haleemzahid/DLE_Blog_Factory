@@ -20,11 +20,6 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
-      admin: {
-        components: {
-          Description: '@/components/VoiceComposeField#VoiceComposeField',
-        },
-      },
     },
   ],
   timestamps: true,
