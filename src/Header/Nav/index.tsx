@@ -47,9 +47,9 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
           {hasChildren && <ChevronRight className="w-4 h-4 ml-2" />}
         </Link>
 
-        {/* Submenu */}
+        {/* Submenu - aligned to bottom of parent item */}
         {hasChildren && isActive && (
-          <div className="absolute left-full top-0 ml-0 w-56 bg-white dark:bg-gray-900 shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+          <div className="absolute left-full bottom-0 ml-0 w-56 bg-white dark:bg-gray-900 shadow-lg border border-gray-200 dark:border-gray-700 z-50 rounded-md">
             {item.children!.map((child, j) => (
               <Link
                 key={j}
