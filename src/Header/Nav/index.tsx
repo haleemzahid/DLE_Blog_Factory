@@ -76,7 +76,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
       }}
     >
       <button
-        className="flex items-center gap-1 py-2 text-primary hover:text-header-accent transition-colors font-medium"
+        className="flex items-center gap-1 py-2 text-[17px] text-primary hover:text-header-accent transition-colors font-medium"
         onClick={() => setIsOpen(!isOpen)}
       >
         {label}
@@ -320,7 +320,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           key={i}
           {...item.link}
           appearance="link"
-          className="text-primary hover:text-header-accent transition-colors font-medium"
+          className="text-[17px] text-primary hover:text-header-accent transition-colors font-medium"
         >
           {item.label}
         </CMSLink>
