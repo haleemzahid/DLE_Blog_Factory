@@ -38,7 +38,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
       >
         <Link
           href={item.href}
-          className={`flex items-center justify-between px-4 py-2 text-sm transition-colors ${
+          className={`flex items-center justify-between px-4 py-2 text-[17px] transition-colors ${
             isActive
               ? 'bg-header-accent text-white'
               : 'text-gray-700 dark:text-gray-300 hover:bg-header-accent hover:text-white'
@@ -55,7 +55,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
               <Link
                 key={j}
                 href={child.href}
-                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-header-accent hover:text-white transition-colors"
+                className="block px-4 py-2 text-[17px] text-gray-700 dark:text-gray-300 hover:bg-header-accent hover:text-white transition-colors"
               >
                 {child.label}
               </Link>
@@ -87,7 +87,9 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
         <>
           {/* Invisible bridge to maintain hover */}
           <div className="absolute top-full left-0 h-2 w-full" />
-          <div className={`absolute top-[calc(100%+0.5rem)] ${alignRight ? 'right-0' : 'left-0'} py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md min-w-[200px]`}>
+          <div
+            className={`absolute top-[calc(100%+0.5rem)] ${alignRight ? 'right-0' : 'left-0'} py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md min-w-[200px]`}
+          >
             <div>{items.map((item, i) => renderMenuItem(item, i))}</div>
           </div>
         </>
@@ -128,7 +130,7 @@ const MobileDropdown: React.FC<MobileDropdownProps> = ({ label, items, onItemCli
                 <div className="flex items-center">
                   <Link
                     href={item.href}
-                    className="flex-1 px-6 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-header-accent hover:text-white transition-colors"
+                    className="flex-1 px-6 py-2 text-[17px] text-gray-700 dark:text-gray-300 hover:bg-header-accent hover:text-white transition-colors"
                     onClick={onItemClick}
                   >
                     {item.label}
@@ -151,7 +153,7 @@ const MobileDropdown: React.FC<MobileDropdownProps> = ({ label, items, onItemCli
                       <Link
                         key={j}
                         href={child.href}
-                        className="block px-8 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-header-accent hover:text-white transition-colors"
+                        className="block px-8 py-2 text-[17px] text-gray-600 dark:text-gray-400 hover:bg-header-accent hover:text-white transition-colors"
                         onClick={onItemClick}
                       >
                         {child.label}
@@ -283,7 +285,14 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           }
           // Align right for last 2 dropdown items to prevent overflow
           const isLastItems = i >= navItems.length - 2
-          return <DropdownMenu key={i} label={item.label} items={dropdownItems} alignRight={isLastItems} />
+          return (
+            <DropdownMenu
+              key={i}
+              label={item.label}
+              items={dropdownItems}
+              alignRight={isLastItems}
+            />
+          )
         }
       }
 
