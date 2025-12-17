@@ -22,11 +22,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null)
 
-  // Split items into columns if more than 6 items
-  const useMultiColumn = items.length > 6
-  const midPoint = Math.ceil(items.length / 2)
-  const leftColumn = useMultiColumn ? items.slice(0, midPoint) : items
-  const rightColumn = useMultiColumn ? items.slice(midPoint) : []
+  // Show all items in single column (no multi-column split)
 
   const renderMenuItem = (item: DropdownItem, index: number) => {
     const hasChildren = item.children && item.children.length > 0
@@ -90,21 +86,8 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
         <>
           {/* Invisible bridge to maintain hover */}
           <div className="absolute top-full left-0 h-2 w-full" />
-          <div
-            className={`absolute top-[calc(100%+0.5rem)] left-0 py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md ${
-              useMultiColumn ? 'min-w-[450px]' : 'min-w-[200px]'
-            }`}
-          >
-            {useMultiColumn ? (
-              <div className="grid grid-cols-2">
-                <div className="border-r border-gray-200 dark:border-gray-700">
-                  {leftColumn.map((item, i) => renderMenuItem(item, i))}
-                </div>
-                <div>{rightColumn.map((item, i) => renderMenuItem(item, i + midPoint))}</div>
-              </div>
-            ) : (
-              <div>{items.map((item, i) => renderMenuItem(item, i))}</div>
-            )}
+          <div className="absolute top-[calc(100%+0.5rem)] left-0 py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md min-w-[200px] max-h-[80vh] overflow-y-auto">
+            <div>{items.map((item, i) => renderMenuItem(item, i))}</div>
           </div>
         </>
       )}
