@@ -44,7 +44,7 @@ export async function Footer() {
     <footer className="mt-auto bg-[#0a1628] text-white">
       <div className="container py-12">
         {/* Top Section: Logo + Copyright on left, Legal Links on right */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-8">
           {/* Left: Logo and Copyright */}
           <div className="flex flex-col items-center lg:items-start">
             <Link href="/" className="mb-4">
@@ -64,9 +64,9 @@ export async function Footer() {
             </p>
           </div>
 
-          {/* Right: Legal Links */}
+          {/* Right: Legal Links - vertically centered */}
           {legalLinks.length > 0 && (
-            <div className="flex flex-wrap justify-center lg:justify-end gap-2 text-sm max-w-2xl">
+            <div className="flex flex-wrap justify-center lg:justify-end items-center gap-x-2 gap-y-1 text-sm max-w-2xl lg:max-w-[55%]">
               {legalLinks.map((item, i) => (
                 <React.Fragment key={i}>
                   {item.link ? (
