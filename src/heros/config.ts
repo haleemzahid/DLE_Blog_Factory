@@ -69,6 +69,16 @@ export const hero: Field = {
       relationTo: 'media',
       required: true,
     },
+    {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Hero Logo',
+      admin: {
+        condition: (_, { type } = {}) => ['highImpact'].includes(type),
+        description: 'Logo displayed below the hero text (e.g., DLE Network logo)',
+      },
+    },
   ],
   label: false,
 }

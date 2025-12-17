@@ -208,6 +208,10 @@ export interface Page {
         }[]
       | null;
     media?: (number | null) | Media;
+    /**
+     * Logo displayed below the hero text (e.g., DLE Network logo)
+     */
+    logo?: (number | null) | Media;
   };
   layout: (
     | CallToActionBlock
@@ -1890,6 +1894,7 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        logo?: T;
       };
   layout?:
     | T
