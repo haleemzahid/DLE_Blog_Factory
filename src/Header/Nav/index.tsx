@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { SearchIcon, ChevronDown, ChevronRight, Menu, X } from 'lucide-react'
+import { ChevronDown, ChevronRight, Menu, X } from 'lucide-react'
 
 import type { Header as HeaderType, Designation, State } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
@@ -333,10 +333,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
       {/* Desktop Navigation */}
       <nav className="hidden md:flex gap-4 items-center">
         {renderNavItems(false)}
-        <Link href="/search" className="hover:text-header-accent transition-colors">
-          <span className="sr-only">Search</span>
-          <SearchIcon className="w-5 text-primary" />
-        </Link>
       </nav>
 
       {/* Mobile Menu Toggle */}
@@ -353,16 +349,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         <div className="md:hidden fixed inset-0 top-[80px] bg-white dark:bg-gray-900 z-50 overflow-y-auto">
           <div className="flex flex-col">
             {renderNavItems(true)}
-
-            {/* Mobile Search */}
-            <Link
-              href="/search"
-              className="flex items-center gap-2 px-4 py-3 text-primary font-medium border-b border-gray-200 dark:border-gray-700 hover:bg-header-accent hover:text-white transition-colors"
-              onClick={closeMobileMenu}
-            >
-              <SearchIcon className="w-5 h-5" />
-              Search
-            </Link>
           </div>
         </div>
       )}
