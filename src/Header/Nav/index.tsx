@@ -71,7 +71,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
 
   return (
     <div
-      className="relative"
+      className="relative group"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => {
         setIsOpen(false)
@@ -79,7 +79,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
       }}
     >
       <button
-        className="flex items-center gap-1 text-primary hover:text-header-accent transition-colors font-medium"
+        className="flex items-center gap-1 py-2 text-primary hover:text-header-accent transition-colors font-medium"
         onClick={() => setIsOpen(!isOpen)}
       >
         {label}
@@ -87,22 +87,26 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
       </button>
 
       {isOpen && (
-        <div
-          className={`absolute top-full left-0 mt-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 ${
-            useMultiColumn ? 'min-w-[450px]' : 'w-64'
-          }`}
-        >
-          {useMultiColumn ? (
-            <div className="grid grid-cols-2">
-              <div className="border-r border-gray-200 dark:border-gray-700">
-                {leftColumn.map((item, i) => renderMenuItem(item, i))}
+        <>
+          {/* Invisible bridge to maintain hover */}
+          <div className="absolute top-full left-0 h-2 w-full" />
+          <div
+            className={`absolute top-[calc(100%+0.5rem)] left-0 py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md ${
+              useMultiColumn ? 'min-w-[450px]' : 'min-w-[200px]'
+            }`}
+          >
+            {useMultiColumn ? (
+              <div className="grid grid-cols-2">
+                <div className="border-r border-gray-200 dark:border-gray-700">
+                  {leftColumn.map((item, i) => renderMenuItem(item, i))}
+                </div>
+                <div>{rightColumn.map((item, i) => renderMenuItem(item, i + midPoint))}</div>
               </div>
-              <div>{rightColumn.map((item, i) => renderMenuItem(item, i + midPoint))}</div>
-            </div>
-          ) : (
-            <div>{items.map((item, i) => renderMenuItem(item, i))}</div>
-          )}
-        </div>
+            ) : (
+              <div>{items.map((item, i) => renderMenuItem(item, i))}</div>
+            )}
+          </div>
+        </>
       )}
     </div>
   )
@@ -329,7 +333,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex gap-6 items-center">
+      <nav className="hidden md:flex gap-4 items-center">
         {renderNavItems(false)}
         <Link href="/search" className="hover:text-header-accent transition-colors">
           <span className="sr-only">Search</span>

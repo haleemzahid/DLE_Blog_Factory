@@ -3033,6 +3033,49 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  /**
+   * Links like ADA disclaimer, Sitemap, Privacy Policy, etc.
+   */
+  legalLinks?:
+    | {
+        label: string;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Company name for copyright notice
+   */
+  copyrightText?: string | null;
+  socialLinks?: {
+    facebook?: string | null;
+    twitter?: string | null;
+    instagram?: string | null;
+    linkedin?: string | null;
+    youtube?: string | null;
+    pinterest?: string | null;
+  };
+  /**
+   * Disclaimer text displayed at the bottom of the footer
+   */
+  disclaimer?: string | null;
+  /**
+   * Phone number to display after the disclaimer text
+   */
+  disclaimerPhone?: string | null;
   navItems?:
     | {
         link: {
@@ -3116,6 +3159,33 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+            };
+        id?: T;
+      };
+  copyrightText?: T;
+  socialLinks?:
+    | T
+    | {
+        facebook?: T;
+        twitter?: T;
+        instagram?: T;
+        linkedin?: T;
+        youtube?: T;
+        pinterest?: T;
+      };
+  disclaimer?: T;
+  disclaimerPhone?: T;
   navItems?:
     | T
     | {
