@@ -16,9 +16,10 @@ interface DropdownItem {
 interface DropdownMenuProps {
   label: string
   items: DropdownItem[]
+  alignRight?: boolean
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = false }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null)
 
@@ -86,7 +87,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
         <>
           {/* Invisible bridge to maintain hover */}
           <div className="absolute top-full left-0 h-2 w-full" />
-          <div className="absolute top-[calc(100%+0.5rem)] left-0 py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md min-w-[200px]">
+          <div className={`absolute top-[calc(100%+0.5rem)] ${alignRight ? 'right-0' : 'left-0'} py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md min-w-[200px]`}>
             <div>{items.map((item, i) => renderMenuItem(item, i))}</div>
           </div>
         </>
@@ -280,7 +281,9 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
               />
             )
           }
-          return <DropdownMenu key={i} label={item.label} items={dropdownItems} />
+          // Align right for last 2 dropdown items to prevent overflow
+          const isLastItems = i >= navItems.length - 2
+          return <DropdownMenu key={i} label={item.label} items={dropdownItems} alignRight={isLastItems} />
         }
       }
 
