@@ -86,7 +86,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
         <>
           {/* Invisible bridge to maintain hover */}
           <div className="absolute top-full left-0 h-2 w-full" />
-          <div className="absolute top-[calc(100%+0.5rem)] left-0 py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md min-w-[200px] max-h-[80vh] overflow-y-auto">
+          <div className="absolute top-[calc(100%+0.5rem)] left-0 py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md min-w-[200px]">
             <div>{items.map((item, i) => renderMenuItem(item, i))}</div>
           </div>
         </>
@@ -287,12 +287,15 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
       // Handle single link type
       if (isMobile) {
         return (
-          <div key={i} className="border-b border-gray-200 dark:border-gray-700">
+          <div
+            key={i}
+            className="border-b border-gray-200 dark:border-gray-700"
+            onClick={closeMobileMenu}
+          >
             <CMSLink
               {...item.link}
               appearance="link"
               className="block px-4 py-3 text-primary font-medium hover:bg-header-accent hover:text-white transition-colors"
-              onClick={closeMobileMenu}
             >
               {item.label}
             </CMSLink>
