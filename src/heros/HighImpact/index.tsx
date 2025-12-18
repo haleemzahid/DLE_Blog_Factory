@@ -8,12 +8,34 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText, logo }) => {
+export const HighImpactHero: React.FC<Page['hero']> = ({
+  links,
+  media,
+  richText,
+  logo,
+  headingColor,
+  subtitleColor,
+  paragraphColor,
+}) => {
   const { setHeaderTheme } = useHeaderTheme()
 
   useEffect(() => {
     setHeaderTheme('dark')
   })
+
+  // Use hex color values directly from the color picker
+  const headingColorValue = headingColor || '#ffffff'
+  const subtitleColorValue = subtitleColor || '#e8b44a'
+  const paragraphColorValue = paragraphColor || '#ffffff'
+
+  // Create dynamic styles for different text elements
+  const richTextStyles = `
+    mb-6
+    [&_p:first-child]:text-sm [&_p:first-child]:md:text-base [&_p:first-child]:tracking-widest [&_p:first-child]:uppercase [&_p:first-child]:mb-4
+    [&_p]:text-lg [&_p]:md:text-xl [&_p]:mb-4
+    [&_h1]:text-3xl [&_h1]:md:text-4xl [&_h1]:lg:text-5xl [&_h1]:font-bold [&_h1]:uppercase [&_h1]:tracking-wide [&_h1]:leading-tight [&_h1]:mb-6 [&_h1]:drop-shadow-lg
+    [&_h2]:text-2xl [&_h2]:md:text-3xl [&_h2]:font-semibold [&_h2]:mb-4
+  `
 
   return (
     <div
@@ -32,9 +54,18 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
       {/* Content */}
       <div className="container z-10 relative flex items-center justify-center min-h-[80vh] py-20">
         <div className="max-w-[53rem] text-center">
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+                .hero-rich-text h1, .hero-rich-text h2 { color: ${headingColorValue}; }
+                .hero-rich-text p:first-child { color: ${subtitleColorValue}; }
+                .hero-rich-text p:not(:first-child) { color: ${paragraphColorValue}; }
+              `,
+            }}
+          />
           {richText && (
             <RichText
-              className="mb-6 [&_p:first-of-type]:text-[#e8b44a] [&_p:first-of-type]:text-lg [&_p:first-of-type]:md:text-xl [&_p:first-of-type]:font-medium [&_p:first-of-type]:mb-4 [&_p:not(:first-of-type)]:text-xl [&_p:not(:first-of-type)]:md:text-2xl [&_p:not(:first-of-type)]:text-white [&_p:not(:first-of-type)]:font-light [&_p:not(:first-of-type)]:italic [&_h1]:text-3xl [&_h1]:md:text-4xl [&_h1]:lg:text-5xl [&_h1]:font-bold [&_h1]:uppercase [&_h1]:tracking-wide [&_h1]:leading-tight [&_h1]:mb-6 [&_h1]:text-white [&_h1]:drop-shadow-lg"
+              className={`hero-rich-text ${richTextStyles}`}
               data={richText}
               enableGutter={false}
             />

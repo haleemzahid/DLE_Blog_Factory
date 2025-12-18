@@ -47,7 +47,9 @@
       "Bash(cmd /c \"dir d:\\payloadcms /a /b\")",
       "Bash(cmd /c \"cd /d d:\\payloadcms && dir /a /b\")",
       "Bash(powershell -Command \"Get-ChildItem d:\\payloadcms -Force | Select-Object Name\")",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(cmd /c \"cd /d d:\\payloadcms && pnpm generate:types\")",
+      "Bash(cmd /c \"cd /d d:\\payloadcms && pnpm generate:types 2>&1\")"
     ],
     "deny": [],
     "ask": []

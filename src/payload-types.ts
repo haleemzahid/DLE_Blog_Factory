@@ -207,6 +207,18 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    /**
+     * Color for headings (H1, H2) - use color picker
+     */
+    headingColor?: string | null;
+    /**
+     * Color for subtitle/small text above heading
+     */
+    subtitleColor?: string | null;
+    /**
+     * Color for paragraphs/body text
+     */
+    paragraphColor?: string | null;
     media?: (number | null) | Media;
     /**
      * Logo displayed below the hero text (e.g., DLE Network logo)
@@ -1893,6 +1905,9 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        headingColor?: T;
+        subtitleColor?: T;
+        paragraphColor?: T;
         media?: T;
         logo?: T;
       };
