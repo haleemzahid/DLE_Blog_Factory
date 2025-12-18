@@ -49,7 +49,11 @@
       "Bash(powershell -Command \"Get-ChildItem d:\\payloadcms -Force | Select-Object Name\")",
       "Bash(git merge:*)",
       "Bash(cmd /c \"cd /d d:\\payloadcms && pnpm generate:types\")",
-      "Bash(cmd /c \"cd /d d:\\payloadcms && pnpm generate:types 2>&1\")"
+      "Bash(cmd /c \"cd /d d:\\payloadcms && pnpm generate:types 2>&1\")",
+      "Bash(git -C d:payloadcms checkout main)",
+      "Bash(git -C d:payloadcms pull:*)",
+      "Bash(git -C d:payloadcms checkout:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []

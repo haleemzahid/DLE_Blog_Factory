@@ -21,6 +21,7 @@ import { TeamSection } from '../../blocks/TeamSection/config'
 import { PartnersLogos } from '../../blocks/PartnersLogos/config'
 import { FeaturedAgents } from '../../blocks/FeaturedAgents/config'
 import { PageBlog } from '../../blocks/PageBlog/config'
+import { AboutSection } from '../../blocks/AboutSection/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -115,6 +116,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 PartnersLogos,
                 FeaturedAgents,
                 PageBlog,
+                AboutSection,
               ],
               required: true,
               admin: {

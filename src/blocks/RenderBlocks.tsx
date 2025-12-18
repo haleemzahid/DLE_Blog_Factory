@@ -21,6 +21,7 @@ import { TeamSectionBlock } from '@/blocks/TeamSection/Component'
 import { PartnersLogosBlock } from '@/blocks/PartnersLogos/Component'
 import { FeaturedAgentsBlock } from '@/blocks/FeaturedAgents/Component'
 import { PageBlogBlock } from '@/blocks/PageBlog/Component'
+import { AboutSectionBlock } from '@/blocks/AboutSection/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -42,6 +43,7 @@ const blockComponents = {
   partnersLogos: PartnersLogosBlock,
   featuredAgents: FeaturedAgentsBlock,
   pageBlog: PageBlogBlock,
+  aboutSection: AboutSectionBlock,
 }
 
 export const RenderBlocks: React.FC<{
