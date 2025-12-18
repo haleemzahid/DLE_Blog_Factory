@@ -246,6 +246,7 @@ export interface Page {
     | FeaturedAgentsBlock
     | PageBlogBlock
     | AboutSectionBlock
+    | SolutionsSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1573,6 +1574,52 @@ export interface AboutSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionsSectionBlock".
+ */
+export interface SolutionsSectionBlock {
+  /**
+   * Image displayed on the left (e.g., Agent Training infographic)
+   */
+  image: number | Media;
+  title: string;
+  solutions?:
+    | {
+        /**
+         * e.g., "#1 – Be Remembered"
+         */
+        heading: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  enableButton?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  buttonStyle?: ('dark' | 'red' | 'outline') | null;
+  imagePosition?: ('left' | 'right') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'solutionsSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1993,6 +2040,7 @@ export interface PagesSelect<T extends boolean = true> {
         featuredAgents?: T | FeaturedAgentsBlockSelect<T>;
         pageBlog?: T | PageBlogBlockSelect<T>;
         aboutSection?: T | AboutSectionBlockSelect<T>;
+        solutionsSection?: T | SolutionsSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -2373,6 +2421,36 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
   image?: T;
   imagePosition?: T;
   backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionsSectionBlock_select".
+ */
+export interface SolutionsSectionBlockSelect<T extends boolean = true> {
+  image?: T;
+  title?: T;
+  solutions?:
+    | T
+    | {
+        heading?: T;
+        description?: T;
+        id?: T;
+      };
+  enableButton?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  buttonStyle?: T;
+  imagePosition?: T;
   id?: T;
   blockName?: T;
 }
