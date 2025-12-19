@@ -248,6 +248,7 @@ export interface Page {
     | AboutSectionBlock
     | SolutionsSectionBlock
     | ServicesSectionBlock
+    | FeaturedTestimonialBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1697,6 +1698,31 @@ export interface ServicesSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedTestimonialBlock".
+ */
+export interface FeaturedTestimonialBlock {
+  photo: number | Media;
+  /**
+   * The testimonial text (will be displayed with quotation marks)
+   */
+  quote: string;
+  /**
+   * e.g., "Brianna L"
+   */
+  clientName: string;
+  nameColor?: string | null;
+  /**
+   * e.g., "Ms. Glendora" or "Real Estate Agent, Los Angeles"
+   */
+  clientTitle?: string | null;
+  photoPosition?: ('left' | 'right') | null;
+  backgroundColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredTestimonial';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -2119,6 +2145,7 @@ export interface PagesSelect<T extends boolean = true> {
         aboutSection?: T | AboutSectionBlockSelect<T>;
         solutionsSection?: T | SolutionsSectionBlockSelect<T>;
         servicesSection?: T | ServicesSectionBlockSelect<T>;
+        featuredTestimonial?: T | FeaturedTestimonialBlockSelect<T>;
       };
   meta?:
     | T
@@ -2573,6 +2600,21 @@ export interface ServicesSectionBlockSelect<T extends boolean = true> {
         id?: T;
       };
   columns?: T;
+  backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedTestimonialBlock_select".
+ */
+export interface FeaturedTestimonialBlockSelect<T extends boolean = true> {
+  photo?: T;
+  quote?: T;
+  clientName?: T;
+  nameColor?: T;
+  clientTitle?: T;
+  photoPosition?: T;
   backgroundColor?: T;
   id?: T;
   blockName?: T;

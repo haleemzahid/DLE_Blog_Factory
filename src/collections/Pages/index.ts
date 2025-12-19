@@ -24,6 +24,7 @@ import { PageBlog } from '../../blocks/PageBlog/config'
 import { AboutSection } from '../../blocks/AboutSection/config'
 import { SolutionsSection } from '../../blocks/SolutionsSection/config'
 import { ServicesSection } from '../../blocks/ServicesSection/config'
+import { FeaturedTestimonial } from '../../blocks/FeaturedTestimonial/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -121,6 +122,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 AboutSection,
                 SolutionsSection,
                 ServicesSection,
+                FeaturedTestimonial,
               ],
               required: true,
               admin: {
