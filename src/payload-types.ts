@@ -1701,20 +1701,31 @@ export interface ServicesSectionBlock {
  * via the `definition` "FeaturedTestimonialBlock".
  */
 export interface FeaturedTestimonialBlock {
-  photo: number | Media;
   /**
-   * The testimonial text (will be displayed with quotation marks)
+   * Small text above the title (e.g., "We Love Them")
    */
-  quote: string;
-  /**
-   * e.g., "Brianna L"
-   */
-  clientName: string;
+  eyebrow?: string | null;
+  eyebrowColor?: string | null;
+  title?: string | null;
+  testimonials?:
+    | {
+        photo?: (number | null) | Media;
+        /**
+         * The testimonial text
+         */
+        quote: string;
+        /**
+         * e.g., "Brianna L"
+         */
+        clientName: string;
+        /**
+         * e.g., "Ms. Glendora" or "Real Estate Agent, Los Angeles"
+         */
+        clientTitle?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   nameColor?: string | null;
-  /**
-   * e.g., "Ms. Glendora" or "Real Estate Agent, Los Angeles"
-   */
-  clientTitle?: string | null;
   photoPosition?: ('left' | 'right') | null;
   backgroundColor?: string | null;
   id?: string | null;
@@ -2609,11 +2620,19 @@ export interface ServicesSectionBlockSelect<T extends boolean = true> {
  * via the `definition` "FeaturedTestimonialBlock_select".
  */
 export interface FeaturedTestimonialBlockSelect<T extends boolean = true> {
-  photo?: T;
-  quote?: T;
-  clientName?: T;
+  eyebrow?: T;
+  eyebrowColor?: T;
+  title?: T;
+  testimonials?:
+    | T
+    | {
+        photo?: T;
+        quote?: T;
+        clientName?: T;
+        clientTitle?: T;
+        id?: T;
+      };
   nameColor?: T;
-  clientTitle?: T;
   photoPosition?: T;
   backgroundColor?: T;
   id?: T;
