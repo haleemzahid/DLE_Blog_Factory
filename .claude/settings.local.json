@@ -54,7 +54,8 @@
       "Bash(git -C d:payloadcms status)",
       "Bash(git -C d:\\payloadcms branch:*)",
       "Bash(cmd /c \"cd /d d:\\payloadcms && pnpm payload migrate\")",
-      "Bash(pnpm payload migrate:fresh:*)"
+      "Bash(pnpm payload migrate:fresh:*)",
+      "Bash(pnpm payload migrate:status:*)"
     ],
     "deny": [],
     "ask": []
