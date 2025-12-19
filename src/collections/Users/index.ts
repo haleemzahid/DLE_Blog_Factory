@@ -6,7 +6,7 @@ export const Users: CollectionConfig = {
   slug: 'users',
   access: {
     admin: authenticated,
-    create: authenticated,
+    create: () => true, // Allow first user creation
     delete: authenticated,
     read: authenticated,
     update: authenticated,
@@ -20,11 +20,6 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
-      admin: {
-        components: {
-          Description: '@/components/VoiceComposeField#VoiceComposeField',
-        },
-      },
     },
   ],
   timestamps: true,

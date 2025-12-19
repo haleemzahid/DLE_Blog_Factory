@@ -72,6 +72,10 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    agents: Agent;
+    states: State;
+    designations: Designation;
+    testimonials: Testimonial;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -95,6 +99,10 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    agents: AgentsSelect<false> | AgentsSelect<true>;
+    states: StatesSelect<false> | StatesSelect<true>;
+    designations: DesignationsSelect<false> | DesignationsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -199,9 +207,49 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    /**
+     * Color for headings (H1, H2) - use color picker
+     */
+    headingColor?: string | null;
+    /**
+     * Color for subtitle/small text above heading
+     */
+    subtitleColor?: string | null;
+    /**
+     * Color for paragraphs/body text
+     */
+    paragraphColor?: string | null;
     media?: (number | null) | Media;
+    /**
+     * Logo displayed below the hero text (e.g., DLE Network logo)
+     */
+    logo?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | HomeValueFormBlock
+    | TestimonialsBlock
+    | ServicesGridBlock
+    | AgentGalleryBlock
+    | FAQBlock
+    | AgentBlogBlock
+    | AgentContactBlock
+    | DirectoryListingBlock
+    | HomepageBlogBlock
+    | VideoEmbedBlock
+    | TeamSectionBlock
+    | PartnersLogosBlock
+    | FeaturedAgentsBlock
+    | PageBlogBlock
+    | AboutSectionBlock
+    | SolutionsSectionBlock
+    | ServicesSectionBlock
+    | FeaturedTestimonialBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -255,6 +303,30 @@ export interface Post {
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
+  /**
+   * Select where this post should appear
+   */
+  postType: 'main' | 'agent' | 'syndicated';
+  /**
+   * Display this post on the main website homepage
+   */
+  showOnHomepage?: boolean | null;
+  /**
+   * Associate this post with a specific agent's super page blog
+   */
+  agent?: (number | null) | Agent;
+  /**
+   * Select multiple agents to syndicate/copy this post to their pages
+   */
+  syndicatedAgents?: (number | Agent)[] | null;
+  /**
+   * Highlight this post as featured
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Display this post on specific pages (e.g., Google SEO Services page)
+   */
+  relatedPages?: (number | Page)[] | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -438,6 +510,278 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agents".
+ */
+export interface Agent {
+  id: number;
+  /**
+   * Agent's full legal name (e.g., Anthony Grynchal)
+   */
+  name: string;
+  /**
+   * The designation title (e.g., Mr. Claremont™, Ms. Fresno™)
+   */
+  displayName: string;
+  city: string;
+  state: number | State;
+  /**
+   * Select the designation types for this agent (e.g., Mr. SEO, Mr. Luxury)
+   */
+  designation?: (number | Designation)[] | null;
+  profilePhoto: number | Media;
+  heroImage?: (number | null) | Media;
+  logo?: (number | null) | Media;
+  /**
+   * e.g., "TOP RATED REAL ESTATE AGENT IN CLAREMONT"
+   */
+  tagline?: string | null;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Brief description for listings and cards
+   */
+  shortBio?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  address?: {
+    street?: string | null;
+    city?: string | null;
+    state?: string | null;
+    zip?: string | null;
+  };
+  workingHours?:
+    | {
+        day?: ('monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday') | null;
+        /**
+         * e.g., 7 AM – 9:30 PM
+         */
+        hours?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    linkedin?: string | null;
+    youtube?: string | null;
+    twitter?: string | null;
+    pinterest?: string | null;
+    tiktok?: string | null;
+    googleMaps?: string | null;
+  };
+  /**
+   * e.g., DRE# 01873626
+   */
+  dreLicense?: string | null;
+  brokerage?: {
+    name?: string | null;
+    logo?: (number | null) | Media;
+  };
+  certifications?:
+    | {
+        /**
+         * e.g., Certified Luxury Home Marketing Specialist
+         */
+        title: string;
+        /**
+         * e.g., CLHMS
+         */
+        abbreviation?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  experience?: number | null;
+  memberSince?: string | null;
+  services?:
+    | {
+        /**
+         * e.g., Home Value & Appraisal Services
+         */
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        icon?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * CloudCMA or similar home value widget URL
+   */
+  homeValueWidgetUrl?: string | null;
+  gallery?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  faqs?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Show this agent in featured sections
+   */
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "states".
+ */
+export interface State {
+  id: number;
+  /**
+   * e.g., California, Texas, Florida
+   */
+  name: string;
+  /**
+   * e.g., CA, TX, FL
+   */
+  abbreviation: string;
+  country: 'usa' | 'canada' | 'uk' | 'australia' | 'new-zealand' | 'uae';
+  /**
+   * Check if this is an unincorporated area directory
+   */
+  isUnincorporated?: boolean | null;
+  description?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  headerImage?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "designations".
+ */
+export interface Designation {
+  id: number;
+  /**
+   * e.g., Mr. SEO™, Mrs. Luxury™, Mr. Listings™
+   */
+  title: string;
+  prefix: 'mr' | 'mrs' | 'ms';
+  category:
+    | 'city'
+    | 'seo'
+    | 'luxury'
+    | 'listings'
+    | 'new-build'
+    | 'title'
+    | 'mobile-home'
+    | 'appraisal'
+    | 'fix-flip'
+    | 'marketing'
+    | 'open-house'
+    | 'offers'
+    | 'nationwide'
+    | 'efficiency'
+    | 'other';
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Brief description for cards and listings
+   */
+  shortDescription?: string | null;
+  icon?: (number | null) | Media;
+  /**
+   * For nested dropdown menus (e.g., Mr. Listings → Mr. Marketing)
+   */
+  parentDesignation?: (number | null) | Designation;
+  headerImage?: (number | null) | Media;
+  homeValueFormTitle?: string | null;
+  homeValueFormDescription?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Show in the main navigation dropdown
+   */
+  featured?: boolean | null;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -783,6 +1127,613 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeValueFormBlock".
+ */
+export interface HomeValueFormBlock {
+  title: string;
+  description?: string | null;
+  inputPlaceholder?: string | null;
+  buttonText?: string | null;
+  /**
+   * CloudCMA or similar home value widget URL. Leave blank to use internal form.
+   */
+  widgetUrl?: string | null;
+  backgroundImage?: (number | null) | Media;
+  style?: ('centered' | 'left' | 'sidebar') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeValueForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  title?: string | null;
+  subtitle?: string | null;
+  /**
+   * Leave blank to show all featured testimonials
+   */
+  agent?: (number | null) | Agent;
+  /**
+   * Manually select testimonials. Leave blank to auto-populate from agent.
+   */
+  testimonials?: (number | Testimonial)[] | null;
+  limit?: number | null;
+  layout?: ('grid' | 'carousel' | 'list') | null;
+  showRatings?: boolean | null;
+  showPhotos?: boolean | null;
+  showSource?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonialsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  clientName: string;
+  clientPhoto?: (number | null) | Media;
+  /**
+   * Is this reviewer a Google Local Guide?
+   */
+  isLocalGuide?: boolean | null;
+  rating: number;
+  review: string;
+  /**
+   * The agent this testimonial belongs to
+   */
+  agent: number | Agent;
+  source?: ('google' | 'yelp' | 'zillow' | 'realtor' | 'facebook' | 'direct' | 'other') | null;
+  /**
+   * Link to the original review
+   */
+  sourceUrl?: string | null;
+  date?: string | null;
+  /**
+   * Show this testimonial prominently
+   */
+  featured?: boolean | null;
+  /**
+   * Only approved testimonials will be displayed
+   */
+  approved?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesGridBlock".
+ */
+export interface ServicesGridBlock {
+  title?: string | null;
+  services?:
+    | {
+        /**
+         * e.g., Home Value & Appraisal Services
+         */
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        icon?: (number | null) | Media;
+        link?: {
+          type?: ('none' | 'internal' | 'external') | null;
+          url?: string | null;
+          page?: (number | null) | Page;
+          label?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  layout?: ('twoColumn' | 'threeColumn' | 'fourColumn' | 'alternating') | null;
+  showIcons?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AgentGalleryBlock".
+ */
+export interface AgentGalleryBlock {
+  title?: string | null;
+  /**
+   * Auto-populate gallery from agent profile. Leave blank to use manual selection.
+   */
+  agent?: (number | null) | Agent;
+  /**
+   * Manually select images. Will be used if no agent is selected.
+   */
+  images?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: ('grid' | 'masonry' | 'carousel') | null;
+  columns?: ('2' | '3' | '4') | null;
+  enableLightbox?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'agentGallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock".
+ */
+export interface FAQBlock {
+  title?: string | null;
+  /**
+   * Auto-populate FAQs from agent profile. Leave blank to use manual selection.
+   */
+  agent?: (number | null) | Agent;
+  /**
+   * Manually add FAQs. Will be used if no agent is selected.
+   */
+  faqs?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  layout?: ('accordion' | 'twoColumn' | 'list') | null;
+  defaultOpen?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AgentBlogBlock".
+ */
+export interface AgentBlogBlock {
+  title?: string | null;
+  /**
+   * Show blog posts for this agent. Leave blank to show general posts.
+   */
+  agent?: (number | null) | Agent;
+  categories?: (number | Category)[] | null;
+  limit?: number | null;
+  layout?: ('grid' | 'list' | 'featured') | null;
+  showLoadMore?: boolean | null;
+  showDate?: boolean | null;
+  showAuthor?: boolean | null;
+  showExcerpt?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'agentBlog';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AgentContactBlock".
+ */
+export interface AgentContactBlock {
+  /**
+   * Auto-populate contact info from agent profile.
+   */
+  agent?: (number | null) | Agent;
+  title?: string | null;
+  showBio?: boolean | null;
+  showPhoto?: boolean | null;
+  showSocialLinks?: boolean | null;
+  showWorkingHours?: boolean | null;
+  showContactForm?: boolean | null;
+  layout?: ('twoColumn' | 'sidebar' | 'fullWidth') | null;
+  backgroundColor?: ('white' | 'gray' | 'dark') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'agentContact';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DirectoryListingBlock".
+ */
+export interface DirectoryListingBlock {
+  title?: string | null;
+  listingType: 'agents' | 'states' | 'designations';
+  /**
+   * Show only agents from this state
+   */
+  filterByState?: (number | null) | State;
+  /**
+   * Show only agents with this designation
+   */
+  filterByDesignation?: (number | null) | Designation;
+  filterByCountry?: ('all' | 'usa' | 'canada' | 'uk' | 'australia' | 'new-zealand' | 'uae') | null;
+  layout?: ('multiColumn' | 'grid' | 'alphabetical') | null;
+  columns?: ('2' | '3' | '4' | '5') | null;
+  showApplyButton?: boolean | null;
+  showInquireButton?: boolean | null;
+  applyButtonUrl?: string | null;
+  inquireButtonUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'directoryListing';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageBlogBlock".
+ */
+export interface HomepageBlogBlock {
+  title?: string | null;
+  subtitle?: string | null;
+  limit?: number | null;
+  /**
+   * Include posts with type "Main Website Blog"
+   */
+  showMainBlog?: boolean | null;
+  /**
+   * Include syndicated posts with "Show on Homepage" checked
+   */
+  showSyndicatedOnHomepage?: boolean | null;
+  showFeaturedOnly?: boolean | null;
+  layout?: ('grid' | 'list' | 'featured') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageBlog';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock".
+ */
+export interface VideoEmbedBlock {
+  /**
+   * YouTube or Vimeo URL (e.g., https://www.youtube.com/watch?v=xxxxx)
+   */
+  videoUrl: string;
+  /**
+   * Optional title displayed above the video
+   */
+  title?: string | null;
+  aspectRatio?: ('16:9' | '4:3' | '1:1') | null;
+  maxWidth?: ('small' | 'medium' | 'large' | 'full') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoEmbed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamSectionBlock".
+ */
+export interface TeamSectionBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  members?:
+    | {
+        name: string;
+        role?: string | null;
+        photo: number | Media;
+        bio?: string | null;
+        linkedIn?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaLabel?: string | null;
+  ctaLink?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'teamSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PartnersLogosBlock".
+ */
+export interface PartnersLogosBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  logos?:
+    | {
+        name: string;
+        logo: number | Media;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  style?: ('carousel' | 'grid' | 'inline') | null;
+  grayscale?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'partnersLogos';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedAgentsBlock".
+ */
+export interface FeaturedAgentsBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  subtitle?: string | null;
+  displayMode?: ('auto' | 'manual' | 'designation') | null;
+  selectedAgents?: (number | Agent)[] | null;
+  /**
+   * Show agents with this designation
+   */
+  designation?: (number | null) | Designation;
+  limit?: number | null;
+  layout?: ('carousel' | 'grid') | null;
+  showDesignation?: boolean | null;
+  ctaLabel?: string | null;
+  ctaLink?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredAgents';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageBlogBlock".
+ */
+export interface PageBlogBlock {
+  title?: string | null;
+  subtitle?: string | null;
+  displayMode?: ('auto' | 'category' | 'manual') | null;
+  /**
+   * Filter posts by these categories
+   */
+  categories?: (number | Category)[] | null;
+  selectedPosts?: (number | Post)[] | null;
+  limit?: number | null;
+  layout?: ('grid' | 'list' | 'compact') | null;
+  showReadMore?: boolean | null;
+  showDate?: boolean | null;
+  showExcerpt?: boolean | null;
+  ctaLabel?: string | null;
+  /**
+   * Leave empty to hide the button
+   */
+  ctaLink?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pageBlog';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSectionBlock".
+ */
+export interface AboutSectionBlock {
+  /**
+   * Color for the section heading (default: red)
+   */
+  headingColor?: string | null;
+  heading: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  enableButton?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  /**
+   * Image displayed on the right side of the section
+   */
+  image: number | Media;
+  imagePosition?: ('left' | 'right') | null;
+  /**
+   * Background color for the section
+   */
+  backgroundColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionsSectionBlock".
+ */
+export interface SolutionsSectionBlock {
+  /**
+   * Image displayed on the left (e.g., Agent Training infographic)
+   */
+  image: number | Media;
+  title: string;
+  solutions?:
+    | {
+        /**
+         * e.g., "#1 – Be Remembered"
+         */
+        heading: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  enableButton?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  buttonStyle?: ('dark' | 'red' | 'outline') | null;
+  imagePosition?: ('left' | 'right') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'solutionsSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesSectionBlock".
+ */
+export interface ServicesSectionBlock {
+  /**
+   * Small text above the main title (e.g., "Our Services")
+   */
+  eyebrow?: string | null;
+  eyebrowColor?: string | null;
+  title: string;
+  enableButton?: boolean | null;
+  headerLink?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  buttonStyle?: ('red' | 'dark' | 'outline') | null;
+  services?:
+    | {
+        /**
+         * Icon image for the service card
+         */
+        icon?: (number | null) | Media;
+        /**
+         * e.g., "Google Business Profile Optimization"
+         */
+        title: string;
+        titleColor?: string | null;
+        description: string;
+        enableLink?: boolean | null;
+        serviceLink?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Number of columns in the service cards grid
+   */
+  columns?: ('2' | '3' | '4') | null;
+  backgroundColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedTestimonialBlock".
+ */
+export interface FeaturedTestimonialBlock {
+  /**
+   * Small text above the title (e.g., "We Love Them")
+   */
+  eyebrow?: string | null;
+  eyebrowColor?: string | null;
+  title?: string | null;
+  testimonials?:
+    | {
+        photo?: (number | null) | Media;
+        /**
+         * The testimonial text
+         */
+        quote: string;
+        /**
+         * e.g., "Brianna L"
+         */
+        clientName: string;
+        /**
+         * e.g., "Ms. Glendora" or "Real Estate Agent, Los Angeles"
+         */
+        clientTitle?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  nameColor?: string | null;
+  photoPosition?: ('left' | 'right') | null;
+  backgroundColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredTestimonial';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1067,6 +2018,22 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'agents';
+        value: number | Agent;
+      } | null)
+    | ({
+        relationTo: 'states';
+        value: number | State;
+      } | null)
+    | ({
+        relationTo: 'designations';
+        value: number | Designation;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1158,7 +2125,11 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        headingColor?: T;
+        subtitleColor?: T;
+        paragraphColor?: T;
         media?: T;
+        logo?: T;
       };
   layout?:
     | T
@@ -1168,6 +2139,24 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        homeValueForm?: T | HomeValueFormBlockSelect<T>;
+        testimonialsBlock?: T | TestimonialsBlockSelect<T>;
+        servicesGrid?: T | ServicesGridBlockSelect<T>;
+        agentGallery?: T | AgentGalleryBlockSelect<T>;
+        faqBlock?: T | FAQBlockSelect<T>;
+        agentBlog?: T | AgentBlogBlockSelect<T>;
+        agentContact?: T | AgentContactBlockSelect<T>;
+        directoryListing?: T | DirectoryListingBlockSelect<T>;
+        homepageBlog?: T | HomepageBlogBlockSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockSelect<T>;
+        teamSection?: T | TeamSectionBlockSelect<T>;
+        partnersLogos?: T | PartnersLogosBlockSelect<T>;
+        featuredAgents?: T | FeaturedAgentsBlockSelect<T>;
+        pageBlog?: T | PageBlogBlockSelect<T>;
+        aboutSection?: T | AboutSectionBlockSelect<T>;
+        solutionsSection?: T | SolutionsSectionBlockSelect<T>;
+        servicesSection?: T | ServicesSectionBlockSelect<T>;
+        featuredTestimonial?: T | FeaturedTestimonialBlockSelect<T>;
       };
   meta?:
     | T
@@ -1269,6 +2258,388 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeValueFormBlock_select".
+ */
+export interface HomeValueFormBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  inputPlaceholder?: T;
+  buttonText?: T;
+  widgetUrl?: T;
+  backgroundImage?: T;
+  style?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  agent?: T;
+  testimonials?: T;
+  limit?: T;
+  layout?: T;
+  showRatings?: T;
+  showPhotos?: T;
+  showSource?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesGridBlock_select".
+ */
+export interface ServicesGridBlockSelect<T extends boolean = true> {
+  title?: T;
+  services?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              url?: T;
+              page?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  layout?: T;
+  showIcons?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AgentGalleryBlock_select".
+ */
+export interface AgentGalleryBlockSelect<T extends boolean = true> {
+  title?: T;
+  agent?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  layout?: T;
+  columns?: T;
+  enableLightbox?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock_select".
+ */
+export interface FAQBlockSelect<T extends boolean = true> {
+  title?: T;
+  agent?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  layout?: T;
+  defaultOpen?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AgentBlogBlock_select".
+ */
+export interface AgentBlogBlockSelect<T extends boolean = true> {
+  title?: T;
+  agent?: T;
+  categories?: T;
+  limit?: T;
+  layout?: T;
+  showLoadMore?: T;
+  showDate?: T;
+  showAuthor?: T;
+  showExcerpt?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AgentContactBlock_select".
+ */
+export interface AgentContactBlockSelect<T extends boolean = true> {
+  agent?: T;
+  title?: T;
+  showBio?: T;
+  showPhoto?: T;
+  showSocialLinks?: T;
+  showWorkingHours?: T;
+  showContactForm?: T;
+  layout?: T;
+  backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DirectoryListingBlock_select".
+ */
+export interface DirectoryListingBlockSelect<T extends boolean = true> {
+  title?: T;
+  listingType?: T;
+  filterByState?: T;
+  filterByDesignation?: T;
+  filterByCountry?: T;
+  layout?: T;
+  columns?: T;
+  showApplyButton?: T;
+  showInquireButton?: T;
+  applyButtonUrl?: T;
+  inquireButtonUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageBlogBlock_select".
+ */
+export interface HomepageBlogBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  limit?: T;
+  showMainBlog?: T;
+  showSyndicatedOnHomepage?: T;
+  showFeaturedOnly?: T;
+  layout?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock_select".
+ */
+export interface VideoEmbedBlockSelect<T extends boolean = true> {
+  videoUrl?: T;
+  title?: T;
+  aspectRatio?: T;
+  maxWidth?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamSectionBlock_select".
+ */
+export interface TeamSectionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  members?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        photo?: T;
+        bio?: T;
+        linkedIn?: T;
+        id?: T;
+      };
+  ctaLabel?: T;
+  ctaLink?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PartnersLogosBlock_select".
+ */
+export interface PartnersLogosBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  logos?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        url?: T;
+        id?: T;
+      };
+  style?: T;
+  grayscale?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedAgentsBlock_select".
+ */
+export interface FeaturedAgentsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  subtitle?: T;
+  displayMode?: T;
+  selectedAgents?: T;
+  designation?: T;
+  limit?: T;
+  layout?: T;
+  showDesignation?: T;
+  ctaLabel?: T;
+  ctaLink?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageBlogBlock_select".
+ */
+export interface PageBlogBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  displayMode?: T;
+  categories?: T;
+  selectedPosts?: T;
+  limit?: T;
+  layout?: T;
+  showReadMore?: T;
+  showDate?: T;
+  showExcerpt?: T;
+  ctaLabel?: T;
+  ctaLink?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSectionBlock_select".
+ */
+export interface AboutSectionBlockSelect<T extends boolean = true> {
+  headingColor?: T;
+  heading?: T;
+  content?: T;
+  enableButton?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  image?: T;
+  imagePosition?: T;
+  backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionsSectionBlock_select".
+ */
+export interface SolutionsSectionBlockSelect<T extends boolean = true> {
+  image?: T;
+  title?: T;
+  solutions?:
+    | T
+    | {
+        heading?: T;
+        description?: T;
+        id?: T;
+      };
+  enableButton?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  buttonStyle?: T;
+  imagePosition?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesSectionBlock_select".
+ */
+export interface ServicesSectionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  eyebrowColor?: T;
+  title?: T;
+  enableButton?: T;
+  headerLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  buttonStyle?: T;
+  services?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        titleColor?: T;
+        description?: T;
+        enableLink?: T;
+        serviceLink?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  columns?: T;
+  backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedTestimonialBlock_select".
+ */
+export interface FeaturedTestimonialBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  eyebrowColor?: T;
+  title?: T;
+  testimonials?:
+    | T
+    | {
+        photo?: T;
+        quote?: T;
+        clientName?: T;
+        clientTitle?: T;
+        id?: T;
+      };
+  nameColor?: T;
+  photoPosition?: T;
+  backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1286,6 +2657,12 @@ export interface PostsSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
+  postType?: T;
+  showOnHomepage?: T;
+  agent?: T;
+  syndicatedAgents?: T;
+  isFeatured?: T;
+  relatedPages?: T;
   populatedAuthors?:
     | T
     | {
@@ -1435,6 +2812,162 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agents_select".
+ */
+export interface AgentsSelect<T extends boolean = true> {
+  name?: T;
+  displayName?: T;
+  city?: T;
+  state?: T;
+  designation?: T;
+  profilePhoto?: T;
+  heroImage?: T;
+  logo?: T;
+  tagline?: T;
+  bio?: T;
+  shortBio?: T;
+  phone?: T;
+  email?: T;
+  address?:
+    | T
+    | {
+        street?: T;
+        city?: T;
+        state?: T;
+        zip?: T;
+      };
+  workingHours?:
+    | T
+    | {
+        day?: T;
+        hours?: T;
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        linkedin?: T;
+        youtube?: T;
+        twitter?: T;
+        pinterest?: T;
+        tiktok?: T;
+        googleMaps?: T;
+      };
+  dreLicense?: T;
+  brokerage?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+      };
+  certifications?:
+    | T
+    | {
+        title?: T;
+        abbreviation?: T;
+        id?: T;
+      };
+  experience?: T;
+  memberSince?: T;
+  services?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  homeValueWidgetUrl?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  _status?: T;
+  generateSlug?: T;
+  slug?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "states_select".
+ */
+export interface StatesSelect<T extends boolean = true> {
+  name?: T;
+  abbreviation?: T;
+  country?: T;
+  isUnincorporated?: T;
+  description?: T;
+  generateSlug?: T;
+  slug?: T;
+  headerImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "designations_select".
+ */
+export interface DesignationsSelect<T extends boolean = true> {
+  title?: T;
+  prefix?: T;
+  category?: T;
+  description?: T;
+  shortDescription?: T;
+  icon?: T;
+  parentDesignation?: T;
+  headerImage?: T;
+  homeValueFormTitle?: T;
+  homeValueFormDescription?: T;
+  generateSlug?: T;
+  slug?: T;
+  featured?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  clientName?: T;
+  clientPhoto?: T;
+  isLocalGuide?: T;
+  rating?: T;
+  review?: T;
+  agent?: T;
+  source?: T;
+  sourceUrl?: T;
+  date?: T;
+  featured?: T;
+  approved?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1784,7 +3317,12 @@ export interface Header {
   id: number;
   navItems?:
     | {
-        link: {
+        type?: ('link' | 'dropdown') | null;
+        /**
+         * The label shown in the navigation
+         */
+        label: string;
+        link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
@@ -1797,8 +3335,59 @@ export interface Header {
                 value: number | Post;
               } | null);
           url?: string | null;
-          label: string;
         };
+        dropdownItems?:
+          | {
+              label: string;
+              link?: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+              };
+              /**
+               * Enable to add nested sub-items
+               */
+              hasSubmenu?: boolean | null;
+              subItems?:
+                | {
+                    label: string;
+                    link?: {
+                      type?: ('reference' | 'custom') | null;
+                      newTab?: boolean | null;
+                      reference?:
+                        | ({
+                            relationTo: 'pages';
+                            value: number | Page;
+                          } | null)
+                        | ({
+                            relationTo: 'posts';
+                            value: number | Post;
+                          } | null);
+                      url?: string | null;
+                    };
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Automatically add all active designations to this dropdown
+         */
+        includeDesignations?: boolean | null;
+        /**
+         * Automatically add all states to this dropdown
+         */
+        includeStates?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -1811,6 +3400,49 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  /**
+   * Links like ADA disclaimer, Sitemap, Privacy Policy, etc.
+   */
+  legalLinks?:
+    | {
+        label: string;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Company name for copyright notice
+   */
+  copyrightText?: string | null;
+  socialLinks?: {
+    facebook?: string | null;
+    twitter?: string | null;
+    instagram?: string | null;
+    linkedin?: string | null;
+    youtube?: string | null;
+    pinterest?: string | null;
+  };
+  /**
+   * Disclaimer text displayed at the bottom of the footer
+   */
+  disclaimer?: string | null;
+  /**
+   * Phone number to display after the disclaimer text
+   */
+  disclaimerPhone?: string | null;
   navItems?:
     | {
         link: {
@@ -1842,6 +3474,8 @@ export interface HeaderSelect<T extends boolean = true> {
   navItems?:
     | T
     | {
+        type?: T;
+        label?: T;
         link?:
           | T
           | {
@@ -1849,8 +3483,38 @@ export interface HeaderSelect<T extends boolean = true> {
               newTab?: T;
               reference?: T;
               url?: T;
-              label?: T;
             };
+        dropdownItems?:
+          | T
+          | {
+              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                  };
+              hasSubmenu?: T;
+              subItems?:
+                | T
+                | {
+                    label?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+            };
+        includeDesignations?: T;
+        includeStates?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1862,6 +3526,33 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+            };
+        id?: T;
+      };
+  copyrightText?: T;
+  socialLinks?:
+    | T
+    | {
+        facebook?: T;
+        twitter?: T;
+        instagram?: T;
+        linkedin?: T;
+        youtube?: T;
+        pinterest?: T;
+      };
+  disclaimer?: T;
+  disclaimerPhone?: T;
   navItems?:
     | T
     | {

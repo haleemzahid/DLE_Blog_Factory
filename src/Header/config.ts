@@ -13,11 +13,99 @@ export const Header: GlobalConfig = {
       name: 'navItems',
       type: 'array',
       fields: [
+        {
+          name: 'type',
+          type: 'select',
+          defaultValue: 'link',
+          options: [
+            { label: 'Single Link', value: 'link' },
+            { label: 'Dropdown Menu', value: 'dropdown' },
+          ],
+        },
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+          admin: {
+            description: 'The label shown in the navigation',
+          },
+        },
         link({
           appearances: false,
+          disableLabel: true,
+          overrides: {
+            admin: {
+              condition: (_, siblingData) => siblingData?.type === 'link',
+            },
+          },
         }),
+        {
+          name: 'dropdownItems',
+          type: 'array',
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'dropdown',
+          },
+          fields: [
+            {
+              name: 'label',
+              type: 'text',
+              required: true,
+            },
+            link({
+              appearances: false,
+              disableLabel: true,
+            }),
+            {
+              name: 'hasSubmenu',
+              type: 'checkbox',
+              label: 'Has Sub-menu',
+              admin: {
+                description: 'Enable to add nested sub-items',
+              },
+            },
+            {
+              name: 'subItems',
+              type: 'array',
+              label: 'Sub-menu Items',
+              admin: {
+                condition: (_, siblingData) => siblingData?.hasSubmenu === true,
+              },
+              fields: [
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                },
+                link({
+                  appearances: false,
+                  disableLabel: true,
+                }),
+              ],
+              maxRows: 15,
+            },
+          ],
+          maxRows: 20,
+        },
+        {
+          name: 'includeDesignations',
+          type: 'checkbox',
+          label: 'Auto-include all designations',
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'dropdown',
+            description: 'Automatically add all active designations to this dropdown',
+          },
+        },
+        {
+          name: 'includeStates',
+          type: 'checkbox',
+          label: 'Auto-include all states',
+          admin: {
+            condition: (_, siblingData) => siblingData?.type === 'dropdown',
+            description: 'Automatically add all states to this dropdown',
+          },
+        },
       ],
-      maxRows: 6,
+      maxRows: 10,
       admin: {
         initCollapsed: true,
         components: {

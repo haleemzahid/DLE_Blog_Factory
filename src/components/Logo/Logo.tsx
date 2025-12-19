@@ -15,15 +15,29 @@ export const Logo = (props: Props) => {
 
   return (
     /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
-    />
+    <div className={clsx('relative w-[70px] h-[70px]', className)}>
+      {/* Light mode logo */}
+      <img
+        src="https://designatedlocalexpert.com/wp-content/uploads/2022/07/cropped-cropped-fav-150x150.png"
+        alt="Designated Local Expert Logo"
+        width={150}
+        height={150}
+        loading={loading}
+        fetchPriority={priority}
+        decoding="async"
+        className="object-contain dark:hidden"
+      />
+      {/* Dark mode logo */}
+      <img
+        src="https://designatedlocalexpert.com/wp-content/uploads/2022/07/DleImg.png"
+        alt="Designated Local Expert Logo"
+        width={150}
+        height={150}
+        loading={loading}
+        fetchPriority={priority}
+        decoding="async"
+        className="hidden dark:block object-contain brightness-200 contrast-150"
+      />
+    </div>
   )
 }

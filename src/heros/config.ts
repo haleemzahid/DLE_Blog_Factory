@@ -61,6 +61,45 @@ export const hero: Field = {
       },
     }),
     {
+      name: 'headingColor',
+      type: 'text',
+      label: 'Heading Color',
+      defaultValue: '#ffffff',
+      admin: {
+        condition: (_, { type } = {}) => ['highImpact'].includes(type),
+        description: 'Color for headings (H1, H2) - use color picker',
+        components: {
+          Field: '@/components/ColorPickerField#ColorPickerField',
+        },
+      },
+    },
+    {
+      name: 'subtitleColor',
+      type: 'text',
+      label: 'Subtitle Color',
+      defaultValue: '#e8b44a',
+      admin: {
+        condition: (_, { type } = {}) => ['highImpact'].includes(type),
+        description: 'Color for subtitle/small text above heading',
+        components: {
+          Field: '@/components/ColorPickerField#ColorPickerField',
+        },
+      },
+    },
+    {
+      name: 'paragraphColor',
+      type: 'text',
+      label: 'Paragraph Color',
+      defaultValue: '#ffffff',
+      admin: {
+        condition: (_, { type } = {}) => ['highImpact'].includes(type),
+        description: 'Color for paragraphs/body text',
+        components: {
+          Field: '@/components/ColorPickerField#ColorPickerField',
+        },
+      },
+    },
+    {
       name: 'media',
       type: 'upload',
       admin: {
@@ -68,6 +107,16 @@ export const hero: Field = {
       },
       relationTo: 'media',
       required: true,
+    },
+    {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Hero Logo',
+      admin: {
+        condition: (_, { type } = {}) => ['highImpact'].includes(type),
+        description: 'Logo displayed below the hero text (e.g., DLE Network logo)',
+      },
     },
   ],
   label: false,

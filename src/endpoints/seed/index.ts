@@ -223,16 +223,18 @@ export const seed = async ({
       data: {
         navItems: [
           {
+            type: 'link',
+            label: 'Posts',
             link: {
               type: 'custom',
-              label: 'Posts',
               url: '/posts',
             },
           },
           {
+            type: 'link',
+            label: 'Contact',
             link: {
               type: 'reference',
-              label: 'Contact',
               reference: {
                 relationTo: 'pages',
                 value: contactPage.id,
