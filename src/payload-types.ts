@@ -247,6 +247,7 @@ export interface Page {
     | PageBlogBlock
     | AboutSectionBlock
     | SolutionsSectionBlock
+    | ServicesSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1620,6 +1621,82 @@ export interface SolutionsSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesSectionBlock".
+ */
+export interface ServicesSectionBlock {
+  /**
+   * Small text above the main title (e.g., "Our Services")
+   */
+  eyebrow?: string | null;
+  eyebrowColor?: string | null;
+  title: string;
+  enableButton?: boolean | null;
+  headerLink?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  buttonStyle?: ('red' | 'dark' | 'outline') | null;
+  services?:
+    | {
+        /**
+         * Icon image for the service card
+         */
+        icon?: (number | null) | Media;
+        /**
+         * e.g., "Google Business Profile Optimization"
+         */
+        title: string;
+        titleColor?: string | null;
+        description: string;
+        enableLink?: boolean | null;
+        serviceLink?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Number of columns in the service cards grid
+   */
+  columns?: ('2' | '3' | '4') | null;
+  backgroundColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -2041,6 +2118,7 @@ export interface PagesSelect<T extends boolean = true> {
         pageBlog?: T | PageBlogBlockSelect<T>;
         aboutSection?: T | AboutSectionBlockSelect<T>;
         solutionsSection?: T | SolutionsSectionBlockSelect<T>;
+        servicesSection?: T | ServicesSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -2451,6 +2529,51 @@ export interface SolutionsSectionBlockSelect<T extends boolean = true> {
       };
   buttonStyle?: T;
   imagePosition?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesSectionBlock_select".
+ */
+export interface ServicesSectionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  eyebrowColor?: T;
+  title?: T;
+  enableButton?: T;
+  headerLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  buttonStyle?: T;
+  services?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        titleColor?: T;
+        description?: T;
+        enableLink?: T;
+        serviceLink?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  columns?: T;
+  backgroundColor?: T;
   id?: T;
   blockName?: T;
 }
