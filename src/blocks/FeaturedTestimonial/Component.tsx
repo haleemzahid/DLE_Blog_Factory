@@ -129,7 +129,7 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
             {/* Quote */}
             {currentTestimonial?.quote && (
               <blockquote className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
-                "{currentTestimonial.quote}"
+                &ldquo;{currentTestimonial.quote}&rdquo;
               </blockquote>
             )}
 

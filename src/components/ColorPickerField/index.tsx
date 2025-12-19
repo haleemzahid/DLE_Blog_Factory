@@ -59,7 +59,7 @@ export const ColorPickerField: React.FC<TextFieldClientProps> = (props) => {
           }}
         />
       </div>
-      {field.admin?.description && (
+      {field.admin?.description && typeof field.admin.description === 'string' && (
         <p style={{ marginTop: '4px', fontSize: '12px', color: 'var(--theme-elevation-500)' }}>
           {field.admin.description}
         </p>
