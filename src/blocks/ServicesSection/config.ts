@@ -4,6 +4,7 @@ import { link } from '@/fields/link'
 
 export const ServicesSection: Block = {
   slug: 'servicesSection',
+  dbName: 'svcSec',
   interfaceName: 'ServicesSectionBlock',
   labels: {
     singular: 'Services Section',
@@ -70,6 +71,7 @@ export const ServicesSection: Block = {
     {
       name: 'services',
       type: 'array',
+      dbName: 'svc_items',
       label: 'Service Cards',
       minRows: 1,
       maxRows: 12,
@@ -118,6 +120,7 @@ export const ServicesSection: Block = {
         link({
           overrides: {
             name: 'serviceLink',
+            dbName: 'svc_lnk',
             admin: {
               condition: (_data, siblingData) => {
                 return Boolean(siblingData?.enableLink)
