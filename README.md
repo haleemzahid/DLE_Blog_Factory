@@ -1,5 +1,7 @@
 # Payload CMS with Vercel
 
+<!-- Deployment trigger: 2025-12-22 -->
+
 This is a Payload CMS project configured for deployment on Vercel with Next.js.
 
 ## Getting Started
