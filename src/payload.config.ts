@@ -21,6 +21,7 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -58,6 +59,11 @@ export default buildConfig({
       idleTimeoutMillis: 30000,
       max: 10, // Limit pool size
     },
+    // Disable auto-push in production to prevent dev mode issues
+    push: process.env.NODE_ENV !== 'production',
+    // Use migrations in production
+    migrationDir: path.resolve(dirname, './migrations'),
+    prodMigrations: migrations,
   }),
   collections: [Pages, Posts, Media, Categories, Users, Agents, States, Designations, Testimonials],
   cors: [getServerSideURL()].filter(Boolean),
