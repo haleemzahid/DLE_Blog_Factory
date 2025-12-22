@@ -13,7 +13,6 @@
  *   - POSTGRES_URL environment variable must be set
  */
 
-import { createRequire } from 'module'
 import pg from 'pg'
 import dotenv from 'dotenv'
 
