@@ -46,7 +46,7 @@ The build scripts now explicitly set `NODE_ENV=production`:
 ```json
 {
   "build": "cross-env NODE_ENV=production NODE_OPTIONS=--no-deprecation payload migrate --force-accept-warning && next build",
-  "ci": "cross-env NODE_ENV=production payload migrate && pnpm build"
+  "ci": "cross-env NODE_ENV=production payload migrate --yes && pnpm build"
 }
 ```
 
