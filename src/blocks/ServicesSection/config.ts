@@ -120,7 +120,6 @@ export const ServicesSection: Block = {
         link({
           overrides: {
             name: 'serviceLink',
-            dbName: 'svc_lnk',
             admin: {
               condition: (_data, siblingData) => {
                 return Boolean(siblingData?.enableLink)
