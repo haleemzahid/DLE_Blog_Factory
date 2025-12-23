@@ -1225,6 +1225,31 @@ export interface ServicesGridBlock {
    * Optional subtitle text below the main title
    */
   subtitle?: string | null;
+  enableButton?: boolean | null;
+  headerLink?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+    /**
+     * Choose a hover color for the button
+     */
+    hoverColor?: string | null;
+  };
+  buttonStyle?: ('red' | 'dark' | 'outline') | null;
   services?:
     | {
         /**
@@ -2342,6 +2367,19 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
 export interface ServicesGridBlockSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
+  enableButton?: T;
+  headerLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+        hoverColor?: T;
+      };
+  buttonStyle?: T;
   services?:
     | T
     | {

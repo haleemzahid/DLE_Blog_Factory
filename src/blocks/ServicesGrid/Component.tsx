@@ -3,6 +3,7 @@ import type { ServicesGridBlock as ServicesGridBlockType } from '@/payload-types
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import Link from 'next/link'
+import { CMSLink } from '@/components/Link'
 
 type Props = ServicesGridBlockType & {
   id?: string
@@ -11,6 +12,9 @@ type Props = ServicesGridBlockType & {
 export const ServicesGridBlock: React.FC<Props> = ({
   title,
   subtitle,
+  enableButton,
+  headerLink,
+  buttonStyle = 'red',
   services,
   layout = 'twoColumn',
   showIcons = true,
@@ -35,19 +39,39 @@ export const ServicesGridBlock: React.FC<Props> = ({
     }
   }
 
+  const buttonClasses: Record<string, string> = {
+    red: 'bg-red-500 hover:bg-red-600 text-white',
+    dark: 'bg-gray-900 hover:bg-gray-800 text-white',
+    outline: 'bg-transparent border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white',
+  }
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        {title && (
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
-            {title}
-          </h2>
-        )}
-        {subtitle && (
-          <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">
-            {subtitle}
-          </p>
-        )}
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10">
+          <div>
+            {title && (
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                {title}
+              </h2>
+            )}
+            {subtitle && (
+              <p className="text-gray-600 mt-2 max-w-2xl">
+                {subtitle}
+              </p>
+            )}
+          </div>
+
+          {enableButton && headerLink && (
+            <div className="mt-4 md:mt-0">
+              <CMSLink
+                {...headerLink}
+                className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-medium text-sm transition-colors ${buttonClasses[buttonStyle || 'red']}`}
+              />
+            </div>
+          )}
+        </div>
 
         <div className={`grid ${getGridCols()} gap-8`}>
           {services.map((service, index) => (

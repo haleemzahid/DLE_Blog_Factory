@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { link } from '@/fields/link'
+
 export const ServicesGrid: Block = {
   slug: 'servicesGrid',
   interfaceName: 'ServicesGridBlock',
@@ -19,6 +21,36 @@ export const ServicesGrid: Block = {
       label: 'Section Subtitle',
       admin: {
         description: 'Optional subtitle text below the main title',
+      },
+    },
+    {
+      name: 'enableButton',
+      type: 'checkbox',
+      label: 'Show Header Button',
+      defaultValue: false,
+    },
+    link({
+      overrides: {
+        name: 'headerLink',
+        admin: {
+          condition: (_data, siblingData) => {
+            return Boolean(siblingData?.enableButton)
+          },
+        },
+      },
+    }),
+    {
+      name: 'buttonStyle',
+      type: 'select',
+      label: 'Button Style',
+      defaultValue: 'red',
+      options: [
+        { label: 'Red', value: 'red' },
+        { label: 'Dark (Black)', value: 'dark' },
+        { label: 'Outline', value: 'outline' },
+      ],
+      admin: {
+        condition: (_data, siblingData) => Boolean(siblingData?.enableButton),
       },
     },
     {
