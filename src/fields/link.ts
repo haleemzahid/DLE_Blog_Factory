@@ -133,6 +133,19 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       defaultValue: 'default',
       options: appearanceOptionsToUse,
     })
+
+    // Add hover color picker field
+    linkResult.fields.push({
+      name: 'hoverColor',
+      type: 'text',
+      label: 'Hover Color',
+      admin: {
+        description: 'Choose a hover color for the button',
+        components: {
+          Field: '@/components/ColorPickerField#ColorPickerField',
+        },
+      },
+    })
   }
 
   return deepMerge(linkResult, overrides)

@@ -9,6 +9,7 @@ type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
   children?: React.ReactNode
   className?: string
+  hoverColor?: string | null
   label?: string | null
   newTab?: boolean | null
   reference?: {
@@ -26,6 +27,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     appearance = 'inline',
     children,
     className,
+    hoverColor,
     label,
     newTab,
     reference,
@@ -55,8 +57,18 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     )
   }
 
+  const hoverStyle = hoverColor
+    ? ({ '--hover-color': hoverColor } as React.CSSProperties)
+    : undefined
+
   return (
-    <Button asChild className={className} size={size} variant={appearance}>
+    <Button
+      asChild
+      className={cn(className, hoverColor && 'custom-hover-color')}
+      size={size}
+      variant={appearance}
+      style={hoverStyle}
+    >
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}

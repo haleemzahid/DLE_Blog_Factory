@@ -203,6 +203,10 @@ export interface Page {
              * Choose how the link should be rendered.
              */
             appearance?: ('default' | 'outline') | null;
+            /**
+             * Choose a hover color for the button
+             */
+            hoverColor?: string | null;
           };
           id?: string | null;
         }[]
@@ -823,6 +827,10 @@ export interface CallToActionBlock {
            * Choose how the link should be rendered.
            */
           appearance?: ('default' | 'outline') | null;
+          /**
+           * Choose a hover color for the button
+           */
+          hoverColor?: string | null;
         };
         id?: string | null;
       }[]
@@ -873,6 +881,10 @@ export interface ContentBlock {
            * Choose how the link should be rendered.
            */
           appearance?: ('default' | 'outline') | null;
+          /**
+           * Choose a hover color for the button
+           */
+          hoverColor?: string | null;
         };
         id?: string | null;
       }[]
@@ -1560,6 +1572,10 @@ export interface AboutSectionBlock {
      * Choose how the link should be rendered.
      */
     appearance?: ('default' | 'outline') | null;
+    /**
+     * Choose a hover color for the button
+     */
+    hoverColor?: string | null;
   };
   /**
    * Image displayed on the right side of the section
@@ -1613,6 +1629,10 @@ export interface SolutionsSectionBlock {
      * Choose how the link should be rendered.
      */
     appearance?: ('default' | 'outline') | null;
+    /**
+     * Choose a hover color for the button
+     */
+    hoverColor?: string | null;
   };
   buttonStyle?: ('dark' | 'red' | 'outline') | null;
   imagePosition?: ('left' | 'right') | null;
@@ -1650,6 +1670,10 @@ export interface ServicesSectionBlock {
      * Choose how the link should be rendered.
      */
     appearance?: ('default' | 'outline') | null;
+    /**
+     * Choose a hover color for the button
+     */
+    hoverColor?: string | null;
   };
   buttonStyle?: ('red' | 'dark' | 'outline') | null;
   services?:
@@ -1683,6 +1707,10 @@ export interface ServicesSectionBlock {
            * Choose how the link should be rendered.
            */
           appearance?: ('default' | 'outline') | null;
+          /**
+           * Choose a hover color for the button
+           */
+          hoverColor?: string | null;
         };
         id?: string | null;
       }[]
@@ -2122,6 +2150,7 @@ export interface PagesSelect<T extends boolean = true> {
                     url?: T;
                     label?: T;
                     appearance?: T;
+                    hoverColor?: T;
                   };
               id?: T;
             };
@@ -2190,6 +2219,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
+              hoverColor?: T;
             };
         id?: T;
       };
@@ -2216,6 +2246,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
+              hoverColor?: T;
             };
         id?: T;
       };
@@ -2533,6 +2564,7 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         url?: T;
         label?: T;
         appearance?: T;
+        hoverColor?: T;
       };
   image?: T;
   imagePosition?: T;
@@ -2564,6 +2596,7 @@ export interface SolutionsSectionBlockSelect<T extends boolean = true> {
         url?: T;
         label?: T;
         appearance?: T;
+        hoverColor?: T;
       };
   buttonStyle?: T;
   imagePosition?: T;
@@ -2588,6 +2621,7 @@ export interface ServicesSectionBlockSelect<T extends boolean = true> {
         url?: T;
         label?: T;
         appearance?: T;
+        hoverColor?: T;
       };
   buttonStyle?: T;
   services?:
@@ -2607,6 +2641,7 @@ export interface ServicesSectionBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
+              hoverColor?: T;
             };
         id?: T;
       };

@@ -55,7 +55,9 @@
       "Bash(git -C d:\\payloadcms branch:*)",
       "Bash(cmd /c \"cd /d d:\\payloadcms && pnpm payload migrate\")",
       "Bash(pnpm payload migrate:fresh:*)",
-      "Bash(pnpm payload migrate:status:*)"
+      "Bash(pnpm payload migrate:status:*)",
+      "Bash(tree:*)",
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && pnpm generate:importmap\")"
     ],
     "deny": [],
     "ask": []

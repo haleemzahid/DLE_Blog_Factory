@@ -104,3 +104,8 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+/* Custom hover color for buttons */
+.custom-hover-color:hover {
+  background-color: var(--hover-color) !important;
+}
