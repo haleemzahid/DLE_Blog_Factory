@@ -25,6 +25,8 @@ import { AboutSection } from '../../blocks/AboutSection/config'
 import { SolutionsSection } from '../../blocks/SolutionsSection/config'
 import { ServicesSection } from '../../blocks/ServicesSection/config'
 import { FeaturedTestimonial } from '../../blocks/FeaturedTestimonial/config'
+import { ArticlesSection } from '../../blocks/ArticlesSection/config'
+import { ArticlesSectionWithSidebar } from '../../blocks/ArticlesSectionWithSidebar/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -123,6 +125,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 SolutionsSection,
                 ServicesSection,
                 FeaturedTestimonial,
+                ArticlesSection,
+                ArticlesSectionWithSidebar,
               ],
               required: true,
               admin: {

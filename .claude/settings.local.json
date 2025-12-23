@@ -59,7 +59,8 @@
       "Bash(tree:*)",
       "Bash(cmd /c \"cd /d d:\\\\payloadcms && pnpm generate:importmap\")",
       "Bash(cmd /c \"cd /d d:\\\\payloadcms && pnpm generate:types && pnpm generate:importmap\")",
-      "Bash(cmd /c \"cd /d d:\\\\payloadcms && rm -rf .next 2>nul || rmdir /s /q .next 2>nul\")"
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && rm -rf .next 2>nul || rmdir /s /q .next 2>nul\")",
+      "Bash(xargs:*)"
     ],
     "deny": [],
     "ask": []

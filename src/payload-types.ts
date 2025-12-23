@@ -253,6 +253,8 @@ export interface Page {
     | SolutionsSectionBlock
     | ServicesSectionBlock
     | FeaturedTestimonialBlock
+    | ArticlesSectionBlock
+    | ArticlesSidebarBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1825,6 +1827,77 @@ export interface FeaturedTestimonialBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticlesSectionBlock".
+ */
+export interface ArticlesSectionBlock {
+  title?: string | null;
+  displayMode?: ('latest' | 'category' | 'manual') | null;
+  /**
+   * Filter posts by these categories
+   */
+  categories?: (number | Category)[] | null;
+  selectedPosts?: (number | Post)[] | null;
+  limit?: number | null;
+  columns?: ('2' | '3' | '4') | null;
+  showAuthor?: boolean | null;
+  showDate?: boolean | null;
+  showExcerpt?: boolean | null;
+  showReadMore?: boolean | null;
+  enablePagination?: boolean | null;
+  postsPerPage?: number | null;
+  titleColor?: string | null;
+  readMoreColor?: string | null;
+  backgroundColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'articlesSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticlesSidebarBlock".
+ */
+export interface ArticlesSidebarBlock {
+  title?: string | null;
+  displayMode?: ('latest' | 'category' | 'manual') | null;
+  /**
+   * Filter posts by these categories
+   */
+  categories?: (number | Category)[] | null;
+  selectedPosts?: (number | Post)[] | null;
+  limit?: number | null;
+  columns?: ('1' | '2') | null;
+  showAuthor?: boolean | null;
+  showDate?: boolean | null;
+  showExcerpt?: boolean | null;
+  showReadMore?: boolean | null;
+  enablePagination?: boolean | null;
+  postsPerPage?: number | null;
+  showSidebar?: boolean | null;
+  /**
+   * Select an agent to display their contact info in the sidebar
+   */
+  sidebarAgent?: (number | null) | Agent;
+  showContactInfo?: boolean | null;
+  showSocialLinks?: boolean | null;
+  showFeaturedOn?: boolean | null;
+  featuredOnLogos?:
+    | {
+        logo: number | Media;
+        name?: string | null;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  titleColor?: string | null;
+  titleBgColor?: string | null;
+  accentColor?: string | null;
+  backgroundColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'articlesSidebar';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -2249,6 +2322,8 @@ export interface PagesSelect<T extends boolean = true> {
         solutionsSection?: T | SolutionsSectionBlockSelect<T>;
         servicesSection?: T | ServicesSectionBlockSelect<T>;
         featuredTestimonial?: T | FeaturedTestimonialBlockSelect<T>;
+        articlesSection?: T | ArticlesSectionBlockSelect<T>;
+        articlesSidebar?: T | ArticlesSidebarBlockSelect<T>;
       };
   meta?:
     | T
@@ -2759,6 +2834,66 @@ export interface FeaturedTestimonialBlockSelect<T extends boolean = true> {
       };
   nameColor?: T;
   photoPosition?: T;
+  backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticlesSectionBlock_select".
+ */
+export interface ArticlesSectionBlockSelect<T extends boolean = true> {
+  title?: T;
+  displayMode?: T;
+  categories?: T;
+  selectedPosts?: T;
+  limit?: T;
+  columns?: T;
+  showAuthor?: T;
+  showDate?: T;
+  showExcerpt?: T;
+  showReadMore?: T;
+  enablePagination?: T;
+  postsPerPage?: T;
+  titleColor?: T;
+  readMoreColor?: T;
+  backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticlesSidebarBlock_select".
+ */
+export interface ArticlesSidebarBlockSelect<T extends boolean = true> {
+  title?: T;
+  displayMode?: T;
+  categories?: T;
+  selectedPosts?: T;
+  limit?: T;
+  columns?: T;
+  showAuthor?: T;
+  showDate?: T;
+  showExcerpt?: T;
+  showReadMore?: T;
+  enablePagination?: T;
+  postsPerPage?: T;
+  showSidebar?: T;
+  sidebarAgent?: T;
+  showContactInfo?: T;
+  showSocialLinks?: T;
+  showFeaturedOn?: T;
+  featuredOnLogos?:
+    | T
+    | {
+        logo?: T;
+        name?: T;
+        link?: T;
+        id?: T;
+      };
+  titleColor?: T;
+  titleBgColor?: T;
+  accentColor?: T;
   backgroundColor?: T;
   id?: T;
   blockName?: T;
