@@ -34,6 +34,7 @@ export const FeaturedAgents: Block = {
         { label: 'Auto (Featured Agents)', value: 'auto' },
         { label: 'Manual Selection', value: 'manual' },
         { label: 'By Designation', value: 'designation' },
+        { label: 'Custom Members (Upload Images)', value: 'custom' },
       ],
     },
     {
@@ -53,6 +54,41 @@ export const FeaturedAgents: Block = {
         condition: (_, siblingData) => siblingData?.displayMode === 'designation',
         description: 'Show agents with this designation',
       },
+    },
+    {
+      name: 'customMembers',
+      type: 'array',
+      label: 'Custom Members',
+      admin: {
+        condition: (_, siblingData) => siblingData?.displayMode === 'custom',
+        description: 'Add custom members with photos and names',
+      },
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          label: 'Name',
+          required: true,
+          admin: {
+            description: 'e.g., Mr. Chatsworth, Ms. Fort Wayne',
+          },
+        },
+        {
+          name: 'photo',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Photo',
+          required: true,
+        },
+        {
+          name: 'link',
+          type: 'text',
+          label: 'Link URL (optional)',
+          admin: {
+            description: 'Link when clicking on the member',
+          },
+        },
+      ],
     },
     {
       name: 'limit',
@@ -89,6 +125,29 @@ export const FeaturedAgents: Block = {
       type: 'text',
       label: 'CTA Button Link',
       defaultValue: '/agents',
+    },
+    {
+      name: 'backgroundColor',
+      type: 'text',
+      label: 'Background Color',
+      defaultValue: '#f9fafb',
+      admin: {
+        description: 'Section background color (e.g., #f9fafb for light gray)',
+        components: {
+          Field: '@/components/ColorPickerField#ColorPickerField',
+        },
+      },
+    },
+    {
+      name: 'eyebrowColor',
+      type: 'text',
+      label: 'Eyebrow Color',
+      defaultValue: '#dc2626',
+      admin: {
+        components: {
+          Field: '@/components/ColorPickerField#ColorPickerField',
+        },
+      },
     },
   ],
 }
