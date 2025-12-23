@@ -1519,17 +1519,39 @@ export interface FeaturedAgentsBlock {
   eyebrow?: string | null;
   title?: string | null;
   subtitle?: string | null;
-  displayMode?: ('auto' | 'manual' | 'designation') | null;
+  displayMode?: ('auto' | 'manual' | 'designation' | 'custom') | null;
   selectedAgents?: (number | Agent)[] | null;
   /**
    * Show agents with this designation
    */
   designation?: (number | null) | Designation;
+  /**
+   * Add custom members with photos and names
+   */
+  customMembers?:
+    | {
+        /**
+         * e.g., Mr. Chatsworth, Ms. Fort Wayne
+         */
+        name: string;
+        photo: number | Media;
+        /**
+         * Link when clicking on the member
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   limit?: number | null;
   layout?: ('carousel' | 'grid') | null;
   showDesignation?: boolean | null;
   ctaLabel?: string | null;
   ctaLink?: string | null;
+  /**
+   * Section background color (e.g., #f9fafb for light gray)
+   */
+  backgroundColor?: string | null;
+  eyebrowColor?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'featuredAgents';
@@ -2574,11 +2596,21 @@ export interface FeaturedAgentsBlockSelect<T extends boolean = true> {
   displayMode?: T;
   selectedAgents?: T;
   designation?: T;
+  customMembers?:
+    | T
+    | {
+        name?: T;
+        photo?: T;
+        link?: T;
+        id?: T;
+      };
   limit?: T;
   layout?: T;
   showDesignation?: T;
   ctaLabel?: T;
   ctaLink?: T;
+  backgroundColor?: T;
+  eyebrowColor?: T;
   id?: T;
   blockName?: T;
 }
