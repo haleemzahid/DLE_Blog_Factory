@@ -57,7 +57,9 @@
       "Bash(pnpm payload migrate:fresh:*)",
       "Bash(pnpm payload migrate:status:*)",
       "Bash(tree:*)",
-      "Bash(cmd /c \"cd /d d:\\\\payloadcms && pnpm generate:importmap\")"
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && pnpm generate:importmap\")",
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && pnpm generate:types && pnpm generate:importmap\")",
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && rm -rf .next 2>nul || rmdir /s /q .next 2>nul\")"
     ],
     "deny": [],
     "ask": []

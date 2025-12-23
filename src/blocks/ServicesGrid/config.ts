@@ -14,6 +14,14 @@ export const ServicesGrid: Block = {
       defaultValue: 'Our Services',
     },
     {
+      name: 'subtitle',
+      type: 'textarea',
+      label: 'Section Subtitle',
+      admin: {
+        description: 'Optional subtitle text below the main title',
+      },
+    },
+    {
       name: 'services',
       type: 'array',
       label: 'Services',
@@ -91,6 +99,15 @@ export const ServicesGrid: Block = {
       type: 'checkbox',
       defaultValue: true,
       label: 'Show Icons',
+    },
+    {
+      name: 'cardBorderRadius',
+      type: 'number',
+      label: 'Card Corner Radius (px)',
+      defaultValue: 8,
+      admin: {
+        description: 'Border radius for the service cards in pixels (e.g., 0 for square, 8 for rounded)',
+      },
     },
   ],
 }

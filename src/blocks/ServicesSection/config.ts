@@ -39,6 +39,14 @@ export const ServicesSection: Block = {
       defaultValue: 'Our Real Estate SEO Services',
     },
     {
+      name: 'subtitle',
+      type: 'textarea',
+      label: 'Section Subtitle',
+      admin: {
+        description: 'Optional subtitle text below the main title',
+      },
+    },
+    {
       name: 'enableButton',
       type: 'checkbox',
       label: 'Show Header Button',
@@ -141,6 +149,15 @@ export const ServicesSection: Block = {
       ],
       admin: {
         description: 'Number of columns in the service cards grid',
+      },
+    },
+    {
+      name: 'cardBorderRadius',
+      type: 'number',
+      label: 'Card Corner Radius (px)',
+      defaultValue: 16,
+      admin: {
+        description: 'Border radius for the service cards in pixels (e.g., 0 for square, 16 for rounded)',
       },
     },
     {

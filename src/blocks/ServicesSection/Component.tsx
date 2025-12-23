@@ -9,11 +9,13 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
     eyebrow,
     eyebrowColor,
     title,
+    subtitle,
     enableButton,
     headerLink,
     buttonStyle,
     services,
     columns,
+    cardBorderRadius,
     backgroundColor,
   } = props
 
@@ -54,6 +56,11 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
                 {title}
               </h2>
             )}
+            {subtitle && (
+              <p className="text-gray-600 mt-2 max-w-2xl">
+                {subtitle}
+              </p>
+            )}
           </div>
 
           {enableButton && headerLink && (
@@ -72,7 +79,8 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
             {services.map((service, index) => (
               <div
                 key={service.id || index}
-                className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100"
+                className="bg-white p-6 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100"
+                style={{ borderRadius: `${cardBorderRadius ?? 16}px` }}
               >
                 {/* Icon */}
                 {service.icon && typeof service.icon === 'object' && (

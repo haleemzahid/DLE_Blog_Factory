@@ -1221,6 +1221,10 @@ export interface Testimonial {
  */
 export interface ServicesGridBlock {
   title?: string | null;
+  /**
+   * Optional subtitle text below the main title
+   */
+  subtitle?: string | null;
   services?:
     | {
         /**
@@ -1254,6 +1258,10 @@ export interface ServicesGridBlock {
     | null;
   layout?: ('twoColumn' | 'threeColumn' | 'fourColumn' | 'alternating') | null;
   showIcons?: boolean | null;
+  /**
+   * Border radius for the service cards in pixels (e.g., 0 for square, 8 for rounded)
+   */
+  cardBorderRadius?: number | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'servicesGrid';
@@ -1651,6 +1659,10 @@ export interface ServicesSectionBlock {
   eyebrow?: string | null;
   eyebrowColor?: string | null;
   title: string;
+  /**
+   * Optional subtitle text below the main title
+   */
+  subtitle?: string | null;
   enableButton?: boolean | null;
   headerLink?: {
     type?: ('reference' | 'custom') | null;
@@ -1719,6 +1731,10 @@ export interface ServicesSectionBlock {
    * Number of columns in the service cards grid
    */
   columns?: ('2' | '3' | '4') | null;
+  /**
+   * Border radius for the service cards in pixels (e.g., 0 for square, 16 for rounded)
+   */
+  cardBorderRadius?: number | null;
   backgroundColor?: string | null;
   id?: string | null;
   blockName?: string | null;
@@ -2325,6 +2341,7 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
  */
 export interface ServicesGridBlockSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
   services?:
     | T
     | {
@@ -2343,6 +2360,7 @@ export interface ServicesGridBlockSelect<T extends boolean = true> {
       };
   layout?: T;
   showIcons?: T;
+  cardBorderRadius?: T;
   id?: T;
   blockName?: T;
 }
@@ -2611,6 +2629,7 @@ export interface ServicesSectionBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   eyebrowColor?: T;
   title?: T;
+  subtitle?: T;
   enableButton?: T;
   headerLink?:
     | T
@@ -2646,6 +2665,7 @@ export interface ServicesSectionBlockSelect<T extends boolean = true> {
         id?: T;
       };
   columns?: T;
+  cardBorderRadius?: T;
   backgroundColor?: T;
   id?: T;
   blockName?: T;

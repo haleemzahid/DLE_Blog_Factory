@@ -10,9 +10,11 @@ type Props = ServicesGridBlockType & {
 
 export const ServicesGridBlock: React.FC<Props> = ({
   title,
+  subtitle,
   services,
   layout = 'twoColumn',
   showIcons = true,
+  cardBorderRadius = 8,
 }) => {
   if (!services || services.length === 0) {
     return null
@@ -37,9 +39,14 @@ export const ServicesGridBlock: React.FC<Props> = ({
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         {title && (
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
             {title}
           </h2>
+        )}
+        {subtitle && (
+          <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+            {subtitle}
+          </p>
         )}
 
         <div className={`grid ${getGridCols()} gap-8`}>
@@ -48,8 +55,9 @@ export const ServicesGridBlock: React.FC<Props> = ({
               key={service.id || index}
               className={`
                 ${layout === 'alternating' && index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}
-                p-8 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow
+                p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow
               `}
+              style={{ borderRadius: `${cardBorderRadius}px` }}
             >
               {showIcons && service.icon && typeof service.icon === 'object' && (
                 <div className="w-16 h-16 mb-6">
