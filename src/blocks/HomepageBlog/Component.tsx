@@ -98,6 +98,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
     limit: effectiveLimit,
     sort: '-publishedAt',
     where,
+    depth: 2,
   })
 
   // Get total count for pagination

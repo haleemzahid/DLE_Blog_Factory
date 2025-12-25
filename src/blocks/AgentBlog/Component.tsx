@@ -7,6 +7,35 @@ import { getPayload } from 'payload'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import { AgentBlogPagination, SerializedAgentPost } from './AgentBlogPagination'
 
+// Extract plain text from Lexical rich text content
+const extractTextFromContent = (content: any, maxLength: number = 160): string => {
+  if (!content || !content.root || !content.root.children) return ''
+
+  const extractText = (nodes: any[]): string => {
+    let text = ''
+    for (const node of nodes) {
+      if (node.type === 'text' && node.text) {
+        text += node.text + ' '
+      }
+      if (node.children && Array.isArray(node.children)) {
+        text += extractText(node.children)
+      }
+    }
+    return text
+  }
+
+  const fullText = extractText(content.root.children).trim()
+  if (fullText.length <= maxLength) return fullText
+  return fullText.substring(0, maxLength).trim() + '...'
+}
+
+// Get description from meta or extract from content
+const getPostDescription = (post: Post): string | null => {
+  if (post.meta?.description) return post.meta.description
+  if (post.content) return extractTextFromContent(post.content)
+  return null
+}
+
 type Props = AgentBlogBlockType & {
   id?: string
 }
@@ -32,8 +61,8 @@ const PostCard: React.FC<{
           </h3>
         </Link>
 
-        {showExcerpt && post.meta?.description && (
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">{post.meta.description}</p>
+        {showExcerpt && getPostDescription(post) && (
+          <p className="text-gray-600 text-sm mb-3 line-clamp-2">{getPostDescription(post)}</p>
         )}
 
         <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -102,6 +131,7 @@ export const AgentBlogBlock: React.FC<Props> = async ({
     where,
     limit: effectiveLimit,
     sort: '-publishedAt',
+    depth: 2,
   })
 
   const posts = result.docs
@@ -117,7 +147,7 @@ export const AgentBlogBlock: React.FC<Props> = async ({
     slug: post.slug || '',
     heroImage:
       post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null,
-    description: post.meta?.description || null,
+    description: getPostDescription(post),
     authorName:
       post.populatedAuthors && post.populatedAuthors.length > 0
         ? post.populatedAuthors[0]?.name || null
@@ -153,8 +183,8 @@ export const AgentBlogBlock: React.FC<Props> = async ({
                       {featuredPost.title}
                     </h3>
                   </Link>
-                  {showExcerpt && featuredPost.meta?.description && (
-                    <p className="text-gray-600 mb-4">{featuredPost.meta.description}</p>
+                  {showExcerpt && getPostDescription(featuredPost) && (
+                    <p className="text-gray-600 mb-4">{getPostDescription(featuredPost)}</p>
                   )}
                   <Link
                     href={`/posts/${featuredPost.slug}`}
