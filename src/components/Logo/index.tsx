@@ -5,15 +5,29 @@ import Image from 'next/image'
 
 export const Logo: React.FC = () => {
   return (
-    <div className="flex items-center gap-2">
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '12px',
+      }}
+    >
       <Image
         src="/logo.png"
         alt="DleBlogFactory"
-        width={40}
-        height={40}
-        className="object-contain"
+        width={80}
+        height={80}
+        style={{ objectFit: 'contain' }}
       />
-      <span className="font-bold text-lg text-gray-900 dark:text-white">DleBlogFactory</span>
+      <span
+        style={{
+          fontSize: '20px',
+        }}
+      >
+        DleBlogFactory
+      </span>
     </div>
   )
 }
