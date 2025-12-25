@@ -62,7 +62,11 @@
       "Bash(cmd /c \"cd /d d:\\\\payloadcms && rm -rf .next 2>nul || rmdir /s /q .next 2>nul\")",
       "Bash(xargs:*)",
       "Bash(pnpm next build:*)",
-      "Bash(yes:*)"
+      "Bash(yes:*)",
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && rmdir /s /q .next 2>nul\")",
+      "Bash(CI=true pnpm next build:*)",
+      "Bash(cmd /c \"if exist d:\\\\payloadcms\\\\.next \\(echo EXISTS\\) else \\(echo NOT_EXISTS\\)\")",
+      "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :3000\")"
     ],
     "deny": [],
     "ask": []
