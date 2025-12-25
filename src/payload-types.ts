@@ -1857,6 +1857,26 @@ export interface ArticlesSectionBlock {
  * via the `definition` "ArticlesSidebarBlock".
  */
 export interface ArticlesSidebarBlock {
+  showAbout?: boolean | null;
+  aboutTitle?: string | null;
+  /**
+   * Enter the about description text for the agent
+   */
+  aboutContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   title?: string | null;
   displayMode?: ('latest' | 'category' | 'manual') | null;
   /**
@@ -2866,6 +2886,9 @@ export interface ArticlesSectionBlockSelect<T extends boolean = true> {
  * via the `definition` "ArticlesSidebarBlock_select".
  */
 export interface ArticlesSidebarBlockSelect<T extends boolean = true> {
+  showAbout?: T;
+  aboutTitle?: T;
+  aboutContent?: T;
   title?: T;
   displayMode?: T;
   categories?: T;

@@ -12,6 +12,35 @@ export const ArticlesSectionWithSidebar: Block = {
       type: 'tabs',
       tabs: [
         {
+          label: 'About',
+          fields: [
+            {
+              name: 'showAbout',
+              type: 'checkbox',
+              label: 'Show About Section',
+              defaultValue: true,
+            },
+            {
+              name: 'aboutTitle',
+              type: 'text',
+              label: 'About Title',
+              defaultValue: 'About',
+              admin: {
+                condition: (_, siblingData) => siblingData?.showAbout,
+              },
+            },
+            {
+              name: 'aboutContent',
+              type: 'richText',
+              label: 'About Content',
+              admin: {
+                condition: (_, siblingData) => siblingData?.showAbout,
+                description: 'Enter the about description text for the agent',
+              },
+            },
+          ],
+        },
+        {
           label: 'Articles',
           fields: [
             {

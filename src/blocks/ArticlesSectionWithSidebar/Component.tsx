@@ -3,11 +3,17 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import Link from 'next/link'
 import { Media } from '@/components/Media'
+import RichText from '@/components/RichText'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import type { Post, Category, User, Media as MediaType, Agent } from '@/payload-types'
 import { ArticlesWithSidebarPagination, SerializedArticle } from './ArticlesWithSidebarPagination'
 
 interface ArticlesSectionWithSidebarBlockProps {
+  // About section
+  showAbout?: boolean | null
+  aboutTitle?: string | null
+  aboutContent?: any // Rich text content
+  // Articles section
   title?: string | null
   displayMode?: 'latest' | 'category' | 'manual' | null
   categories?: (Category | string)[] | null
@@ -137,6 +143,11 @@ interface SerializedLogo {
 
 export const ArticlesSectionWithSidebarBlock: React.FC<ArticlesSectionWithSidebarBlockProps> = async (props) => {
   const {
+    // About section
+    showAbout = true,
+    aboutTitle = 'About',
+    aboutContent,
+    // Articles section
     title = 'Articles',
     displayMode = 'latest',
     categories,
@@ -360,7 +371,21 @@ export const ArticlesSectionWithSidebarBlock: React.FC<ArticlesSectionWithSideba
 
           {/* Main Content Area - Right Side */}
           <div className={showSidebar ? 'lg:w-2/3 order-1 lg:order-2' : 'w-full'}>
-            {/* Title with background */}
+            {/* About Section */}
+            {showAbout && (
+              <div className="mb-10">
+                {aboutTitle && (
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">{aboutTitle}</h2>
+                )}
+                {aboutContent && (
+                  <div className="prose prose-gray max-w-none text-gray-600">
+                    <RichText data={aboutContent} enableGutter={false} />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Articles Title with background */}
             {title && (
               <div className="mb-8">
                 <h2
