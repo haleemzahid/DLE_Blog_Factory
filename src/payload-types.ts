@@ -1377,7 +1377,8 @@ export interface AgentBlogBlock {
   categories?: (number | Category)[] | null;
   limit?: number | null;
   layout?: ('grid' | 'list' | 'featured') | null;
-  showLoadMore?: boolean | null;
+  enablePagination?: boolean | null;
+  postsPerPage?: number | null;
   showDate?: boolean | null;
   showAuthor?: boolean | null;
   showExcerpt?: boolean | null;
@@ -2580,7 +2581,8 @@ export interface AgentBlogBlockSelect<T extends boolean = true> {
   categories?: T;
   limit?: T;
   layout?: T;
-  showLoadMore?: T;
+  enablePagination?: T;
+  postsPerPage?: T;
   showDate?: T;
   showAuthor?: T;
   showExcerpt?: T;

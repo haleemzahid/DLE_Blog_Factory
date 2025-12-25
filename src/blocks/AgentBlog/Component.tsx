@@ -5,6 +5,7 @@ import Link from 'next/link'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { formatDateTime } from '@/utilities/formatDateTime'
+import { AgentBlogPagination, SerializedAgentPost } from './AgentBlogPagination'
 
 type Props = AgentBlogBlockType & {
   id?: string
@@ -67,7 +68,8 @@ export const AgentBlogBlock: React.FC<Props> = async ({
   categories,
   limit = 6,
   layout = 'grid',
-  showLoadMore = true,
+  enablePagination = true,
+  postsPerPage = 6,
   showDate = true,
   showAuthor = true,
   showExcerpt = true,
@@ -92,10 +94,13 @@ export const AgentBlogBlock: React.FC<Props> = async ({
     where.categories = { in: categoryIds }
   }
 
+  // Fetch more posts when pagination is enabled so client can paginate
+  const effectiveLimit = enablePagination ? 100 : (limit || 6)
+
   const result = await payload.find({
     collection: 'posts',
     where,
-    limit: limit || 6,
+    limit: effectiveLimit,
     sort: '-publishedAt',
   })
 
@@ -105,8 +110,27 @@ export const AgentBlogBlock: React.FC<Props> = async ({
     return null
   }
 
+  // Serialize posts for client component
+  const serializedPosts: SerializedAgentPost[] = posts.map((post) => ({
+    id: post.id,
+    title: post.title,
+    slug: post.slug || '',
+    heroImage:
+      post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null,
+    description: post.meta?.description || null,
+    authorName:
+      post.populatedAuthors && post.populatedAuthors.length > 0
+        ? post.populatedAuthors[0]?.name || null
+        : null,
+    publishedAt: post.publishedAt || null,
+  }))
+
+  // For featured layout, separate the first post
+  const featuredPost = layout === 'featured' && posts.length > 0 ? posts[0] : null
+  const gridPosts = layout === 'featured' ? serializedPosts.slice(1) : serializedPosts
+
   return (
-    <section className="py-16 bg-gray-100">
+    <section id="agent-blog-section" className="py-16 bg-gray-100">
       <div className="container mx-auto px-4">
         {title && (
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
@@ -114,26 +138,26 @@ export const AgentBlogBlock: React.FC<Props> = async ({
           </h2>
         )}
 
-        {layout === 'featured' && posts.length > 0 && (
+        {layout === 'featured' && featuredPost && (
           <div className="mb-8">
             <article className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="md:flex">
-                {posts[0].heroImage && typeof posts[0].heroImage === 'object' && (
+                {featuredPost.heroImage && typeof featuredPost.heroImage === 'object' && (
                   <div className="md:w-1/2 relative aspect-video md:aspect-auto">
-                    <Media resource={posts[0].heroImage} fill className="object-cover" />
+                    <Media resource={featuredPost.heroImage} fill className="object-cover" />
                   </div>
                 )}
                 <div className="md:w-1/2 p-8 flex flex-col justify-center">
-                  <Link href={`/posts/${posts[0].slug}`}>
+                  <Link href={`/posts/${featuredPost.slug}`}>
                     <h3 className="font-bold text-2xl text-gray-900 hover:text-blue-600 transition-colors mb-4">
-                      {posts[0].title}
+                      {featuredPost.title}
                     </h3>
                   </Link>
-                  {showExcerpt && posts[0].meta?.description && (
-                    <p className="text-gray-600 mb-4">{posts[0].meta.description}</p>
+                  {showExcerpt && featuredPost.meta?.description && (
+                    <p className="text-gray-600 mb-4">{featuredPost.meta.description}</p>
                   )}
                   <Link
-                    href={`/posts/${posts[0].slug}`}
+                    href={`/posts/${featuredPost.slug}`}
                     className="inline-flex items-center text-red-600 font-semibold"
                   >
                     Read more →
@@ -144,31 +168,31 @@ export const AgentBlogBlock: React.FC<Props> = async ({
           </div>
         )}
 
-        <div
-          className={`
-          ${layout === 'grid' || layout === 'featured' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : ''}
-          ${layout === 'list' ? 'space-y-6 max-w-3xl mx-auto' : ''}
-        `}
-        >
-          {(layout === 'featured' ? posts.slice(1) : posts).map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              showDate={showDate ?? true}
-              showAuthor={showAuthor ?? true}
-              showExcerpt={showExcerpt ?? true}
-            />
-          ))}
-        </div>
-
-        {showLoadMore && result.hasNextPage && (
-          <div className="text-center mt-12">
-            <Link
-              href={agent && typeof agent === 'object' ? `/agents/${agent.slug}/blog` : '/posts'}
-              className="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full transition-colors"
-            >
-              Load More
-            </Link>
+        {enablePagination ? (
+          <AgentBlogPagination
+            posts={gridPosts}
+            postsPerPage={postsPerPage || 6}
+            layout={layout || 'grid'}
+            showDate={showDate ?? true}
+            showAuthor={showAuthor ?? true}
+            showExcerpt={showExcerpt ?? true}
+          />
+        ) : (
+          <div
+            className={`
+            ${layout === 'grid' || layout === 'featured' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : ''}
+            ${layout === 'list' ? 'space-y-6 max-w-3xl mx-auto' : ''}
+          `}
+          >
+            {(layout === 'featured' ? posts.slice(1) : posts).map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                showDate={showDate ?? true}
+                showAuthor={showAuthor ?? true}
+                showExcerpt={showExcerpt ?? true}
+              />
+            ))}
           </div>
         )}
       </div>

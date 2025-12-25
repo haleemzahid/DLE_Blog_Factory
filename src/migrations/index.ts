@@ -1,5 +1,6 @@
 import * as migration_20251107_183848_initial from './20251107_183848_initial';
 import * as migration_20251214_160005_header_label_migration from './20251214_160005_header_label_migration';
+import * as migration_20251225_agent_blog_pagination from './20251225_agent_blog_pagination';
 
 export const migrations = [
   {
@@ -11,5 +12,10 @@ export const migrations = [
     up: migration_20251214_160005_header_label_migration.up,
     down: migration_20251214_160005_header_label_migration.down,
     name: '20251214_160005_header_label_migration'
+  },
+  {
+    up: migration_20251225_agent_blog_pagination.up,
+    down: migration_20251225_agent_blog_pagination.down,
+    name: '20251225_agent_blog_pagination'
   },
 ];

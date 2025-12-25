@@ -46,10 +46,21 @@ export const AgentBlog: Block = {
       ],
     },
     {
-      name: 'showLoadMore',
+      name: 'enablePagination',
       type: 'checkbox',
       defaultValue: true,
-      label: 'Show Load More Button',
+      label: 'Enable Pagination',
+    },
+    {
+      name: 'postsPerPage',
+      type: 'number',
+      label: 'Posts Per Page',
+      defaultValue: 6,
+      min: 1,
+      max: 20,
+      admin: {
+        condition: (_, siblingData) => siblingData?.enablePagination,
+      },
     },
     {
       name: 'showDate',
