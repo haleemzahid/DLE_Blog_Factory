@@ -1,16 +1,23 @@
 'use client'
 
 import React from 'react'
-import Image from 'next/image'
+import './styles.css'
 
 export const Icon: React.FC = () => {
   return (
-    <Image
+    <img
       src="/logo.png"
       alt="DleBlogFactory"
-      width={32}
-      height={32}
-      className="object-contain"
+      width={40}
+      height={40}
+      style={{
+        objectFit: 'contain',
+        width: '40px',
+        height: '40px',
+        minWidth: '40px',
+        minHeight: '40px',
+        maxWidth: 'none',
+      }}
     />
   )
 }
