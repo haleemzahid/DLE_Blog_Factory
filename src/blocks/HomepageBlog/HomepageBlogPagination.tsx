@@ -15,20 +15,18 @@ import {
 } from '@/components/ui/pagination'
 
 interface SerializedPost {
-  id: string
+  id: number
   title: string
   slug: string
   publishedAt?: string | null
   heroImage?: {
-    id: string
-    url?: string
-    alt?: string
-    width?: number
-    height?: number
+    id: number
+    url?: string | null
+    alt?: string | null
+    width?: number | null
+    height?: number | null
   } | null
-  meta?: {
-    description?: string | null
-  } | null
+  description?: string | null
   isFeatured?: boolean
 }
 
@@ -188,9 +186,9 @@ export const HomepageBlogPagination: React.FC<HomepageBlogPaginationProps> = ({
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
                   {post.title}
                 </h3>
-                {post.meta?.description && (
+                {post.description && (
                   <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 flex-1">
-                    {post.meta.description}
+                    {post.description}
                   </p>
                 )}
                 <span className="text-blue-600 dark:text-blue-400 font-medium text-sm inline-flex items-center gap-2 mt-4">

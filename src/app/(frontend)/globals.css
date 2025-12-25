@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Google Fonts for premium typography */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto+Slab:wght@400;500;600;700&display=swap');
+
 @layer base {
   h1,
   h2,
@@ -17,10 +20,16 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
-    /* Header accent color (red like designatedlocalexpert.com) */
+    /* Primary brand blue (like designatedlocalexpert.com) */
+    --primary-blue: 207 98% 36%;
+
+    /* Header accent color (red for CTAs) */
     --header-accent: 0 84% 44%;
 
-    --card: 240 5% 96%;
+    /* CTA Red (for buttons) */
+    --cta-red: 0 100% 44%;
+
+    --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
@@ -41,15 +50,23 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 240 6% 80%;
+    --border: 220 13% 91%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.2rem;
+    --radius: 0.5rem;
 
     --success: 196 52% 74%;
     --warning: 34 89% 85%;
     --error: 10 100% 86%;
+
+    /* Shadow variables for depth */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   }
 
   [data-theme='dark'] {
@@ -108,4 +125,328 @@ html[data-theme='light'] {
 /* Custom hover color for buttons */
 .custom-hover-color:hover {
   background-color: var(--hover-color) !important;
+}
+
+/* Hide empty paragraphs in rich text content */
+.payload-richtext p:empty,
+.prose p:empty {
+  display: none;
+}
+
+/* Reduce spacing for consecutive empty-looking paragraphs */
+.payload-richtext p:has(br:only-child),
+.prose p:has(br:only-child) {
+  margin: 0;
+  padding: 0;
+  line-height: 0.5;
+}
+
+/* ============================================
+   BEAUTIFUL BUTTON STYLES
+   ============================================ */
+
+/* Primary CTA Button - Red pill style */
+.btn-primary {
+  @apply inline-flex items-center justify-center px-8 py-4 text-white font-semibold text-base;
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(229, 57, 53, 0.4);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(229, 57, 53, 0.5);
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+}
+
+/* Secondary CTA Button - Dark pill style */
+.btn-secondary {
+  @apply inline-flex items-center justify-center px-8 py-4 text-white font-semibold text-base;
+  background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+}
+
+/* Outline button style */
+.btn-outline {
+  @apply inline-flex items-center justify-center px-8 py-4 font-semibold text-base;
+  border: 2px solid currentColor;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  @apply bg-primary text-primary-foreground;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   CARD STYLES WITH SHADOWS
+   ============================================ */
+
+.card-elevated {
+  @apply bg-white rounded-xl overflow-hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card-elevated:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .card-elevated {
+  @apply bg-gray-800;
+}
+
+/* ============================================
+   SECTION STYLES
+   ============================================ */
+
+.section-padding {
+  @apply py-16 md:py-24 lg:py-32;
+}
+
+.section-heading {
+  font-family: 'Montserrat', sans-serif;
+  @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+}
+
+.section-subheading {
+  font-family: 'Roboto Slab', serif;
+  @apply text-lg md:text-xl text-muted-foreground;
+}
+
+/* ============================================
+   HEADER/NAV ENHANCEMENTS
+   ============================================ */
+
+.nav-link {
+  @apply relative font-medium transition-colors duration-300;
+}
+
+.nav-link::after {
+  content: '';
+  @apply absolute left-0 bottom-0 w-0 h-0.5 bg-header-accent transition-all duration-300;
+}
+
+.nav-link:hover::after {
+  @apply w-full;
+}
+
+/* Dropdown with beautiful shadow */
+.dropdown-menu {
+  @apply bg-white rounded-xl py-3;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .dropdown-menu {
+  @apply bg-gray-900;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   HERO SECTION STYLES
+   ============================================ */
+
+.hero-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+.hero-title {
+  font-family: 'Montserrat', sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-family: 'Roboto Slab', serif;
+}
+
+/* ============================================
+   SMOOTH SCROLL & ANIMATIONS
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Stagger animation delays */
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+.animation-delay-500 { animation-delay: 0.5s; }
+
+/* Scale on hover */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Image zoom effect */
+.image-zoom {
+  overflow: hidden;
+}
+
+.image-zoom img {
+  transition: transform 0.5s ease;
+}
+
+.image-zoom:hover img {
+  transform: scale(1.08);
+}
+
+/* ============================================
+   TYPOGRAPHY ENHANCEMENTS
+   ============================================ */
+
+.font-heading {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.font-body {
+  font-family: 'Roboto Slab', serif;
+}
+
+/* Text gradient effect */
+.text-gradient {
+  background: linear-gradient(135deg, #0170B9 0%, #00a8e8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   FOOTER ENHANCEMENTS
+   ============================================ */
+
+.footer-gradient {
+  background: linear-gradient(180deg, #0a1628 0%, #071020 100%);
+}
+
+.social-icon {
+  @apply w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.social-icon:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+.social-icon:hover svg {
+  color: #0a1628;
+}
+
+/* ============================================
+   AGENT/TEAM CARD STYLES
+   ============================================ */
+
+.agent-card {
+  @apply relative overflow-hidden rounded-2xl;
+  transition: all 0.4s ease;
+}
+
+.agent-card::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-300;
+  z-index: 1;
+}
+
+.agent-card:hover::before {
+  opacity: 1;
+}
+
+.agent-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.agent-card-content {
+  @apply absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full transition-transform duration-300;
+  z-index: 2;
+}
+
+.agent-card:hover .agent-card-content {
+  transform: translateY(0);
+}
+
+/* ============================================
+   BLOG POST CARD STYLES
+   ============================================ */
+
+.post-card {
+  @apply bg-white rounded-xl overflow-hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='dark'] .post-card {
+  @apply bg-gray-800;
+}
+
+.post-card .category-badge {
+  @apply inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wide rounded-full;
+  background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+  color: #1a1a1a;
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+@media (max-width: 768px) {
+  .section-padding {
+    @apply py-12;
+  }
+
+  .section-heading {
+    @apply text-2xl;
+  }
 }

@@ -6,6 +6,35 @@ import { Media } from '@/components/Media'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import type { Post, Category, Page } from '@/payload-types'
 
+// Extract plain text from Lexical rich text content
+const extractTextFromContent = (content: any, maxLength: number = 160): string => {
+  if (!content || !content.root || !content.root.children) return ''
+
+  const extractText = (nodes: any[]): string => {
+    let text = ''
+    for (const node of nodes) {
+      if (node.type === 'text' && node.text) {
+        text += node.text + ' '
+      }
+      if (node.children && Array.isArray(node.children)) {
+        text += extractText(node.children)
+      }
+    }
+    return text
+  }
+
+  const fullText = extractText(content.root.children).trim()
+  if (fullText.length <= maxLength) return fullText
+  return fullText.substring(0, maxLength).trim() + '...'
+}
+
+// Get description from meta or extract from content
+const getPostDescription = (post: Post): string | null => {
+  if (post.meta?.description) return post.meta.description
+  if (post.content) return extractTextFromContent(post.content)
+  return null
+}
+
 interface PageBlogBlockProps {
   title?: string | null
   subtitle?: string | null
@@ -207,9 +236,9 @@ function PostCard({ post, layout, showReadMore, showDate, showExcerpt }: PostCar
             <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors mb-2">
               {post.title}
             </h3>
-            {showExcerpt && post.meta?.description && (
+            {showExcerpt && getPostDescription(post) && (
               <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
-                {post.meta.description}
+                {getPostDescription(post)}
               </p>
             )}
             {showReadMore && (
@@ -254,9 +283,9 @@ function PostCard({ post, layout, showReadMore, showDate, showExcerpt }: PostCar
           <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">
             {post.title}
           </h3>
-          {showExcerpt && post.meta?.description && (
+          {showExcerpt && getPostDescription(post) && (
             <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 flex-1">
-              {post.meta.description}
+              {getPostDescription(post)}
             </p>
           )}
           {showReadMore && (

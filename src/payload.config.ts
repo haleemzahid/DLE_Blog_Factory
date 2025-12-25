@@ -30,7 +30,8 @@ export default buildConfig({
   serverURL: getServerSideURL(),
   admin: {
     meta: {
-      title: 'DleBlogFactory Admin',
+      title: 'DleBlogFactory',
+      titleSuffix: '- DleBlogFactory',
       description: 'DleBlogFactory Admin Panel',
       icons: [
         {

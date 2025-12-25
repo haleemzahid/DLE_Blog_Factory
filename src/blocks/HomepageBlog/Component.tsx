@@ -7,6 +7,35 @@ import { formatDateTime } from '@/utilities/formatDateTime'
 import type { Post } from '@/payload-types'
 import { HomepageBlogPagination } from './HomepageBlogPagination'
 
+// Extract plain text from Lexical rich text content
+const extractTextFromContent = (content: any, maxLength: number = 160): string => {
+  if (!content || !content.root || !content.root.children) return ''
+
+  const extractText = (nodes: any[]): string => {
+    let text = ''
+    for (const node of nodes) {
+      if (node.type === 'text' && node.text) {
+        text += node.text + ' '
+      }
+      if (node.children && Array.isArray(node.children)) {
+        text += extractText(node.children)
+      }
+    }
+    return text
+  }
+
+  const fullText = extractText(content.root.children).trim()
+  if (fullText.length <= maxLength) return fullText
+  return fullText.substring(0, maxLength).trim() + '...'
+}
+
+// Get description from meta or extract from content
+const getPostDescription = (post: Post): string | null => {
+  if (post.meta?.description) return post.meta.description
+  if (post.content) return extractTextFromContent(post.content)
+  return null
+}
+
 interface HomepageBlogBlockProps {
   title?: string | null
   subtitle?: string | null
@@ -97,11 +126,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
             height: post.heroImage.height,
           }
         : null,
-    meta: post.meta
-      ? {
-          description: post.meta.description,
-        }
-      : null,
+    description: getPostDescription(post),
     isFeatured: (post as Post & { isFeatured?: boolean }).isFeatured,
   }))
 
@@ -146,9 +171,9 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                     <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {featuredPost.title}
                     </h3>
-                    {featuredPost.meta?.description && (
+                    {getPostDescription(featuredPost) && (
                       <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                        {featuredPost.meta.description}
+                        {getPostDescription(featuredPost)}
                       </p>
                     )}
                     <span className="text-blue-600 dark:text-blue-400 font-medium inline-flex items-center gap-2">
@@ -226,9 +251,9 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                       <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
                         {post.title}
                       </h3>
-                      {post.meta?.description && (
+                      {getPostDescription(post) && (
                         <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 flex-1">
-                          {post.meta.description}
+                          {getPostDescription(post)}
                         </p>
                       )}
                       <span className="text-blue-600 dark:text-blue-400 font-medium text-sm inline-flex items-center gap-2 mt-4">

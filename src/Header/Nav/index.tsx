@@ -50,12 +50,18 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
 
         {/* Submenu - aligned to bottom of parent item */}
         {hasChildren && isActive && (
-          <div className="absolute left-full bottom-0 ml-0 w-56 bg-white dark:bg-gray-900 shadow-lg border border-gray-200 dark:border-gray-700 z-50 rounded-md">
+          <div
+            className="absolute left-full bottom-0 ml-0 w-56 bg-white dark:bg-gray-900 z-50 rounded-xl py-2"
+            style={{
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+              border: '1px solid rgba(0, 0, 0, 0.05)',
+            }}
+          >
             {item.children!.map((child, j) => (
               <Link
                 key={j}
                 href={child.href}
-                className="block px-4 py-2 text-[17px] text-gray-700 dark:text-gray-300 hover:bg-header-accent hover:text-white transition-colors"
+                className="block px-4 py-2.5 text-[15px] text-gray-700 dark:text-gray-300 hover:bg-header-accent hover:text-white transition-all duration-200"
               >
                 {child.label}
               </Link>
@@ -76,11 +82,14 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
       }}
     >
       <button
-        className="flex items-center gap-1 py-2 text-[17px] text-primary hover:text-header-accent transition-colors font-medium"
+        className="flex items-center gap-1.5 py-2 text-[17px] text-primary hover:text-header-accent transition-all duration-300 font-medium group"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {label}
-        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="relative">
+          {label}
+          <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-header-accent transition-all duration-300 group-hover:w-full" />
+        </span>
+        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
@@ -88,7 +97,11 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
           {/* Invisible bridge to maintain hover */}
           <div className="absolute top-full left-0 h-2 w-full" />
           <div
-            className={`absolute top-[calc(100%+0.5rem)] ${alignRight ? 'right-0' : 'left-0'} py-2 bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 z-50 rounded-md min-w-[200px]`}
+            className={`absolute top-[calc(100%+0.5rem)] ${alignRight ? 'right-0' : 'left-0'} py-3 bg-white dark:bg-gray-900 z-50 rounded-xl min-w-[220px] animate-fade-in-up`}
+            style={{
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+              border: '1px solid rgba(0, 0, 0, 0.05)',
+            }}
           >
             <div>{items.map((item, i) => renderMenuItem(item, i))}</div>
           </div>
@@ -320,9 +333,12 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           key={i}
           {...item.link}
           appearance="link"
-          className="text-[17px] text-primary hover:text-header-accent transition-colors font-medium"
+          className="relative text-[17px] text-primary hover:text-header-accent transition-all duration-300 font-medium group"
         >
-          {item.label}
+          <span className="relative">
+            {item.label}
+            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-header-accent transition-all duration-300 group-hover:w-full" />
+          </span>
         </CMSLink>
       )
     })

@@ -66,7 +66,9 @@
       "Bash(cmd /c \"cd /d d:\\\\payloadcms && rmdir /s /q .next 2>nul\")",
       "Bash(CI=true pnpm next build:*)",
       "Bash(cmd /c \"if exist d:\\\\payloadcms\\\\.next \\(echo EXISTS\\) else \\(echo NOT_EXISTS\\)\")",
-      "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :3000\")"
+      "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :3000\")",
+      "Bash(npx tsc:*)",
+      "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :3001\")"
     ],
     "deny": [],
     "ask": []
