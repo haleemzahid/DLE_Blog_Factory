@@ -177,6 +177,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
         {/* Grid/List Layout with Pagination */}
         {enablePagination ? (
           <HomepageBlogPagination
+            blockId={props.blockName || `blog-${title || 'default'}`}
             initialPosts={serializedPosts}
             totalPosts={totalPosts - (featuredPost ? 1 : 0)}
             postsPerPage={postsPerPage || 6}

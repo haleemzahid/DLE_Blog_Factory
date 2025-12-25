@@ -77,9 +77,8 @@ export const ArticlesWithSidebarPagination: React.FC<ArticlesWithSidebarPaginati
         ))}
       </div>
 
-      {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-10">
+      {/* Pagination Controls - always show */}
+      <div className="flex justify-center items-center gap-2 mt-10">
           <button
             type="button"
             onClick={() => goToPage(currentPage - 1)}
@@ -115,8 +114,12 @@ export const ArticlesWithSidebarPagination: React.FC<ArticlesWithSidebarPaginati
           >
             Next
           </button>
+
+          {/* Page info */}
+          <span className="text-sm text-gray-500 ml-4">
+            Page {currentPage} of {totalPages || 1} ({articles.length} posts)
+          </span>
         </div>
-      )}
     </>
   )
 }

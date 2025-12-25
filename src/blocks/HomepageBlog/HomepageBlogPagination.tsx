@@ -33,6 +33,7 @@ interface SerializedPost {
 }
 
 interface HomepageBlogPaginationProps {
+  blockId: string
   initialPosts: SerializedPost[]
   totalPosts: number
   postsPerPage: number
@@ -41,15 +42,23 @@ interface HomepageBlogPaginationProps {
 }
 
 export const HomepageBlogPagination: React.FC<HomepageBlogPaginationProps> = ({
+  blockId,
   initialPosts,
   totalPosts,
   postsPerPage,
   layout,
   whereClause,
 }) => {
+  // Use blockId as key to reset state when block changes
   const [posts, setPosts] = useState<SerializedPost[]>(initialPosts)
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+
+  // Reset state when blockId or initialPosts change
+  React.useEffect(() => {
+    setPosts(initialPosts)
+    setCurrentPage(1)
+  }, [blockId, initialPosts])
 
   const totalPages = Math.ceil(totalPosts / postsPerPage)
 
