@@ -171,6 +171,14 @@ export const Agents: CollectionConfig<'agents'> = {
               ],
             },
             {
+              name: 'website',
+              type: 'text',
+              label: 'Website URL',
+              admin: {
+                description: 'e.g., www.MrClaremont.com',
+              },
+            },
+            {
               name: 'address',
               type: 'group',
               fields: [

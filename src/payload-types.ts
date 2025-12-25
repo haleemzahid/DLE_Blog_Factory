@@ -565,6 +565,10 @@ export interface Agent {
   shortBio?: string | null;
   phone?: string | null;
   email?: string | null;
+  /**
+   * e.g., www.MrClaremont.com
+   */
+  website?: string | null;
   address?: {
     street?: string | null;
     city?: string | null;
@@ -3114,6 +3118,7 @@ export interface AgentsSelect<T extends boolean = true> {
   shortBio?: T;
   phone?: T;
   email?: T;
+  website?: T;
   address?:
     | T
     | {

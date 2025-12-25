@@ -97,6 +97,7 @@ interface SerializedAgent {
   displayName?: string | null
   phone?: string | null
   email?: string | null
+  website?: string | null
   tagline?: string | null
   shortBio?: string | null
   certifications?: { title?: string | null; abbreviation?: string | null }[] | null
@@ -125,6 +126,7 @@ const serializeAgent = (agent: Agent): SerializedAgent => ({
   displayName: agent.displayName,
   phone: agent.phone,
   email: agent.email,
+  website: (agent as any).website,
   tagline: agent.tagline,
   shortBio: agent.shortBio,
   certifications: agent.certifications,
@@ -303,7 +305,7 @@ export const ArticlesSectionWithSidebarBlock: React.FC<ArticlesSectionWithSideba
                   <div className="bg-gray-100 rounded-lg p-6">
                     <h3 className="text-lg font-bold text-gray-900 mb-4">Contact Details</h3>
                     <p className="text-sm text-gray-600 mb-4">
-                      Contact details for {agent.displayName || agent.name} and their real estate business are as follows:
+                      Contact details for {agent.displayName || agent.name} and {agent.displayName ? 'his' : 'their'} real estate business are as follows:
                     </p>
                     <div className="space-y-2 text-sm">
                       {agent.displayName && (
@@ -334,6 +336,19 @@ export const ArticlesSectionWithSidebarBlock: React.FC<ArticlesSectionWithSideba
                           </a>
                         </div>
                       )}
+                      {(agent as any).website && (
+                        <div>
+                          <span className="text-gray-600">Website: </span>
+                          <a
+                            href={(agent as any).website.startsWith('http') ? (agent as any).website : `https://${(agent as any).website}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline"
+                          >
+                            {(agent as any).website}
+                          </a>
+                        </div>
+                      )}
                       {agent.socialLinks?.googleMaps && (
                         <div>
                           <span className="text-gray-600">Google Business Profile: </span>
@@ -349,16 +364,18 @@ export const ArticlesSectionWithSidebarBlock: React.FC<ArticlesSectionWithSideba
                 {/* Featured On */}
                 {showFeaturedOn && serializedLogos.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Featured On</h3>
-                    <div className="flex flex-wrap gap-4">
+                    <h3 className="inline-block text-sm font-bold text-gray-900 px-2 py-1 mb-4" style={{ backgroundColor: '#fde047' }}>
+                      Featured On:
+                    </h3>
+                    <div className="flex flex-wrap items-center gap-4">
                       {serializedLogos.map((logo, idx) => (
                         <div key={idx} className="bg-white border border-gray-200 rounded p-2">
                           {logo.link ? (
                             <a href={logo.link} target="_blank" rel="noopener noreferrer">
-                              <img src={logo.url} alt={logo.alt} className="h-8 w-auto object-contain" />
+                              <img src={logo.url} alt={logo.alt} className="h-10 w-auto object-contain" />
                             </a>
                           ) : (
-                            <img src={logo.url} alt={logo.alt} className="h-8 w-auto object-contain" />
+                            <img src={logo.url} alt={logo.alt} className="h-10 w-auto object-contain" />
                           )}
                         </div>
                       ))}
