@@ -60,7 +60,9 @@
       "Bash(cmd /c \"cd /d d:\\\\payloadcms && pnpm generate:importmap\")",
       "Bash(cmd /c \"cd /d d:\\\\payloadcms && pnpm generate:types && pnpm generate:importmap\")",
       "Bash(cmd /c \"cd /d d:\\\\payloadcms && rm -rf .next 2>nul || rmdir /s /q .next 2>nul\")",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(pnpm next build:*)",
+      "Bash(yes:*)"
     ],
     "deny": [],
     "ask": []

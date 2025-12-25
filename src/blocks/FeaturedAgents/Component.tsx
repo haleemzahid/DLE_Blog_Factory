@@ -3,11 +3,11 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import Link from 'next/link'
 import { Media } from '@/components/Media'
-import type { Agent, Designation } from '@/payload-types'
+import type { Agent, Designation, Media as MediaType } from '@/payload-types'
 
 interface CustomMember {
   name: string
-  photo: number | { id: number; url?: string; alt?: string; filename?: string } | null
+  photo: number | MediaType | null
   link?: string | null
   id?: string | null
 }
