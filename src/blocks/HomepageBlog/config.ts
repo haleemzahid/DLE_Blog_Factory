@@ -62,5 +62,26 @@ export const HomepageBlog: Block = {
         { label: 'Featured + Grid', value: 'featured' },
       ],
     },
+    {
+      name: 'enablePagination',
+      type: 'checkbox',
+      label: 'Enable Pagination',
+      defaultValue: true,
+      admin: {
+        description: 'Show "Load More" button to load additional posts',
+      },
+    },
+    {
+      name: 'postsPerPage',
+      type: 'number',
+      label: 'Posts Per Page',
+      defaultValue: 6,
+      min: 3,
+      max: 12,
+      admin: {
+        description: 'Number of posts to load each time (initial load and each "Load More" click)',
+        condition: (_data, siblingData) => Boolean(siblingData?.enablePagination),
+      },
+    },
   ],
 }

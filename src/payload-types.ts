@@ -1450,6 +1450,14 @@ export interface HomepageBlogBlock {
   showSyndicatedOnHomepage?: boolean | null;
   showFeaturedOnly?: boolean | null;
   layout?: ('grid' | 'list' | 'featured') | null;
+  /**
+   * Show "Load More" button to load additional posts
+   */
+  enablePagination?: boolean | null;
+  /**
+   * Number of posts to load each time (initial load and each "Load More" click)
+   */
+  postsPerPage?: number | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'homepageBlog';
@@ -2627,6 +2635,8 @@ export interface HomepageBlogBlockSelect<T extends boolean = true> {
   showSyndicatedOnHomepage?: T;
   showFeaturedOnly?: T;
   layout?: T;
+  enablePagination?: T;
+  postsPerPage?: T;
   id?: T;
   blockName?: T;
 }
