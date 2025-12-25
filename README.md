@@ -1,7 +1,7 @@
 # Blog factory for meta DLE
 <!-- Deployment trigger: 2025-12-22 -->
 
-This is a Payload CMS project configured for deployment on Vercel with Next.js.
+This is a Blog Factory project configured for deployment on Vercel with Next.js.
 
 ## Getting Started
 
