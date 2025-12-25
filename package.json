@@ -1,7 +1,7 @@
 {
   "name": "with-vercel-website",
   "version": "1.0.0",
-  "description": "Website template for Payload",
+  "description": "DleBlogFactory - A modern blog platform",
   "license": "MIT",
   "type": "module",
   "scripts": {

@@ -29,6 +29,17 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   serverURL: getServerSideURL(),
   admin: {
+    meta: {
+      title: 'DleBlogFactory Admin',
+      description: 'DleBlogFactory Admin Panel',
+      icons: [
+        {
+          type: 'image/png',
+          rel: 'icon',
+          url: '/logo.png',
+        },
+      ],
+    },
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
@@ -37,6 +48,10 @@ export default buildConfig({
       // Feel free to delete this at any time. Simply remove the line below.
       beforeDashboard: ['@/components/BeforeDashboard'],
       providers: ['@/components/DocumentVoiceButton#DocumentVoiceButton'],
+      graphics: {
+        Logo: '@/components/Logo',
+        Icon: '@/components/Logo/Icon',
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),
