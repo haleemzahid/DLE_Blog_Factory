@@ -45,44 +45,23 @@ export const HomepageBlogPagination: React.FC<HomepageBlogPaginationProps> = ({
   totalPosts,
   postsPerPage,
   layout,
-  whereClause,
 }) => {
-  // Use blockId as key to reset state when block changes
-  const [posts, setPosts] = useState<SerializedPost[]>(initialPosts)
-  const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
-  // Reset state when blockId or initialPosts change
+  // Reset page when blockId changes
   React.useEffect(() => {
-    setPosts(initialPosts)
     setCurrentPage(1)
-  }, [blockId, initialPosts])
+  }, [blockId])
 
-  const totalPages = Math.ceil(totalPosts / postsPerPage)
+  // Client-side pagination - slice the posts array
+  const totalPages = Math.ceil(initialPosts.length / postsPerPage)
+  const startIndex = (currentPage - 1) * postsPerPage
+  const endIndex = startIndex + postsPerPage
+  const currentPosts = initialPosts.slice(startIndex, endIndex)
 
-  const goToPage = async (page: number) => {
-    if (loading || page < 1 || page > totalPages || page === currentPage) return
-
-    setLoading(true)
-    try {
-      const response = await fetch(
-        `/api/posts?page=${page}&limit=${postsPerPage}&where=${encodeURIComponent(JSON.stringify(whereClause))}&sort=-publishedAt`,
-      )
-
-      if (response.ok) {
-        const data = await response.json()
-        if (data.docs && data.docs.length > 0) {
-          setPosts(data.docs)
-          setCurrentPage(page)
-          // Scroll to top of section
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        }
-      }
-    } catch (error) {
-      console.error('Error loading posts:', error)
-    } finally {
-      setLoading(false)
-    }
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return
+    setCurrentPage(page)
   }
 
   // Generate page numbers to display
@@ -123,35 +102,11 @@ export const HomepageBlogPagination: React.FC<HomepageBlogPaginationProps> = ({
 
   return (
     <>
-      {/* Loading overlay */}
-      {loading && (
-        <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
-            <svg className="animate-spin h-8 w-8 text-blue-600" viewBox="0 0 24 24">
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-                fill="none"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              />
-            </svg>
-          </div>
-        </div>
-      )}
-
       {/* Grid/List Layout */}
       <div
         className={layout === 'list' ? 'space-y-6' : 'grid md:grid-cols-2 lg:grid-cols-3 gap-8'}
       >
-        {posts.map((post) => (
+        {currentPosts.map((post) => (
           <Link key={post.id} href={`/posts/${post.slug}`} className="block group">
             <article
               className={
@@ -264,7 +219,7 @@ export const HomepageBlogPagination: React.FC<HomepageBlogPaginationProps> = ({
 
         {/* Page info */}
         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
-          Page {currentPage} of {totalPages || 1} ({totalPosts} posts)
+          Page {currentPage} of {totalPages || 1} ({initialPosts.length} posts)
         </p>
       </div>
     </>

@@ -90,8 +90,8 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
     where.isFeatured = { equals: true }
   }
 
-  // Determine limit based on pagination settings
-  const effectiveLimit = enablePagination ? postsPerPage || 6 : limit || 6
+  // Fetch more posts when pagination is enabled so client can paginate
+  const effectiveLimit = enablePagination ? 100 : (limit || 6)
 
   const posts = await payload.find({
     collection: 'posts',
@@ -132,7 +132,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
   }))
 
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900">
+    <section id="homepage-blog-section" className="py-16 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">

@@ -43,8 +43,6 @@ export const AgentBlogPagination: React.FC<AgentBlogPaginationProps> = ({
 
   const goToPage = (page: number) => {
     setCurrentPage(page)
-    // Scroll to section
-    document.getElementById('agent-blog-section')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
@@ -121,44 +119,46 @@ interface PostCardProps {
 
 function PostCard({ post, showDate, showAuthor, showExcerpt }: PostCardProps) {
   return (
-    <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      {post.heroImage && (
-        <Link href={`/posts/${post.slug}`} className="block relative aspect-video">
-          <Media resource={post.heroImage} fill className="object-cover" />
-        </Link>
-      )}
-
-      <div className="p-5">
-        <Link href={`/posts/${post.slug}`}>
-          <h3 className="font-bold text-lg text-gray-900 hover:text-blue-600 transition-colors mb-2 line-clamp-2">
-            {post.title}
-          </h3>
-        </Link>
-
-        {showExcerpt && post.description && (
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">{post.description}</p>
-        )}
-
-        <div className="flex items-center gap-4 text-sm text-gray-500">
-          {showAuthor && post.authorName && <span>{post.authorName}</span>}
-          {showDate && post.publishedAt && <span>{formatDateTime(post.publishedAt)}</span>}
+    <Link href={`/posts/${post.slug}`} className="block group">
+      <article className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow h-full flex flex-col">
+        {/* Image */}
+        <div className="relative aspect-[16/10]">
+          {post.heroImage && (
+            <Media resource={post.heroImage} fill className="object-cover" />
+          )}
         </div>
 
-        <Link
-          href={`/posts/${post.slug}`}
-          className="inline-flex items-center text-red-600 font-semibold text-sm mt-3 hover:text-red-700"
-        >
-          Read more
-          <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
-        </Link>
-      </div>
-    </article>
+        {/* Content */}
+        <div className="p-6 flex-1 flex flex-col">
+          <div className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-2">
+            {post.publishedAt && formatDateTime(post.publishedAt)}
+          </div>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+            {post.title}
+          </h3>
+          {post.description && (
+            <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 flex-1">
+              {post.description}
+            </p>
+          )}
+          <span className="text-blue-600 dark:text-blue-400 font-medium text-sm inline-flex items-center gap-2 mt-4">
+            Read More
+            <svg
+              className="w-3 h-3 group-hover:translate-x-1 transition-transform"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </span>
+        </div>
+      </article>
+    </Link>
   )
 }
