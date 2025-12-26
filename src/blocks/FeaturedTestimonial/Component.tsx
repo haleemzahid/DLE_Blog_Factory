@@ -6,15 +6,8 @@ import { Media } from '@/components/Media'
 import type { FeaturedTestimonialBlock as FeaturedTestimonialBlockProps } from '@/payload-types'
 
 export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> = (props) => {
-  const {
-    eyebrow,
-    eyebrowColor,
-    title,
-    testimonials,
-    nameColor,
-    photoPosition,
-    backgroundColor,
-  } = props
+  const { eyebrow, eyebrowColor, title, testimonials, nameColor, photoPosition, backgroundColor } =
+    props
 
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -40,7 +33,7 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
 
   return (
     <section
-      className="py-16 md:py-24 relative overflow-hidden"
+      className="py-6 relative overflow-hidden"
       style={{ backgroundColor: backgroundColor || '#ffffff' }}
     >
       {/* Background decorative element */}
@@ -59,9 +52,7 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
               </span>
             )}
             {title && (
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                {title}
-              </h2>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">{title}</h2>
             )}
           </div>
 
@@ -111,7 +102,9 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
         </div>
 
         {/* Testimonial Content */}
-        <div className={`flex flex-col md:flex-row items-center gap-8 md:gap-12 ${isPhotoLeft ? '' : 'md:flex-row-reverse'}`}>
+        <div
+          className={`flex flex-col md:flex-row items-center gap-8 md:gap-12 ${isPhotoLeft ? '' : 'md:flex-row-reverse'}`}
+        >
           {/* Photo */}
           {currentTestimonial?.photo && typeof currentTestimonial.photo === 'object' && (
             <div className="flex-shrink-0">
@@ -135,19 +128,14 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
 
             {/* Client Name */}
             {currentTestimonial?.clientName && (
-              <p
-                className="font-bold text-lg mb-1"
-                style={{ color: nameColor || '#dc2626' }}
-              >
+              <p className="font-bold text-lg mb-1" style={{ color: nameColor || '#dc2626' }}>
                 {currentTestimonial.clientName}
               </p>
             )}
 
             {/* Client Title */}
             {currentTestimonial?.clientTitle && (
-              <p className="text-gray-600 text-sm">
-                {currentTestimonial.clientTitle}
-              </p>
+              <p className="text-gray-600 text-sm">{currentTestimonial.clientTitle}</p>
             )}
           </div>
         </div>

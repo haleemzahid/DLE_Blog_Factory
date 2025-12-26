@@ -121,7 +121,7 @@ export const PageBlogBlock: React.FC<PageBlogBlockProps> = async (props) => {
   if (posts.length === 0) return null
 
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900">
+    <section className="py-6 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">

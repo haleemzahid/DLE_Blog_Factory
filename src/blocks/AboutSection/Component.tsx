@@ -20,10 +20,7 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
   const isImageLeft = imagePosition === 'left'
 
   return (
-    <section
-      className="py-12 md:py-16"
-      style={{ backgroundColor: backgroundColor || '#f3f4f6' }}
-    >
+    <section className="py-12 md:py-6" style={{ backgroundColor: backgroundColor || '#f3f4f6' }}>
       <div className="container">
         <div
           className={`grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center ${
@@ -57,8 +54,18 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
                 {...link}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm rounded-full hover:bg-gray-800 transition-colors group"
               >
-                <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                <svg
+                  className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
                 </svg>
               </CMSLink>
             )}
@@ -68,10 +75,7 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
           <div className={`${isImageLeft ? 'lg:order-1' : 'lg:order-2'}`}>
             {image && typeof image === 'object' && (
               <div className="rounded-lg overflow-hidden shadow-xl">
-                <Media
-                  resource={image}
-                  imgClassName="w-full h-auto object-cover"
-                />
+                <Media resource={image} imgClassName="w-full h-auto object-cover" />
               </div>
             )}
           </div>

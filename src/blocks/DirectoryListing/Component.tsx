@@ -131,7 +131,7 @@ export const DirectoryListingBlock: React.FC<Props> = async ({
       : null
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-6 bg-white">
       <div className="container mx-auto px-4">
         {/* Action Buttons */}
         {(showApplyButton || showInquireButton) && (

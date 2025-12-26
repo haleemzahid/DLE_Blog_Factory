@@ -19,7 +19,7 @@ export const AgentHero: React.FC<Props> = ({ agent }) => {
       )}
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 py-16 text-white">
+      <div className="relative z-10 container mx-auto px-4 py-6 text-white">
         <div className="flex flex-col md:flex-row items-center gap-8">
           {/* Agent Photo */}
           {agent.profilePhoto && typeof agent.profilePhoto === 'object' && (

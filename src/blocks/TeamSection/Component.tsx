@@ -34,7 +34,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
   if (!members || members.length === 0) return null
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-br from-blue-50/50 via-white to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
+    <section className="py-6 md:py-24 bg-gradient-to-br from-blue-50/50 via-white to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
       {/* Background decorative element */}
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-100/40 rounded-full blur-3xl -z-10" />
 
@@ -80,9 +80,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
           {/* Right Side - Content */}
           <div className="text-center lg:text-left">
             {eyebrow && (
-              <span className="text-red-500 font-medium text-base italic">
-                {eyebrow}
-              </span>
+              <span className="text-red-500 font-medium text-base italic">{eyebrow}</span>
             )}
             {title && (
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mt-3 leading-tight">

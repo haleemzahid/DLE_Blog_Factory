@@ -93,7 +93,7 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
   if (!isCustomMode && agents.length === 0) return null
 
   return (
-    <section className="py-16" style={{ backgroundColor: backgroundColor || '#f9fafb' }}>
+    <section className="py-6" style={{ backgroundColor: backgroundColor || '#f9fafb' }}>
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
@@ -105,12 +105,8 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
               {eyebrow}
             </span>
           )}
-          {title && (
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">{title}</h2>
-          )}
-          {subtitle && (
-            <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">{subtitle}</p>
-          )}
+          {title && <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">{title}</h2>}
+          {subtitle && <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">{subtitle}</p>}
         </div>
 
         {/* Members Display */}
@@ -128,7 +124,11 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
                   <CustomMemberCard key={`${member.id}-${idx}`} member={member} />
                 ))
               : agents.map((agent, idx) => (
-                  <AgentCard key={`${agent.id}-${idx}`} agent={agent} showDesignation={showDesignation || false} />
+                  <AgentCard
+                    key={`${agent.id}-${idx}`}
+                    agent={agent}
+                    showDesignation={showDesignation || false}
+                  />
                 ))}
           </div>
         )}
@@ -142,7 +142,12 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
             >
               {ctaLabel}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </Link>
           </div>

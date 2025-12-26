@@ -124,7 +124,7 @@ export const AgentBlogBlock: React.FC<Props> = async ({
   }
 
   // Fetch more posts when pagination is enabled so client can paginate
-  const effectiveLimit = enablePagination ? 100 : (limit || 6)
+  const effectiveLimit = enablePagination ? 100 : limit || 6
 
   const result = await payload.find({
     collection: 'posts',
@@ -145,8 +145,7 @@ export const AgentBlogBlock: React.FC<Props> = async ({
     id: post.id,
     title: post.title,
     slug: post.slug || '',
-    heroImage:
-      post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null,
+    heroImage: post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null,
     description: getPostDescription(post),
     authorName:
       post.populatedAuthors && post.populatedAuthors.length > 0
@@ -160,7 +159,7 @@ export const AgentBlogBlock: React.FC<Props> = async ({
   const gridPosts = layout === 'featured' ? serializedPosts.slice(1) : serializedPosts
 
   return (
-    <section id="agent-blog-section" className="py-16 bg-gray-100">
+    <section id="agent-blog-section" className="py-6 bg-gray-100">
       <div className="container mx-auto px-4">
         {title && (
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">

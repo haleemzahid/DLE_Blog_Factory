@@ -91,7 +91,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
   }
 
   // Fetch more posts when pagination is enabled so client can paginate
-  const effectiveLimit = enablePagination ? 100 : (limit || 6)
+  const effectiveLimit = enablePagination ? 100 : limit || 6
 
   const posts = await payload.find({
     collection: 'posts',
@@ -132,7 +132,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
   }))
 
   return (
-    <section id="homepage-blog-section" className="py-16 bg-gray-50 dark:bg-gray-900">
+    <section id="homepage-blog-section" className="py-6 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
@@ -218,7 +218,11 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
               }
             >
               {gridPosts.map((post, index) => (
-                <Link key={`${post.id}-${index}`} href={`/posts/${post.slug}`} className="block group">
+                <Link
+                  key={`${post.id}-${index}`}
+                  href={`/posts/${post.slug}`}
+                  className="block group"
+                >
                   <article
                     className={
                       layout === 'list'
@@ -237,11 +241,12 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                       {post.heroImage && typeof post.heroImage === 'object' && (
                         <Media resource={post.heroImage} fill className="object-cover" />
                       )}
-                      {(post as Post & { isFeatured?: boolean }).isFeatured && layout !== 'list' && (
-                        <span className="absolute top-3 left-3 bg-yellow-500 text-black text-xs font-semibold px-2 py-1 rounded-full">
-                          Featured
-                        </span>
-                      )}
+                      {(post as Post & { isFeatured?: boolean }).isFeatured &&
+                        layout !== 'list' && (
+                          <span className="absolute top-3 left-3 bg-yellow-500 text-black text-xs font-semibold px-2 py-1 rounded-full">
+                            Featured
+                          </span>
+                        )}
                     </div>
 
                     {/* Content */}
@@ -290,7 +295,12 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
             >
               View All Posts
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </Link>
           </div>

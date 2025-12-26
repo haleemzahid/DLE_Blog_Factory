@@ -111,7 +111,7 @@ export const AgentContactBlock: React.FC<Props> = ({
   const socialLinks = agent.socialLinks
 
   return (
-    <section className={`py-16 ${bgClass}`}>
+    <section className={`py-6 ${bgClass}`}>
       <div className="container mx-auto px-4">
         {title && (
           <h2

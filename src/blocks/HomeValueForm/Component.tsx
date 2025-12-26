@@ -32,7 +32,7 @@ export const HomeValueFormBlock: React.FC<Props> = ({
   }
 
   return (
-    <section className="relative py-16 md:py-24">
+    <section className="relative py-6 md:py-24">
       {backgroundImage && typeof backgroundImage === 'object' && (
         <div className="absolute inset-0 z-0">
           <Media resource={backgroundImage} fill className="object-cover" />

@@ -47,7 +47,7 @@ export default async function AgentsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-16">
+      <section className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-6">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Agents</h1>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
@@ -73,7 +73,7 @@ export default async function AgentsPage() {
       </section>
 
       {/* Content Section */}
-      <section className="py-16">
+      <section className="py-6">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Main Content - Agent Grid */}
