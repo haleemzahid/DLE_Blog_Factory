@@ -72,12 +72,12 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
             )}
           </div>
 
-          {/* Right Side - Team Members */}
-          <div className="flex flex-wrap justify-center lg:justify-end gap-6 order-1 lg:order-2">
-            {members.map((member, index) => (
-              <div key={`${member.id}-${index}`} className="group text-center">
+          {/* Right Side - Team Members Carousel */}
+          <div className="flex gap-6 order-1 lg:order-2 overflow-hidden">
+            {members.slice(0, 2).map((member, index) => (
+              <div key={`${member.id}-${index}`} className="flex-shrink-0 text-center">
                 {/* Photo Card */}
-                <div className="relative w-56 h-72 mb-4 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-300 bg-white">
+                <div className="relative w-40 h-52 md:w-48 md:h-60 mb-4 rounded-2xl overflow-hidden shadow-lg bg-white">
                   {member.photo && typeof member.photo === 'object' && (
                     <Media resource={member.photo} fill imgClassName="object-cover" />
                   )}
@@ -88,10 +88,10 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
                       target="_blank"
                       rel="noopener noreferrer"
                       title={`${member.name} on LinkedIn`}
-                      className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-colors flex items-center justify-center"
+                      className="absolute inset-0 bg-blue-600/0 hover:bg-blue-600/20 transition-colors flex items-center justify-center"
                     >
                       <svg
-                        className="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg"
+                        className="w-10 h-10 text-white opacity-0 hover:opacity-100 transition-opacity drop-shadow-lg"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
@@ -102,9 +102,9 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
                 </div>
 
                 {/* Info */}
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
+                <h3 className="text-base font-bold text-gray-900 dark:text-white">{member.name}</h3>
                 {member.role && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{member.role}</p>
+                  <p className="text-sm text-red-500 mt-1">{member.role}</p>
                 )}
               </div>
             ))}
