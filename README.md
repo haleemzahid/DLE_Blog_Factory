@@ -1,5 +1,5 @@
 # Blog factory for meta DLE read me
-<!-- Deployment trigger: 2025-12-22 -->
+
 
 This is a Blog Factory project configured for deployment on Vercel with Next.js.
 
