@@ -26,6 +26,7 @@ export const AgentGallery: Block = {
     {
       name: 'images',
       type: 'array',
+      dbName: 'agent_gal_imgs',
       label: 'Manual Image Selection',
       admin: {
         description: 'Manually select images. Will be used if no agent is selected.',

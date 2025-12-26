@@ -70,9 +70,10 @@ export const AgentGalleryBlock: React.FC<Props> = ({
 
         <div className={`grid ${getGridCols()} gap-4`}>
           {galleryImages.map((item, index) => {
+            if (!item) return null
             const imageData = typeof item.image === 'object' ? item.image : null
 
-            if (!imageData) return null
+            if (!imageData || !imageData.id) return null
 
             return (
               <div
