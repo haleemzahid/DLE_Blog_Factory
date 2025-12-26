@@ -17,6 +17,7 @@ interface DropdownMenuProps {
   label: string
   items: DropdownItem[]
   alignRight?: boolean
+  isDarkTheme?: boolean
 }
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = false }) => {
@@ -82,6 +83,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
       }}
     >
       <button
+        type="button"
         className="flex items-center gap-1.5 py-2 text-[17px] text-primary hover:text-header-accent transition-all duration-300 font-medium group"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -190,6 +192,7 @@ interface HeaderNavProps {
   states?: State[]
   mobileMenuOpen?: boolean
   setMobileMenuOpen?: (open: boolean) => void
+  isDarkTheme?: boolean
 }
 
 export const HeaderNav: React.FC<HeaderNavProps> = ({
@@ -353,6 +356,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 
       {/* Mobile Menu Toggle */}
       <button
+        type="button"
         className="md:hidden p-2 text-primary hover:text-header-accent transition-colors"
         onClick={() => setMobileMenuOpen?.(!mobileMenuOpen)}
         aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}

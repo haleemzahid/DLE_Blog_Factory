@@ -21,12 +21,12 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
 
   return (
     <section
-      className="py-16 md:py-24"
+      className="py-12 md:py-16"
       style={{ backgroundColor: backgroundColor || '#f3f4f6' }}
     >
       <div className="container">
         <div
-          className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center ${
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center ${
             isImageLeft ? 'lg:flex-row-reverse' : ''
           }`}
         >
@@ -35,7 +35,7 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
             {/* Heading */}
             {heading && (
               <h2
-                className="text-2xl md:text-3xl font-bold mb-6"
+                className="text-xl md:text-2xl font-bold mb-4"
                 style={{ color: headingColor || '#dc2626' }}
               >
                 {heading}
@@ -45,7 +45,7 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
             {/* Rich Text Content */}
             {content && (
               <RichText
-                className="prose prose-lg max-w-none mb-8 [&_p]:mb-4 [&_p]:text-gray-700 [&_strong]:font-bold [&_ul]:list-disc [&_ul]:ml-6 [&_ul]:mb-4 [&_li]:mb-2 [&_em]:italic"
+                className="prose prose-sm max-w-none mb-4 [&_p]:mb-1 [&_p]:text-gray-700 [&_p]:text-sm [&_p]:leading-snug [&_strong]:font-bold [&_ul]:ml-4 [&_ul]:mb-1 [&_ul]:mt-1 [&_ul]:list-none [&_li]:mb-0.5 [&_li]:text-sm [&_li]:relative [&_li]:pl-4 [&_li:before]:content-['•'] [&_li:before]:absolute [&_li:before]:left-0 [&_li:before]:text-red-600 [&_li:before]:font-bold [&_em]:italic"
                 data={content}
                 enableGutter={false}
               />
@@ -55,8 +55,12 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
             {enableButton && link && (
               <CMSLink
                 {...link}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors"
-              />
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm rounded-full hover:bg-gray-800 transition-colors group"
+              >
+                <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </CMSLink>
             )}
           </div>
 

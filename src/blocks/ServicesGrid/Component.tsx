@@ -18,7 +18,7 @@ export const ServicesGridBlock: React.FC<Props> = ({
   services,
   layout = 'twoColumn',
   showIcons = true,
-  cardBorderRadius = 8,
+  cardBorderRadius = 16,
 }) => {
   if (!services || services.length === 0) {
     return null
@@ -46,59 +46,59 @@ export const ServicesGridBlock: React.FC<Props> = ({
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-10 bg-white">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           <div>
             {title && (
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                 {title}
               </h2>
             )}
             {subtitle && (
-              <p className="text-gray-600 mt-2 max-w-2xl">
+              <p className="text-gray-600 mt-1 max-w-2xl text-sm">
                 {subtitle}
               </p>
             )}
           </div>
 
           {enableButton && headerLink && (
-            <div className="mt-4 md:mt-0">
+            <div className="mt-3 md:mt-0">
               <CMSLink
                 {...headerLink}
-                className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-medium text-sm transition-colors ${buttonClasses[buttonStyle || 'red']}`}
+                className={`inline-flex items-center gap-2 px-5 py-2 rounded-full font-medium text-sm transition-colors ${buttonClasses[buttonStyle || 'red']}`}
               />
             </div>
           )}
         </div>
 
-        <div className={`grid ${getGridCols()} gap-8`}>
+        <div className={`grid ${getGridCols()} gap-5`}>
           {services.map((service, index) => (
             <div
               key={service.id || index}
               className={`
                 ${layout === 'alternating' && index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}
-                p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow
+                p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow
               `}
               style={{ borderRadius: `${cardBorderRadius}px` }}
             >
               {showIcons && service.icon && typeof service.icon === 'object' && (
-                <div className="w-16 h-16 mb-6">
+                <div className="w-12 h-12 mb-3">
                   <Media resource={service.icon} className="w-full h-full object-contain" />
                 </div>
               )}
 
-              <h3 className="text-xl font-bold text-gray-900 mb-4">{service.title}</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
 
               {service.description && (
-                <div className="text-gray-600 mb-4">
+                <div className="text-gray-600 text-sm leading-snug [&_p]:mb-1 [&_p]:leading-snug">
                   <RichText data={service.description} />
                 </div>
               )}
 
               {service.link?.type !== 'none' && service.link?.label && (
-                <div className="mt-4">
+                <div className="mt-3">
                   {service.link.type === 'external' && service.link.url ? (
                     <a
                       href={service.link.url}

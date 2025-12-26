@@ -41,10 +41,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
 
   return (
     <header
-      className="container relative z-20 transition-all duration-300"
+      className="relative z-20 bg-white shadow-sm"
       {...(theme ? { 'data-theme': theme } : {})}
     >
-      <div className="py-6 md:py-8 flex justify-between items-center">
+      <div className="container py-4 md:py-5 flex justify-between items-center">
         <Link href="/" className="group transition-transform duration-300 hover:scale-105">
           <Logo loading="eager" priority="high" />
         </Link>
