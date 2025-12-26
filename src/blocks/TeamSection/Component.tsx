@@ -36,7 +36,12 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
 
   if (!members || members.length === 0) return null
 
-  const maxIndex = Math.max(0, members.length - itemsPerView)
+  // Use all members that have basic data
+  const validMembers = members.filter((member) => member.name && member.photo)
+
+  if (validMembers.length === 0) return null
+
+  const maxIndex = Math.max(0, validMembers.length - itemsPerView)
   const canGoPrev = currentIndex > 0
   const canGoNext = currentIndex < maxIndex
 
@@ -48,7 +53,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
     setCurrentIndex((prev) => Math.min(maxIndex, prev + 1))
   }
 
-  const visibleMembers = members.slice(currentIndex, currentIndex + itemsPerView)
+  const visibleMembers = validMembers.slice(currentIndex, currentIndex + itemsPerView)
 
   return (
     <section className="py-6 md:py-24 bg-gradient-to-br from-blue-50/50 via-white to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
@@ -90,14 +95,14 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
           </div>
 
           {/* Right Side - Team Members Carousel */}
-          <div className="flex items-center gap-4 order-1 lg:order-2">
+          <div className="flex items-center justify-center lg:justify-start order-1 lg:order-2">
             {/* Left Navigation Button */}
-            {members.length > itemsPerView && (
+            {validMembers.length > itemsPerView && (
               <button
                 type="button"
                 onClick={handlePrev}
                 disabled={!canGoPrev}
-                className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all ${
+                className={`flex-shrink-0 w-10 h-10 mr-4 flex items-center justify-center rounded-full border-2 transition-all ${
                   canGoPrev
                     ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
                     : 'border-gray-200 text-gray-300 cursor-not-allowed'
@@ -111,14 +116,12 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
             )}
 
             {/* Team Members */}
-            <div className="flex gap-6 overflow-hidden">
-              {visibleMembers.map((member, index) => (
-                <div key={`${member.id}-${index}`} className="flex-shrink-0 text-center">
+            <div className="flex gap-6">
+              {visibleMembers.map((member) => (
+                <div key={member.id} className="flex-shrink-0 text-center w-40 md:w-48">
                   {/* Photo Card */}
-                  <div className="relative w-40 h-52 md:w-48 md:h-60 mb-4 rounded-2xl overflow-hidden shadow-lg bg-white">
-                    {member.photo && typeof member.photo === 'object' && (
-                      <Media resource={member.photo} fill imgClassName="object-cover" />
-                    )}
+                  <div className="relative h-52 md:h-60 mb-4 rounded-2xl overflow-hidden shadow-lg">
+                    <Media resource={member.photo as MediaType} fill imgClassName="object-cover" />
                     {/* LinkedIn Overlay */}
                     {member.linkedIn && (
                       <a
@@ -147,12 +150,12 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
             </div>
 
             {/* Right Navigation Button */}
-            {members.length > itemsPerView && (
+            {validMembers.length > itemsPerView && (
               <button
                 type="button"
                 onClick={handleNext}
                 disabled={!canGoNext}
-                className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all ${
+                className={`flex-shrink-0 w-10 h-10 ml-4 flex items-center justify-center rounded-full border-2 transition-all ${
                   canGoNext
                     ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
                     : 'border-gray-200 text-gray-300 cursor-not-allowed'

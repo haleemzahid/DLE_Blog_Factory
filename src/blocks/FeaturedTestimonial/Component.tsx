@@ -103,11 +103,11 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
 
         {/* Testimonial Content */}
         <div
-          className={`flex flex-col md:flex-row items-center gap-8 md:gap-12 ${isPhotoLeft ? '' : 'md:flex-row-reverse'}`}
+          className={`grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 md:gap-12 items-start ${isPhotoLeft ? '' : 'md:[direction:rtl] md:[&>*]:[direction:ltr]'}`}
         >
           {/* Photo */}
           {currentTestimonial?.photo && typeof currentTestimonial.photo === 'object' && (
-            <div className="flex-shrink-0">
+            <div className="mx-auto md:mx-0">
               <div className="w-48 h-48 md:w-56 md:h-56 rounded-lg overflow-hidden shadow-lg">
                 <Media
                   resource={currentTestimonial.photo}
@@ -118,7 +118,7 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
           )}
 
           {/* Content */}
-          <div className="flex-1 text-center md:text-left">
+          <div className="text-center md:text-left">
             {/* Quote */}
             {currentTestimonial?.quote && (
               <blockquote className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
