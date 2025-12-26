@@ -140,7 +140,7 @@ function AgentCard({ agent, showDesignation }: { agent: Agent; showDesignation: 
       : null
 
   return (
-    <Link href={`/agents/${agent.slug}`} className="group block">
+    <Link href={`/agents/${agent.slug}`} className="block">
       <div className="w-full">
         {/* Photo */}
         <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
@@ -148,7 +148,7 @@ function AgentCard({ agent, showDesignation }: { agent: Agent; showDesignation: 
             <Media
               resource={agent.profilePhoto}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover"
             />
           )}
           {/* Designation Badge */}
@@ -163,7 +163,7 @@ function AgentCard({ agent, showDesignation }: { agent: Agent; showDesignation: 
 
         {/* Name */}
         <div className="text-center mt-3">
-          <h3 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors">
+          <h3 className="font-semibold text-gray-900">
             {agent.displayName || agent.name}
           </h3>
         </div>
@@ -183,14 +183,14 @@ function CustomMemberCard({ member }: { member: CustomMember }) {
           <Media
             resource={photo}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover"
           />
         )}
       </div>
 
       {/* Name */}
       <div className="text-center mt-3">
-        <h3 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors">
+        <h3 className="font-semibold text-gray-900">
           {member.name}
         </h3>
       </div>
@@ -199,11 +199,11 @@ function CustomMemberCard({ member }: { member: CustomMember }) {
 
   if (member.link) {
     return (
-      <Link href={member.link} className="group block">
+      <Link href={member.link} className="block">
         {cardContent}
       </Link>
     )
   }
 
-  return <div className="group">{cardContent}</div>
+  return <div>{cardContent}</div>
 }
