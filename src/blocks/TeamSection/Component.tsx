@@ -90,7 +90,27 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
           </div>
 
           {/* Right Side - Team Members Carousel */}
-          <div className="relative order-1 lg:order-2">
+          <div className="flex items-center gap-4 order-1 lg:order-2">
+            {/* Left Navigation Button */}
+            {members.length > itemsPerView && (
+              <button
+                type="button"
+                onClick={handlePrev}
+                disabled={!canGoPrev}
+                className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all ${
+                  canGoPrev
+                    ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
+                    : 'border-gray-200 text-gray-300 cursor-not-allowed'
+                }`}
+                aria-label="Previous"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Team Members */}
             <div className="flex gap-6 overflow-hidden">
               {visibleMembers.map((member, index) => (
                 <div key={`${member.id}-${index}`} className="flex-shrink-0 text-center">
@@ -126,40 +146,23 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
               ))}
             </div>
 
-            {/* Navigation Buttons */}
+            {/* Right Navigation Button */}
             {members.length > itemsPerView && (
-              <div className="flex gap-2 mt-6 justify-center lg:justify-start">
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  disabled={!canGoPrev}
-                  className={`w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all ${
-                    canGoPrev
-                      ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
-                      : 'border-gray-200 text-gray-300 cursor-not-allowed'
-                  }`}
-                  aria-label="Previous"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  disabled={!canGoNext}
-                  className={`w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all ${
-                    canGoNext
-                      ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
-                      : 'border-gray-200 text-gray-300 cursor-not-allowed'
-                  }`}
-                  aria-label="Next"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={handleNext}
+                disabled={!canGoNext}
+                className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all ${
+                  canGoNext
+                    ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
+                    : 'border-gray-200 text-gray-300 cursor-not-allowed'
+                }`}
+                aria-label="Next"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             )}
           </div>
         </div>
