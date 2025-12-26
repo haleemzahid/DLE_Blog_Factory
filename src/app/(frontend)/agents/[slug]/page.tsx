@@ -124,7 +124,7 @@ export default async function AgentPage({ params: paramsPromise }: Args) {
         agent={agent}
         limit={9}
         layout="grid"
-        showLoadMore={true}
+        enablePagination={true}
         showDate={true}
         showAuthor={true}
         showExcerpt={true}
