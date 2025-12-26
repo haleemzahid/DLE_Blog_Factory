@@ -33,11 +33,7 @@ export const PartnersLogosBlock: React.FC<PartnersLogosBlockProps> = ({
   const LogoItem = ({ partner }: { partner: Partner }) => {
     const content = (
       <div
-        className={`
-          relative h-16 w-32 flex items-center justify-center p-4
-          ${grayscale ? 'grayscale hover:grayscale-0 opacity-60 hover:opacity-100' : ''}
-          transition-all duration-300
-        `}
+        className="relative h-16 w-32 flex items-center justify-center p-4"
       >
         {partner.logo && typeof partner.logo === 'object' && (
           <Media resource={partner.logo} className="object-contain max-h-full max-w-full" />
