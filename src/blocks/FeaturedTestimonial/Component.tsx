@@ -41,8 +41,8 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
 
       <div className="container mx-auto px-4">
         {/* One row layout: Title on left, Testimonial on right */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 lg:gap-12 items-start">
-          {/* Left Side - Title and Navigation */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 lg:gap-12 items-center">
+          {/* Left Side - Title */}
           <div className="text-center lg:text-left">
             {eyebrow && (
               <span
@@ -55,105 +55,113 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
             {title && (
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">{title}</h2>
             )}
-
-            {/* Navigation Arrows - below title on desktop */}
-            {testimonials.length > 1 && (
-              <div className="flex items-center gap-4 mt-6 justify-center lg:justify-start">
-                <button
-                  onClick={goToPrevious}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-colors"
-                  aria-label="Previous testimonial"
-                >
-                  <svg
-                    className="w-5 h-5 text-gray-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={goToNext}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-colors"
-                  aria-label="Next testimonial"
-                >
-                  <svg
-                    className="w-5 h-5 text-gray-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </div>
-            )}
           </div>
 
-          {/* Right Side - Testimonial Content */}
-          <div
-            className={`flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start ${isPhotoLeft ? '' : 'md:flex-row-reverse'}`}
-          >
-            {/* Photo */}
-            {currentTestimonial?.photo && typeof currentTestimonial.photo === 'object' && (
-              <div className="flex-shrink-0">
-                <div className="w-48 h-48 md:w-56 md:h-56 rounded-lg overflow-hidden shadow-lg">
-                  <Media
-                    resource={currentTestimonial.photo}
-                    imgClassName="w-full h-full object-cover"
+          {/* Right Side - Testimonial Content with Navigation */}
+          <div className="flex items-center gap-4">
+            {/* Left Navigation Button */}
+            {testimonials.length > 1 && (
+              <button
+                type="button"
+                onClick={goToPrevious}
+                className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 bg-white transition-colors"
+                aria-label="Previous testimonial"
+              >
+                <svg
+                  className="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
                   />
-                </div>
-              </div>
+                </svg>
+              </button>
             )}
 
-            {/* Content */}
-            <div className="text-center md:text-left flex-1">
-              {/* Quote */}
-              {currentTestimonial?.quote && (
-                <blockquote className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
-                  &ldquo;{currentTestimonial.quote}&rdquo;
-                </blockquote>
-              )}
-
-              {/* Client Name */}
-              {currentTestimonial?.clientName && (
-                <p className="font-bold text-lg mb-1" style={{ color: nameColor || '#dc2626' }}>
-                  {currentTestimonial.clientName}
-                </p>
-              )}
-
-              {/* Client Title */}
-              {currentTestimonial?.clientTitle && (
-                <p className="text-gray-600 text-sm">{currentTestimonial.clientTitle}</p>
-              )}
-
-              {/* Dots indicator - inside testimonial card */}
-              {testimonials.length > 1 && (
-                <div className="flex gap-2 mt-6 justify-center md:justify-start">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentIndex(index)}
-                      className={`w-2 h-2 rounded-full transition-colors ${
-                        index === currentIndex ? 'bg-gray-800' : 'bg-gray-300'
-                      }`}
-                      aria-label={`Go to testimonial ${index + 1}`}
+            {/* Testimonial Card */}
+            <div
+              className={`flex-1 flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start ${isPhotoLeft ? '' : 'md:flex-row-reverse'}`}
+            >
+              {/* Photo */}
+              {currentTestimonial?.photo && typeof currentTestimonial.photo === 'object' && (
+                <div className="flex-shrink-0">
+                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-lg overflow-hidden shadow-lg">
+                    <Media
+                      resource={currentTestimonial.photo}
+                      imgClassName="w-full h-full object-cover"
                     />
-                  ))}
+                  </div>
                 </div>
               )}
+
+              {/* Content */}
+              <div className="text-center md:text-left flex-1">
+                {/* Quote */}
+                {currentTestimonial?.quote && (
+                  <blockquote className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
+                    &ldquo;{currentTestimonial.quote}&rdquo;
+                  </blockquote>
+                )}
+
+                {/* Client Name */}
+                {currentTestimonial?.clientName && (
+                  <p className="font-bold text-lg mb-1" style={{ color: nameColor || '#dc2626' }}>
+                    {currentTestimonial.clientName}
+                  </p>
+                )}
+
+                {/* Client Title */}
+                {currentTestimonial?.clientTitle && (
+                  <p className="text-gray-600 text-sm">{currentTestimonial.clientTitle}</p>
+                )}
+
+                {/* Dots indicator */}
+                {testimonials.length > 1 && (
+                  <div className="flex gap-2 mt-6 justify-center md:justify-start">
+                    {testimonials.map((_, index) => (
+                      <button
+                        type="button"
+                        key={index}
+                        onClick={() => setCurrentIndex(index)}
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                          index === currentIndex ? 'bg-gray-800' : 'bg-gray-300'
+                        }`}
+                        aria-label={`Go to testimonial ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
+
+            {/* Right Navigation Button */}
+            {testimonials.length > 1 && (
+              <button
+                type="button"
+                onClick={goToNext}
+                className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 bg-white transition-colors"
+                aria-label="Next testimonial"
+              >
+                <svg
+                  className="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </div>
