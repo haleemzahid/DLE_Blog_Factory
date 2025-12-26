@@ -129,12 +129,12 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
             {/* Carousel */}
             <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-hide px-8">
               {isCustomMode
-                ? customMembers?.map((member) => (
-                    <CustomMemberCard key={member.id || member.name} member={member} />
+                ? customMembers?.map((member, idx) => (
+                    <CustomMemberCard key={`${member.id}-${idx}`} member={member} />
                   ))
-                : agents.map((agent) => (
+                : agents.map((agent, idx) => (
                     <AgentCard
-                      key={agent.id}
+                      key={`${agent.id}-${idx}`}
                       agent={agent}
                       showDesignation={showDesignation || false}
                     />
@@ -155,11 +155,11 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {isCustomMode
-              ? customMembers?.map((member) => (
-                  <CustomMemberCard key={member.id || member.name} member={member} />
+              ? customMembers?.map((member, idx) => (
+                  <CustomMemberCard key={`${member.id}-${idx}`} member={member} />
                 ))
-              : agents.map((agent) => (
-                  <AgentCard key={agent.id} agent={agent} showDesignation={showDesignation || false} />
+              : agents.map((agent, idx) => (
+                  <AgentCard key={`${agent.id}-${idx}`} agent={agent} showDesignation={showDesignation || false} />
                 ))}
           </div>
         )}

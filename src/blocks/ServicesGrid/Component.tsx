@@ -76,7 +76,7 @@ export const ServicesGridBlock: React.FC<Props> = ({
         <div className={`grid ${getGridCols()} gap-5`}>
           {services.map((service, index) => (
             <div
-              key={service.id || index}
+              key={`${service.id}-${index}`}
               className={`
                 ${layout === 'alternating' && index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}
                 p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow

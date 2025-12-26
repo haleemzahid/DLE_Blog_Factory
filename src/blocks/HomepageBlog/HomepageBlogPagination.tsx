@@ -106,8 +106,8 @@ export const HomepageBlogPagination: React.FC<HomepageBlogPaginationProps> = ({
       <div
         className={layout === 'list' ? 'space-y-6' : 'grid md:grid-cols-2 lg:grid-cols-3 gap-8'}
       >
-        {currentPosts.map((post) => (
-          <Link key={post.id} href={`/posts/${post.slug}`} className="block group">
+        {currentPosts.map((post, index) => (
+          <Link key={`${post.id}-${index}`} href={`/posts/${post.slug}`} className="block group">
             <article
               className={
                 layout === 'list'

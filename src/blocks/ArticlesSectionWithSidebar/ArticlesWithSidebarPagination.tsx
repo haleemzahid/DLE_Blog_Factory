@@ -64,9 +64,9 @@ export const ArticlesWithSidebarPagination: React.FC<ArticlesWithSidebarPaginati
   return (
     <>
       <div className={`grid ${getGridCols()} gap-8`}>
-        {currentArticles.map((article) => (
+        {currentArticles.map((article, index) => (
           <ArticleCard
-            key={article.id}
+            key={`${article.id}-${index}`}
             article={article}
             showAuthor={showAuthor}
             showDate={showDate}

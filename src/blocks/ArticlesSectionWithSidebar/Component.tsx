@@ -431,9 +431,9 @@ export const ArticlesSectionWithSidebarBlock: React.FC<ArticlesSectionWithSideba
               />
             ) : (
               <div className={`grid ${columns === '1' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-8`}>
-                {posts.map((post) => (
+                {posts.map((post, index) => (
                   <ArticleCard
-                    key={post.id}
+                    key={`${post.id}-${index}`}
                     post={post}
                     showAuthor={showAuthor ?? true}
                     showDate={showDate ?? true}

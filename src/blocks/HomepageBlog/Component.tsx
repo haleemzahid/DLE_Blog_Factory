@@ -217,8 +217,8 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                 layout === 'list' ? 'space-y-6' : 'grid md:grid-cols-2 lg:grid-cols-3 gap-8'
               }
             >
-              {gridPosts.map((post) => (
-                <Link key={post.id} href={`/posts/${post.slug}`} className="block group">
+              {gridPosts.map((post, index) => (
+                <Link key={`${post.id}-${index}`} href={`/posts/${post.slug}`} className="block group">
                   <article
                     className={
                       layout === 'list'

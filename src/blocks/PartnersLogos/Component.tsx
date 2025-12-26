@@ -91,7 +91,7 @@ export const PartnersLogosBlock: React.FC<PartnersLogosBlockProps> = ({
         {style === 'grid' && (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center justify-items-center">
             {logos.map((partner, index) => (
-              <LogoItem key={partner.id || index} partner={partner} />
+              <LogoItem key={`${partner.id}-${index}`} partner={partner} />
             ))}
           </div>
         )}
@@ -100,7 +100,7 @@ export const PartnersLogosBlock: React.FC<PartnersLogosBlockProps> = ({
         {style === 'inline' && (
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
             {logos.map((partner, index) => (
-              <LogoItem key={partner.id || index} partner={partner} />
+              <LogoItem key={`${partner.id}-${index}`} partner={partner} />
             ))}
           </div>
         )}

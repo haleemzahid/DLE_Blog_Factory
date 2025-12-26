@@ -169,9 +169,9 @@ export const DirectoryListingBlock: React.FC<Props> = async ({
                 <div key={letter}>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4 border-b pb-2">{letter}</h3>
                   <div className={`grid grid-cols-1 ${getGridCols()} gap-2`}>
-                    {groupedItems[letter].map((item) => (
+                    {groupedItems[letter].map((item, idx) => (
                       <Link
-                        key={item.id}
+                        key={`${item.id}-${idx}`}
                         href={getItemLink(item)}
                         className="flex items-center gap-2 py-1 text-gray-700 hover:text-blue-600 transition-colors"
                       >
@@ -185,9 +185,9 @@ export const DirectoryListingBlock: React.FC<Props> = async ({
           </div>
         ) : layout === 'grid' ? (
           <div className={`grid grid-cols-1 ${getGridCols()} gap-6`}>
-            {items.map((item) => (
+            {items.map((item, idx) => (
               <Link
-                key={item.id}
+                key={`${item.id}-${idx}`}
                 href={getItemLink(item)}
                 className="bg-gray-50 hover:bg-gray-100 p-6 rounded-lg text-center transition-colors"
               >
@@ -200,9 +200,9 @@ export const DirectoryListingBlock: React.FC<Props> = async ({
           </div>
         ) : (
           <div className={`grid grid-cols-1 ${getGridCols()} gap-x-8 gap-y-2`}>
-            {items.map((item) => (
+            {items.map((item, idx) => (
               <Link
-                key={item.id}
+                key={`${item.id}-${idx}`}
                 href={getItemLink(item)}
                 className="flex items-center gap-2 py-1 text-gray-700 hover:text-blue-600 transition-colors"
               >

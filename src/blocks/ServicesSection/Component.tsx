@@ -78,7 +78,7 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
           <div className={`grid grid-cols-1 ${gridCols[columns || '3']} gap-6`}>
             {services.map((service, index) => (
               <div
-                key={service.id || index}
+                key={`${service.id}-${index}`}
                 className="bg-white p-6 shadow-sm hover:shadow-lg transition-shadow duration-300 border border-gray-100"
                 style={{ borderRadius: `${cardBorderRadius ?? 16}px` }}
               >

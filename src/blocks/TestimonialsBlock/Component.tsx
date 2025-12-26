@@ -140,9 +140,9 @@ export const TestimonialsBlockComponent: React.FC<Props> = async ({
           ${layout === 'carousel' ? 'flex overflow-x-auto gap-6 snap-x snap-mandatory pb-4' : ''}
         `}
         >
-          {testimonials.map((testimonial) => (
+          {testimonials.map((testimonial, index) => (
             <div
-              key={testimonial.id}
+              key={`${testimonial.id}-${index}`}
               className={layout === 'carousel' ? 'min-w-[300px] md:min-w-[400px] snap-center' : ''}
             >
               <TestimonialCard

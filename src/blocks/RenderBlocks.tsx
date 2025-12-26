@@ -75,7 +75,7 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               return (
                 // @ts-expect-error there may be some mismatch between the expected types here
-                <Block {...block} disableInnerContainer key={index} />
+                <Block {...block} disableInnerContainer key={`${block.id || blockType}-${index}`} />
               )
             }
           }

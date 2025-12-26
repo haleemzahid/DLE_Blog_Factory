@@ -42,7 +42,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
   const renderAccordion = () => (
     <div className="space-y-4 max-w-3xl mx-auto">
       {faqItems.map((faq, index) => (
-        <div key={faq.id || index} className="border border-gray-200 rounded-lg overflow-hidden">
+        <div key={`${faq.id}-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
           <button
             onClick={() => toggleItem(index)}
             className="w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50 transition-colors"
@@ -82,7 +82,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
   const renderTwoColumn = () => (
     <div className="grid md:grid-cols-2 gap-8">
       {faqItems.map((faq, index) => (
-        <div key={faq.id || index} className="bg-white p-6 rounded-lg shadow-sm">
+        <div key={`${faq.id}-${index}`} className="bg-white p-6 rounded-lg shadow-sm">
           <h3 className="font-semibold text-gray-900 mb-3">{faq.question}</h3>
           <div className="text-gray-600">
             <RichText data={faq.answer} />
@@ -95,7 +95,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
   const renderList = () => (
     <div className="space-y-6 max-w-3xl mx-auto">
       {faqItems.map((faq, index) => (
-        <div key={faq.id || index} className="cursor-pointer" onClick={() => toggleItem(index)}>
+        <div key={`${faq.id}-${index}`} className="cursor-pointer" onClick={() => toggleItem(index)}>
           <div className="flex items-start gap-3">
             <span
               className={`mt-1 transition-transform ${openItems.has(index) ? 'rotate-90' : ''}`}

@@ -43,7 +43,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
           {/* Left Side - Team Members */}
           <div className="flex flex-wrap justify-center lg:justify-start gap-6">
             {members.map((member, index) => (
-              <div key={member.id || index} className="group text-center">
+              <div key={`${member.id}-${index}`} className="group text-center">
                 {/* Photo Card */}
                 <div className="relative w-56 h-72 mb-4 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-300 bg-white">
                   {member.photo && typeof member.photo === 'object' && (

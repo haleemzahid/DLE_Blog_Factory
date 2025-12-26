@@ -56,7 +56,7 @@ export const SolutionsSectionBlock: React.FC<SolutionsSectionBlockProps> = (prop
             {solutions && solutions.length > 0 && (
               <div className="space-y-3">
                 {solutions.map((solution, index) => (
-                  <div key={solution.id || index}>
+                  <div key={`${solution.id}-${index}`}>
                     <h3 className="text-base font-bold text-gray-900 mb-0.5">
                       {solution.heading}
                     </h3>

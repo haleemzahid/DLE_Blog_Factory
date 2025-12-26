@@ -183,9 +183,9 @@ export const ArticlesSectionBlock: React.FC<ArticlesSectionBlockProps> = async (
           />
         ) : (
           <div className={`grid ${getGridCols()} gap-8`}>
-            {posts.map((post) => (
+            {posts.map((post, index) => (
               <ArticleCard
-                key={post.id}
+                key={`${post.id}-${index}`}
                 post={post}
                 showAuthor={showAuthor ?? true}
                 showDate={showDate ?? true}

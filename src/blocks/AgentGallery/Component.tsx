@@ -76,7 +76,7 @@ export const AgentGalleryBlock: React.FC<Props> = ({
 
             return (
               <div
-                key={imageData.id || index}
+                key={`${imageData.id}-${index}`}
                 className={`
                   relative overflow-hidden rounded-lg shadow-md
                   ${enableLightbox ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}

@@ -147,9 +147,9 @@ export const PageBlogBlock: React.FC<PageBlogBlockProps> = async (props) => {
                 : 'grid md:grid-cols-2 lg:grid-cols-3 gap-4'
           }
         >
-          {posts.map((post) => (
+          {posts.map((post, index) => (
             <PostCard
-              key={post.id}
+              key={`${post.id}-${index}`}
               post={post}
               layout={layout || 'grid'}
               showReadMore={showReadMore || false}

@@ -68,7 +68,10 @@
       "Bash(cmd /c \"if exist d:\\\\payloadcms\\\\.next \\(echo EXISTS\\) else \\(echo NOT_EXISTS\\)\")",
       "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :3000\")",
       "Bash(npx tsc:*)",
-      "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :3001\")"
+      "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :3001\")",
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && type .env 2>nul | findstr DATABASE\")",
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && node --import tsx check-duplicates.mjs\")",
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && npx tsx check-duplicates.mjs 2>&1\")"
     ],
     "deny": [],
     "ask": []

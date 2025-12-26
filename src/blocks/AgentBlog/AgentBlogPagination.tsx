@@ -53,9 +53,9 @@ export const AgentBlogPagination: React.FC<AgentBlogPaginationProps> = ({
           ${layout === 'list' ? 'space-y-6 max-w-3xl mx-auto' : ''}
         `}
       >
-        {currentPosts.map((post) => (
+        {currentPosts.map((post, index) => (
           <PostCard
-            key={post.id}
+            key={`${post.id}-${index}`}
             post={post}
             showDate={showDate}
             showAuthor={showAuthor}
