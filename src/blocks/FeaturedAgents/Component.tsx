@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import Link from 'next/link'
 import { Media } from '@/components/Media'
 import type { Agent, Designation, Media as MediaType } from '@/payload-types'
+import { CarouselClient } from './CarouselClient'
 
 interface CustomMember {
   name: string
@@ -114,44 +115,12 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
 
         {/* Members Display */}
         {layout === 'carousel' ? (
-          <div className="relative">
-            {/* Left Arrow */}
-            <button
-              type="button"
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-white/80 hover:bg-white rounded-full shadow-md transition-colors -ml-5"
-              aria-label="Previous"
-            >
-              <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            {/* Carousel */}
-            <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-hide px-8">
-              {isCustomMode
-                ? customMembers?.map((member, idx) => (
-                    <CustomMemberCard key={`${member.id}-${idx}`} member={member} />
-                  ))
-                : agents.map((agent, idx) => (
-                    <AgentCard
-                      key={`${agent.id}-${idx}`}
-                      agent={agent}
-                      showDesignation={showDesignation || false}
-                    />
-                  ))}
-            </div>
-
-            {/* Right Arrow */}
-            <button
-              type="button"
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-white/80 hover:bg-white rounded-full shadow-md transition-colors -mr-5"
-              aria-label="Next"
-            >
-              <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+          <CarouselClient
+            agents={agents}
+            customMembers={customMembers}
+            isCustomMode={isCustomMode}
+            showDesignation={showDesignation || false}
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {isCustomMode
