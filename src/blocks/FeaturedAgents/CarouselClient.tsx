@@ -148,7 +148,7 @@ function AgentCard({ agent, showDesignation }: { agent: Agent; showDesignation: 
             <Media
               resource={agent.profilePhoto}
               fill
-              className="object-cover"
+              imgClassName="object-cover"
             />
           )}
           {/* Designation Badge */}
@@ -183,7 +183,7 @@ function CustomMemberCard({ member }: { member: CustomMember }) {
           <Media
             resource={photo}
             fill
-            className="object-cover"
+            imgClassName="object-cover"
           />
         )}
       </div>
