@@ -61,7 +61,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-100/40 rounded-full blur-3xl -z-10" />
 
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-6 items-center">
           {/* Left Side - Content (Text) */}
           <div className="text-center lg:text-left order-2 lg:order-1">
             {eyebrow && <span className="text-red-500 text-lg font-normal">{eyebrow}</span>}
@@ -123,7 +123,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
               {visibleMembers.map((member, index) => (
                 <div key={`${member.id}-${index}`} className="group text-center">
                   {/* Photo Card */}
-                  <div className="relative w-44 md:w-56 h-56 md:h-72 mb-4 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-300 bg-white">
+                  <div className="relative w-56 md:w-72 h-64 md:h-80 mb-4 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-300 bg-white">
                     {member.photo && typeof member.photo === 'object' && (
                       <Media resource={member.photo} fill imgClassName="object-cover" />
                     )}
