@@ -19,11 +19,11 @@ export const AgentHero: React.FC<Props> = ({ agent }) => {
       )}
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 py-16 text-white">
+      <div className="relative z-10 container mx-auto px-4 py-6 text-white">
         <div className="flex flex-col md:flex-row items-center gap-8">
           {/* Agent Photo */}
           {agent.profilePhoto && typeof agent.profilePhoto === 'object' && (
-            <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white shadow-2xl flex-shrink-0">
+            <div className="w-48 h h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white shadow-2xl flex-shrink-0">
               <Media resource={agent.profilePhoto} className="w-full h-full object-cover" />
             </div>
           )}

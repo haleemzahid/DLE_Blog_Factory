@@ -241,7 +241,7 @@ export const ArticlesSectionWithSidebarBlock: React.FC<ArticlesSectionWithSideba
   return (
     <section
       id="articles-section-sidebar"
-      className="py-12"
+      className="py-6"
       style={{ backgroundColor: backgroundColor || '#ffffff' }}
     >
       <div className="container mx-auto px-4">

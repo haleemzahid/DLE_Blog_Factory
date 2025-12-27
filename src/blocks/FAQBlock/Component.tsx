@@ -42,7 +42,10 @@ export const FAQBlockComponent: React.FC<Props> = ({
   const renderAccordion = () => (
     <div className="space-y-4 max-w-3xl mx-auto">
       {faqItems.map((faq, index) => (
-        <div key={`${faq.id}-${index}`} className="border border-gray-200 rounded-lg overflow-hidden">
+        <div
+          key={`${faq.id}-${index}`}
+          className="border border-gray-200 rounded-lg overflow-hidden"
+        >
           <button
             onClick={() => toggleItem(index)}
             className="w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50 transition-colors"
@@ -95,7 +98,11 @@ export const FAQBlockComponent: React.FC<Props> = ({
   const renderList = () => (
     <div className="space-y-6 max-w-3xl mx-auto">
       {faqItems.map((faq, index) => (
-        <div key={`${faq.id}-${index}`} className="cursor-pointer" onClick={() => toggleItem(index)}>
+        <div
+          key={`${faq.id}-${index}`}
+          className="cursor-pointer"
+          onClick={() => toggleItem(index)}
+        >
           <div className="flex items-start gap-3">
             <span
               className={`mt-1 transition-transform ${openItems.has(index) ? 'rotate-90' : ''}`}
@@ -117,7 +124,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
   )
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-6 bg-white">
       <div className="container mx-auto px-4">
         {title && (
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">

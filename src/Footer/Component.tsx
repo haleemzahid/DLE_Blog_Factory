@@ -36,7 +36,7 @@ export async function Footer() {
 
   return (
     <footer className="mt-auto bg-[#0a1628] text-white font-sans">
-      <div className="container py-12">
+      <div className="container py-6">
         {/* Top Section: Logo + Copyright on left, Legal Links on right */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-8">
           {/* Left: Logo and Copyright */}

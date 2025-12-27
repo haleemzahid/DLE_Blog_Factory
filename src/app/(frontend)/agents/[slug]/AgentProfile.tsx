@@ -9,7 +9,7 @@ type Props = {
 
 export const AgentProfile: React.FC<Props> = ({ agent }) => {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-6 bg-white">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-start">
           {/* Bio Section */}

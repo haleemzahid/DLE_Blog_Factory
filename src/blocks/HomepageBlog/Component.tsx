@@ -6,6 +6,7 @@ import { Media } from '@/components/Media'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import type { Post } from '@/payload-types'
 import { HomepageBlogPagination } from './HomepageBlogPagination'
+import { ArticleCard, cardStyles, type ArticleCardData } from '@/components/Card/ArticleCard'
 
 // Extract plain text from Lexical rich text content
 const extractTextFromContent = (content: any, maxLength: number = 160): string => {
@@ -91,7 +92,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
   }
 
   // Fetch more posts when pagination is enabled so client can paginate
-  const effectiveLimit = enablePagination ? 100 : (limit || 6)
+  const effectiveLimit = enablePagination ? 100 : limit || 6
 
   const posts = await payload.find({
     collection: 'posts',
@@ -117,22 +118,13 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
     title: post.title,
     slug: post.slug || '',
     publishedAt: post.publishedAt,
-    heroImage:
-      post.heroImage && typeof post.heroImage === 'object'
-        ? {
-            id: post.heroImage.id,
-            url: post.heroImage.url,
-            alt: post.heroImage.alt,
-            width: post.heroImage.width,
-            height: post.heroImage.height,
-          }
-        : null,
+    heroImage: post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null,
     description: getPostDescription(post),
     isFeatured: (post as Post & { isFeatured?: boolean }).isFeatured,
   }))
 
   return (
-    <section id="homepage-blog-section" className="py-16 bg-gray-50 dark:bg-gray-900">
+    <section id="homepage-blog-section" className="py-6 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
@@ -150,7 +142,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
         {layout === 'featured' && featuredPost && (
           <div className="mb-12">
             <Link href={`/posts/${featuredPost.slug}`} className="block group">
-              <article className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <article className={cardStyles.container}>
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Featured Image */}
                   <div className="relative aspect-[16/10] md:aspect-auto">
@@ -165,7 +157,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                   </div>
 
                   {/* Content */}
-                  <div className="p-8 flex flex-col justify-center">
+                  <div className={cardStyles.content}>
                     <div className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-2">
                       {featuredPost.publishedAt && formatDateTime(featuredPost.publishedAt)}
                     </div>
@@ -173,25 +165,12 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                       {featuredPost.title}
                     </h3>
                     {getPostDescription(featuredPost) && (
-                      <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                      <p className={cardStyles.excerpt}>
                         {getPostDescription(featuredPost)}
                       </p>
                     )}
-                    <span className="text-blue-600 dark:text-blue-400 font-medium inline-flex items-center gap-2">
-                      Read More
-                      <svg
-                        className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
+                    <span className={cardStyles.readMore} style={{ color: '#2563eb' }}>
+                      Read More »
                     </span>
                   </div>
                 </div>
@@ -218,64 +197,23 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
               }
             >
               {gridPosts.map((post, index) => (
-                <Link key={`${post.id}-${index}`} href={`/posts/${post.slug}`} className="block group">
-                  <article
-                    className={
-                      layout === 'list'
-                        ? 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow flex flex-col md:flex-row'
-                        : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow h-full flex flex-col'
-                    }
-                  >
-                    {/* Image */}
-                    <div
-                      className={
-                        layout === 'list'
-                          ? 'relative w-full md:w-64 aspect-[16/10] md:aspect-auto md:h-48 flex-shrink-0'
-                          : 'relative aspect-[16/10]'
-                      }
-                    >
-                      {post.heroImage && typeof post.heroImage === 'object' && (
-                        <Media resource={post.heroImage} fill className="object-cover" />
-                      )}
-                      {(post as Post & { isFeatured?: boolean }).isFeatured && layout !== 'list' && (
-                        <span className="absolute top-3 left-3 bg-yellow-500 text-black text-xs font-semibold px-2 py-1 rounded-full">
-                          Featured
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-2">
-                        {post.publishedAt && formatDateTime(post.publishedAt)}
-                      </div>
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
-                      {getPostDescription(post) && (
-                        <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 flex-1">
-                          {getPostDescription(post)}
-                        </p>
-                      )}
-                      <span className="text-blue-600 dark:text-blue-400 font-medium text-sm inline-flex items-center gap-2 mt-4">
-                        Read More
-                        <svg
-                          className="w-3 h-3 group-hover:translate-x-1 transition-transform"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </article>
-                </Link>
+                <ArticleCard
+                  key={`${post.id}-${index}`}
+                  article={{
+                    id: post.id,
+                    title: post.title,
+                    slug: post.slug || '',
+                    heroImage: typeof post.heroImage === 'object' ? post.heroImage : null,
+                    description: getPostDescription(post),
+                    authorName: 'DLE Network',
+                    publishedAt: post.publishedAt || null,
+                  } as ArticleCardData}
+                  showDate={true}
+                  showAuthor={false}
+                  showExcerpt={true}
+                  showReadMore={true}
+                  accentColor="#2563eb"
+                />
               ))}
             </div>
           </>
@@ -290,7 +228,12 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
             >
               View All Posts
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </Link>
           </div>

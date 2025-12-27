@@ -22,7 +22,8 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
   const buttonClasses = {
     red: 'bg-red-500 hover:bg-red-600 text-white',
     dark: 'bg-gray-900 hover:bg-gray-800 text-white',
-    outline: 'bg-transparent border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white',
+    outline:
+      'bg-transparent border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white',
   }
 
   const gridCols = {
@@ -33,7 +34,7 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
 
   return (
     <section
-      className="py-16 md:py-24 relative overflow-hidden"
+      className="py-6 relative overflow-hidden"
       style={{ backgroundColor: backgroundColor || '#ffffff' }}
     >
       {/* Background decorative elements */}
@@ -52,15 +53,9 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
               </span>
             )}
             {title && (
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
-                {title}
-              </h2>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">{title}</h2>
             )}
-            {subtitle && (
-              <p className="text-gray-600 mt-2 max-w-2xl">
-                {subtitle}
-              </p>
-            )}
+            {subtitle && <p className="text-gray-600 mt-2 max-w-2xl">{subtitle}</p>}
           </div>
 
           {enableButton && headerLink && (
@@ -85,20 +80,14 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
                 {/* Icon */}
                 {service.icon && typeof service.icon === 'object' && (
                   <div className="w-12 h-12 mb-4">
-                    <Media
-                      resource={service.icon}
-                      imgClassName="w-full h-full object-contain"
-                    />
+                    <Media resource={service.icon} imgClassName="w-full h-full object-contain" />
                   </div>
                 )}
 
                 {/* Title */}
-                {service.title && (
-                  service.enableLink && service.serviceLink ? (
-                    <CMSLink
-                      {...service.serviceLink}
-                      className="block"
-                    >
+                {service.title &&
+                  (service.enableLink && service.serviceLink ? (
+                    <CMSLink {...service.serviceLink} className="block">
                       <h3
                         className="text-base font-bold mb-3 hover:underline"
                         style={{ color: service.titleColor || '#dc2626' }}
@@ -113,14 +102,11 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
                     >
                       {service.title}
                     </h3>
-                  )
-                )}
+                  ))}
 
                 {/* Description */}
                 {service.description && (
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {service.description}
-                  </p>
+                  <p className="text-gray-600 text-sm leading-relaxed">{service.description}</p>
                 )}
               </div>
             ))}

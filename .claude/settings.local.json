@@ -71,7 +71,9 @@
       "Bash(cmd /c \"netstat -ano | findstr LISTENING | findstr :3001\")",
       "Bash(cmd /c \"cd /d d:\\\\payloadcms && type .env 2>nul | findstr DATABASE\")",
       "Bash(cmd /c \"cd /d d:\\\\payloadcms && node --import tsx check-duplicates.mjs\")",
-      "Bash(cmd /c \"cd /d d:\\\\payloadcms && npx tsx check-duplicates.mjs 2>&1\")"
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && npx tsx check-duplicates.mjs 2>&1\")",
+      "Bash(cmd /c \"cd /d d:\\\\payloadcms && pnpm build 2>&1\")",
+      "Bash(more:*)"
     ],
     "deny": [],
     "ask": []

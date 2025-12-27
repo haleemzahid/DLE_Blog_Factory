@@ -74,7 +74,7 @@ export const VideoEmbedBlock: React.FC<VideoEmbedBlockProps> = ({
   }[aspectRatio || '16:9']
 
   return (
-    <section className="py-12 bg-gray-100 dark:bg-gray-900">
+    <section className="py-6 bg-gray-100 dark:bg-gray-900">
       <div className={`container mx-auto px-4 ${maxWidthClass}`}>
         {title && (
           <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">
