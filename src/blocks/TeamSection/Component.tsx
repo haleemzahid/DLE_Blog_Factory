@@ -76,15 +76,20 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
               <div className="mt-8">
                 <Link
                   href={ctaLink}
-                  className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-medium px-8 py-3 rounded-full transition-colors shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center gap-2 bg-red-600 hover:bg-black text-white font-medium px-8 py-3 rounded-full transition-colors shadow-lg hover:shadow-xl"
                 >
                   {ctaLabel}
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="white"
+                    strokeWidth="2"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
                     />
                   </svg>
                 </Link>
