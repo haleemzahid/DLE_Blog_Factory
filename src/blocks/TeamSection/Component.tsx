@@ -62,8 +62,47 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
 
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Content */}
-          <div className="text-center lg:text-left order-2 lg:order-1">
+          {/* Left Side - Team Members */}
+          <div className="flex flex-wrap justify-center lg:justify-start gap-6">
+            {members.map((member, index) => (
+              <div key={`${member.id}-${index}`} className="group text-center">
+                {/* Photo Card */}
+                <div className="relative w-56 h-72 mb-4 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-300 bg-white">
+                  {member.photo && typeof member.photo === 'object' && (
+                    <Media resource={member.photo} fill imgClassName="object-cover" />
+                  )}
+                  {/* LinkedIn Overlay */}
+                  {member.linkedIn && (
+                    <a
+                      href={member.linkedIn}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Visit ${member.name}'s LinkedIn profile`}
+                      className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-colors flex items-center justify-center"
+                    >
+                      <svg
+                        className="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+
+                {/* Info */}
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
+                {member.role && (
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{member.role}</p>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Right Side - Content */}
+          <div className="text-center lg:text-left">
             {eyebrow && (
               <span className="text-red-500 font-medium text-base italic">{eyebrow}</span>
             )}
@@ -110,7 +149,12 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
                 aria-label="Previous"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
               </button>
             )}
@@ -143,7 +187,9 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
                   </div>
 
                   {/* Info */}
-                  <h3 className="text-base font-bold text-gray-900 dark:text-white">{member.name}</h3>
+                  <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                    {member.name}
+                  </h3>
                   {member.role && <p className="text-sm text-red-500 mt-1">{member.role}</p>}
                 </div>
               ))}
@@ -163,7 +209,12 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
                 aria-label="Next"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
             )}

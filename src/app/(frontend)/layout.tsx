@@ -44,6 +44,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  description:
+    'Your trusted partner in real estate SEO, AI visibility, and local market domination. Get expert solutions for your real estate business.',
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
