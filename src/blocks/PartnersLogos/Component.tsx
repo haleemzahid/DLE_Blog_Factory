@@ -32,9 +32,7 @@ export const PartnersLogosBlock: React.FC<PartnersLogosBlockProps> = ({
 
   const LogoItem = ({ partner }: { partner: Partner }) => {
     const content = (
-      <div
-        className="relative h-16 w-32 flex items-center justify-center p-4"
-      >
+      <div className="relative h-16 w-32 flex items-center justify-center p-4">
         {partner.logo && typeof partner.logo === 'object' && (
           <Media resource={partner.logo} className="object-contain max-h-full max-w-full" />
         )}
@@ -58,9 +56,7 @@ export const PartnersLogosBlock: React.FC<PartnersLogosBlockProps> = ({
         {/* Header */}
         <div className="text-center mb-10">
           {eyebrow && (
-            <span className="text-red-600 font-medium text-sm uppercase tracking-wide">
-              {eyebrow}
-            </span>
+            <span className="text-red-600 text-lg uppercase tracking-wide">{eyebrow}</span>
           )}
           {title && (
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-2">
