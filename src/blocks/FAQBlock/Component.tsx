@@ -35,23 +35,23 @@ export const FAQBlockComponent: React.FC<Props> = ({
   }
 
   const renderAccordion = () => (
-    <div className="bg-white max-w-4xl mx-auto rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-4 md:p-6">
+      {title && (
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 text-center uppercase tracking-wide">
+          {title}
+        </h2>
+      )}
       {faqItems.map((faq, index) => {
         const isOpen = openIndex === index
         return (
-          <div
-            key={`${faq.id}-${index}`}
-            className={index < faqItems.length - 1 ? 'border-b border-gray-200' : ''}
-          >
+          <div key={`${faq.id}-${index}`} className="mb-3 last:mb-0">
             <button
               type="button"
               onClick={() => toggleItem(index)}
-              className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 text-left bg-[#f7f9fb] hover:bg-gray-100 transition-colors"
             >
               <span
-                className={`text-sm md:text-base transition-colors ${
-                  isOpen ? 'text-red-500 font-medium' : 'text-gray-700'
-                }`}
+                className={`text-sm md:text-base font-medium ${isOpen ? 'text-red-500' : 'text-[#1a365d]'}`}
               >
                 {faq.question}
               </span>
@@ -77,7 +77,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
                 isOpen ? 'max-h-[1000px]' : 'max-h-0'
               }`}
             >
-              <div className="px-6 pb-4 text-gray-600 text-sm leading-relaxed">
+              <div className="py-4 text-gray-600 text-sm leading-relaxed">
                 <RichText data={faq.answer} />
               </div>
             </div>
@@ -109,9 +109,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
           onClick={() => toggleItem(index)}
         >
           <div className="flex items-start gap-3">
-            <span
-              className={`mt-1 transition-transform ${openIndex === index ? 'rotate-90' : ''}`}
-            >
+            <span className={`mt-1 transition-transform ${openIndex === index ? 'rotate-90' : ''}`}>
               ▶
             </span>
             <div>
@@ -131,7 +129,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
   return (
     <section className="py-6 bg-gray-50">
       <div className="container mx-auto px-4">
-        {title && (
+        {title && layout !== 'accordion' && (
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-8 text-center uppercase tracking-wide">
             {title}
           </h2>
