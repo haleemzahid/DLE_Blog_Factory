@@ -74,7 +74,21 @@ export const SolutionsSectionBlock: React.FC<SolutionsSectionBlockProps> = (prop
                 <CMSLink
                   {...link}
                   className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-colors ${buttonClasses[buttonStyle || 'dark']}`}
-                />
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
+                  </svg>
+                </CMSLink>
               </div>
             )}
           </div>
