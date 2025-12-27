@@ -121,6 +121,11 @@
   max-width: 1200px !important;
 }
 
+/* Full width page - removes container max-width constraint */
+.full-width-page .container {
+  max-width: 100% !important;
+}
+
 /* Show page immediately - theme script runs fast enough to prevent flash */
 html {
   opacity: 1;
