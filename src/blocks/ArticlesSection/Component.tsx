@@ -150,7 +150,7 @@ export const ArticlesSectionBlock: React.FC<ArticlesSectionBlockProps> = async (
   return (
     <section
       id="articles-section"
-      className="py-12"
+      className="py-6"
       style={{ backgroundColor: backgroundColor || '#ffffff' }}
     >
       <div className="container mx-auto px-4">

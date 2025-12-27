@@ -53,7 +53,7 @@ export const PartnersLogosBlock: React.FC<PartnersLogosBlockProps> = ({
   }
 
   return (
-    <section className="py-12 bg-white dark:bg-gray-900">
+    <section className="py-6 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-10">

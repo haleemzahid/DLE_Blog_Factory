@@ -20,7 +20,7 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
   const isImageLeft = imagePosition === 'left'
 
   return (
-    <section className="py-12 md:py-6" style={{ backgroundColor: backgroundColor || '#f3f4f6' }}>
+    <section className="py-6 md:py-6" style={{ backgroundColor: backgroundColor || '#f3f4f6' }}>
       <div className="container">
         <div
           className={`grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center ${

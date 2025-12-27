@@ -452,7 +452,7 @@ html {
 
 @media (max-width: 768px) {
   .section-padding {
-    @apply py-12;
+    @apply py-6;
   }
 
   .section-heading {
