@@ -45,7 +45,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
       {/* Background Image */}
       <div className="absolute inset-0 min-h-[80vh] select-none">
         {media && typeof media === 'object' && (
-          <Media fill imgClassName="object-cover" priority resource={media} />
+          <Media fill imgClassName="object-cover" priority resource={media} size="100vw" />
         )}
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/50" />

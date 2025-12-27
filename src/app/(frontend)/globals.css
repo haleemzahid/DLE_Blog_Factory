@@ -121,13 +121,9 @@
   max-width: 1200px !important;
 }
 
+/* Show page immediately - theme script runs fast enough to prevent flash */
 html {
-  opacity: 0;
-}
-
-html[data-theme='dark'],
-html[data-theme='light'] {
-  opacity: initial;
+  opacity: 1;
 }
 
 /* Custom hover color for buttons */

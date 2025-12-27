@@ -31,6 +31,7 @@ const nextConfig = {
         hostname: '*.blob.vercel-storage.com',
       },
     ],
+    formats: ['image/webp'],
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
