@@ -46,7 +46,7 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
           <div className="text-center lg:text-left">
             {eyebrow && (
               <span
-                className="text-sm font-semibold tracking-wide block mb-2"
+                className="text-lg font-normal tracking-wide block mb-2"
                 style={{ color: eyebrowColor || '#dc2626' }}
               >
                 {eyebrow}

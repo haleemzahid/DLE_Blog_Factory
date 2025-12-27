@@ -99,7 +99,7 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
         <div className="text-center mb-12">
           {eyebrow && (
             <span
-              className="font-medium text-sm uppercase tracking-wide"
+              className="font-normal text-lg uppercase tracking-wide"
               style={{ color: eyebrowColor || '#dc2626' }}
             >
               {eyebrow}
@@ -148,11 +148,7 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
                 stroke="white"
                 strokeWidth="2"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </Link>
           </div>
