@@ -42,7 +42,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
           className={`flex items-center justify-between px-4 py-2 text-[17px] transition-colors ${
             isActive
               ? 'bg-header-accent text-white'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-header-accent hover:text-white'
+              : 'text-gray-700 hover:bg-header-accent hover:text-white'
           }`}
         >
           {item.label}
@@ -52,7 +52,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
         {/* Submenu - aligned to bottom of parent item */}
         {hasChildren && isActive && (
           <div
-            className="absolute left-full bottom-0 ml-0 w-56 bg-white dark:bg-gray-900 z-50 rounded-xl py-2"
+            className="absolute left-full bottom-0 ml-0 w-56 bg-white z-50 rounded-xl py-2"
             style={{
               boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
               border: '1px solid rgba(0, 0, 0, 0.05)',
@@ -62,7 +62,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
               <Link
                 key={j}
                 href={child.href}
-                className="block px-4 py-2.5 text-[15px] text-gray-700 dark:text-gray-300 hover:bg-header-accent hover:text-white transition-all duration-200"
+                className="block px-4 py-2.5 text-[15px] text-gray-700 hover:bg-header-accent hover:text-white transition-all duration-200"
               >
                 {child.label}
               </Link>
@@ -99,7 +99,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items, alignRight = 
           {/* Invisible bridge to maintain hover */}
           <div className="absolute top-full left-0 h-2 w-full" />
           <div
-            className={`absolute top-[calc(100%+0.5rem)] ${alignRight ? 'right-0' : 'left-0'} py-3 bg-white dark:bg-gray-900 z-50 rounded-xl min-w-[220px] animate-fade-in-up`}
+            className={`absolute top-[calc(100%+0.5rem)] ${alignRight ? 'right-0' : 'left-0'} py-3 bg-white z-50 rounded-xl min-w-[220px] animate-fade-in-up`}
             style={{
               boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
               border: '1px solid rgba(0, 0, 0, 0.05)',
