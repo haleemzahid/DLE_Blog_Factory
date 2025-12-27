@@ -2,9 +2,8 @@ import React from 'react'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import Link from 'next/link'
-import { Media } from '@/components/Media'
-import { formatDateTime } from '@/utilities/formatDateTime'
-import type { Post, Category, Page } from '@/payload-types'
+import type { Post, Category } from '@/payload-types'
+import { ArticleCard, cardStyles, type ArticleCardData } from '@/components/Card/ArticleCard'
 
 // Extract plain text from Lexical rich text content
 const extractTextFromContent = (content: any, maxLength: number = 160): string => {
@@ -148,13 +147,22 @@ export const PageBlogBlock: React.FC<PageBlogBlockProps> = async (props) => {
           }
         >
           {posts.map((post, index) => (
-            <PostCard
+            <ArticleCard
               key={`${post.id}-${index}`}
-              post={post}
-              layout={layout || 'grid'}
+              article={{
+                id: post.id,
+                title: post.title,
+                slug: post.slug,
+                heroImage: typeof post.heroImage === 'object' ? post.heroImage : null,
+                description: getPostDescription(post),
+                authorName: 'DLE Network',
+                publishedAt: post.publishedAt || null,
+              } as ArticleCardData}
               showReadMore={showReadMore || false}
               showDate={showDate || false}
               showExcerpt={showExcerpt || false}
+              showAuthor={false}
+              accentColor="#dc2626"
             />
           ))}
         </div>
@@ -180,134 +188,5 @@ export const PageBlogBlock: React.FC<PageBlogBlockProps> = async (props) => {
         )}
       </div>
     </section>
-  )
-}
-
-interface PostCardProps {
-  post: Post
-  layout: 'grid' | 'list' | 'compact'
-  showReadMore: boolean
-  showDate: boolean
-  showExcerpt: boolean
-}
-
-function PostCard({ post, layout, showReadMore, showDate, showExcerpt }: PostCardProps) {
-  if (layout === 'compact') {
-    return (
-      <Link href={`/posts/${post.slug}`} className="group block">
-        <article className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow">
-          <div className="flex gap-4 p-4">
-            {post.heroImage && typeof post.heroImage === 'object' && (
-              <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden">
-                <Media resource={post.heroImage} fill className="object-cover" />
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors line-clamp-2">
-                {post.title}
-              </h3>
-              {showDate && post.publishedAt && (
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {formatDateTime(post.publishedAt)}
-                </p>
-              )}
-            </div>
-          </div>
-        </article>
-      </Link>
-    )
-  }
-
-  if (layout === 'list') {
-    return (
-      <Link href={`/posts/${post.slug}`} className="group block">
-        <article className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow flex flex-col md:flex-row">
-          {post.heroImage && typeof post.heroImage === 'object' && (
-            <div className="relative w-full md:w-72 aspect-video md:aspect-auto flex-shrink-0">
-              <Media resource={post.heroImage} fill className="object-cover" />
-            </div>
-          )}
-          <div className="p-6 flex flex-col justify-center">
-            {showDate && post.publishedAt && (
-              <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-2">
-                {formatDateTime(post.publishedAt)}
-              </p>
-            )}
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors mb-2">
-              {post.title}
-            </h3>
-            {showExcerpt && getPostDescription(post) && (
-              <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
-                {getPostDescription(post)}
-              </p>
-            )}
-            {showReadMore && (
-              <span className="text-red-600 font-medium mt-4 inline-flex items-center gap-1">
-                Read More
-                <svg
-                  className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </span>
-            )}
-          </div>
-        </article>
-      </Link>
-    )
-  }
-
-  // Grid layout (default)
-  return (
-    <Link href={`/posts/${post.slug}`} className="group block h-full">
-      <article className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow h-full flex flex-col">
-        {post.heroImage && typeof post.heroImage === 'object' && (
-          <div className="relative aspect-video">
-            <Media resource={post.heroImage} fill className="object-cover" />
-          </div>
-        )}
-        <div className="p-6 flex-1 flex flex-col">
-          {showDate && post.publishedAt && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-              {formatDateTime(post.publishedAt)}
-            </p>
-          )}
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">
-            {post.title}
-          </h3>
-          {showExcerpt && getPostDescription(post) && (
-            <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 flex-1">
-              {getPostDescription(post)}
-            </p>
-          )}
-          {showReadMore && (
-            <span className="text-red-600 font-medium mt-4 inline-flex items-center gap-1 text-sm">
-              Read More
-              <svg
-                className="w-3 h-3 group-hover:translate-x-1 transition-transform"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </span>
-          )}
-        </div>
-      </article>
-    </Link>
   )
 }

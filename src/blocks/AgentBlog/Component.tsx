@@ -4,8 +4,8 @@ import { Media } from '@/components/Media'
 import Link from 'next/link'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { formatDateTime } from '@/utilities/formatDateTime'
 import { AgentBlogPagination, SerializedAgentPost } from './AgentBlogPagination'
+import { ArticleCard, cardStyles, type ArticleCardData } from '@/components/Card/ArticleCard'
 
 // Extract plain text from Lexical rich text content
 const extractTextFromContent = (content: any, maxLength: number = 160): string => {
@@ -38,57 +38,6 @@ const getPostDescription = (post: Post): string | null => {
 
 type Props = AgentBlogBlockType & {
   id?: string
-}
-
-const PostCard: React.FC<{
-  post: Post
-  showDate?: boolean
-  showAuthor?: boolean
-  showExcerpt?: boolean
-}> = ({ post, showDate = true, showAuthor = true, showExcerpt = true }) => {
-  return (
-    <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      {post.heroImage && typeof post.heroImage === 'object' && (
-        <Link href={`/posts/${post.slug}`} className="block relative aspect-video">
-          <Media resource={post.heroImage} fill className="object-cover" />
-        </Link>
-      )}
-
-      <div className="p-5">
-        <Link href={`/posts/${post.slug}`}>
-          <h3 className="font-bold text-lg text-gray-900 hover:text-blue-600 transition-colors mb-2 line-clamp-2">
-            {post.title}
-          </h3>
-        </Link>
-
-        {showExcerpt && getPostDescription(post) && (
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">{getPostDescription(post)}</p>
-        )}
-
-        <div className="flex items-center gap-4 text-sm text-gray-500">
-          {showAuthor && post.populatedAuthors && post.populatedAuthors.length > 0 && (
-            <span>{post.populatedAuthors[0]?.name}</span>
-          )}
-          {showDate && post.publishedAt && <span>{formatDateTime(post.publishedAt)}</span>}
-        </div>
-
-        <Link
-          href={`/posts/${post.slug}`}
-          className="inline-flex items-center text-red-600 font-semibold text-sm mt-3 hover:text-red-700"
-        >
-          Read more
-          <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
-        </Link>
-      </div>
-    </article>
-  )
 }
 
 export const AgentBlogBlock: React.FC<Props> = async ({
@@ -169,31 +118,28 @@ export const AgentBlogBlock: React.FC<Props> = async ({
 
         {layout === 'featured' && featuredPost && (
           <div className="mb-8">
-            <article className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="md:flex">
-                {featuredPost.heroImage && typeof featuredPost.heroImage === 'object' && (
-                  <div className="md:w-1/2 relative aspect-video md:aspect-auto">
-                    <Media resource={featuredPost.heroImage} fill className="object-cover" />
-                  </div>
-                )}
-                <div className="md:w-1/2 p-8 flex flex-col justify-center">
-                  <Link href={`/posts/${featuredPost.slug}`}>
-                    <h3 className="font-bold text-2xl text-gray-900 hover:text-blue-600 transition-colors mb-4">
+            <Link href={`/posts/${featuredPost.slug}`} className="block group">
+              <article className={cardStyles.container}>
+                <div className="md:flex">
+                  {featuredPost.heroImage && typeof featuredPost.heroImage === 'object' && (
+                    <div className="md:w-1/2 relative aspect-video md:aspect-auto">
+                      <Media resource={featuredPost.heroImage} fill className="object-cover" />
+                    </div>
+                  )}
+                  <div className={`md:w-1/2 ${cardStyles.content}`}>
+                    <h3 className={cardStyles.title}>
                       {featuredPost.title}
                     </h3>
-                  </Link>
-                  {showExcerpt && getPostDescription(featuredPost) && (
-                    <p className="text-gray-600 mb-4">{getPostDescription(featuredPost)}</p>
-                  )}
-                  <Link
-                    href={`/posts/${featuredPost.slug}`}
-                    className="inline-flex items-center text-red-600 font-semibold"
-                  >
-                    Read more →
-                  </Link>
+                    {showExcerpt && getPostDescription(featuredPost) && (
+                      <p className={cardStyles.excerpt}>{getPostDescription(featuredPost)}</p>
+                    )}
+                    <span className={cardStyles.readMore} style={{ color: '#2563eb' }}>
+                      Read More »
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </Link>
           </div>
         )}
 
@@ -214,12 +160,25 @@ export const AgentBlogBlock: React.FC<Props> = async ({
           `}
           >
             {(layout === 'featured' ? posts.slice(1) : posts).map((post, index) => (
-              <PostCard
+              <ArticleCard
                 key={`${post.id}-${index}`}
-                post={post}
+                article={{
+                  id: post.id,
+                  title: post.title,
+                  slug: post.slug || '',
+                  heroImage: typeof post.heroImage === 'object' ? post.heroImage : null,
+                  description: getPostDescription(post),
+                  authorName:
+                    post.populatedAuthors && post.populatedAuthors.length > 0
+                      ? post.populatedAuthors[0]?.name || 'DLE Network'
+                      : 'DLE Network',
+                  publishedAt: post.publishedAt || null,
+                } as ArticleCardData}
                 showDate={showDate ?? true}
                 showAuthor={showAuthor ?? true}
                 showExcerpt={showExcerpt ?? true}
+                showReadMore={true}
+                accentColor="#2563eb"
               />
             ))}
           </div>
