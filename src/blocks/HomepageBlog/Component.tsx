@@ -128,13 +128,11 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
-          {title && (
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {title}
-            </h2>
-          )}
+          {title && <span className="inline-block px-6 text-md text-red-500  mb-2">{title}</span>}
           {subtitle && (
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">{subtitle}</p>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
+              {subtitle}
+            </h2>
           )}
         </div>
 
@@ -165,9 +163,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
                       {featuredPost.title}
                     </h3>
                     {getPostDescription(featuredPost) && (
-                      <p className={cardStyles.excerpt}>
-                        {getPostDescription(featuredPost)}
-                      </p>
+                      <p className={cardStyles.excerpt}>{getPostDescription(featuredPost)}</p>
                     )}
                     <span className={cardStyles.readMore} style={{ color: '#2563eb' }}>
                       Read More »
@@ -199,15 +195,17 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
               {gridPosts.map((post, index) => (
                 <ArticleCard
                   key={`${post.id}-${index}`}
-                  article={{
-                    id: post.id,
-                    title: post.title,
-                    slug: post.slug || '',
-                    heroImage: typeof post.heroImage === 'object' ? post.heroImage : null,
-                    description: getPostDescription(post),
-                    authorName: 'DLE Network',
-                    publishedAt: post.publishedAt || null,
-                  } as ArticleCardData}
+                  article={
+                    {
+                      id: post.id,
+                      title: post.title,
+                      slug: post.slug || '',
+                      heroImage: typeof post.heroImage === 'object' ? post.heroImage : null,
+                      description: getPostDescription(post),
+                      authorName: 'DLE Network',
+                      publishedAt: post.publishedAt || null,
+                    } as ArticleCardData
+                  }
                   showDate={true}
                   showAuthor={false}
                   showExcerpt={true}
