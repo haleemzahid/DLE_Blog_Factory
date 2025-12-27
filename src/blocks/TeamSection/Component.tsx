@@ -62,47 +62,8 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
 
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Team Members */}
-          <div className="flex flex-wrap justify-center lg:justify-start gap-6">
-            {members.map((member, index) => (
-              <div key={`${member.id}-${index}`} className="group text-center">
-                {/* Photo Card */}
-                <div className="relative w-56 h-72 mb-4 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-300 bg-white">
-                  {member.photo && typeof member.photo === 'object' && (
-                    <Media resource={member.photo} fill imgClassName="object-cover" />
-                  )}
-                  {/* LinkedIn Overlay */}
-                  {member.linkedIn && (
-                    <a
-                      href={member.linkedIn}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Visit ${member.name}'s LinkedIn profile`}
-                      className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-colors flex items-center justify-center"
-                    >
-                      <svg
-                        className="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                      </svg>
-                    </a>
-                  )}
-                </div>
-
-                {/* Info */}
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
-                {member.role && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{member.role}</p>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Right Side - Content */}
-          <div className="text-center lg:text-left">
+          {/* Left Side - Content (Text) */}
+          <div className="text-center lg:text-left order-2 lg:order-1">
             {eyebrow && (
               <span className="text-red-500 font-medium text-base italic">{eyebrow}</span>
             )}
@@ -133,15 +94,15 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
             )}
           </div>
 
-          {/* Right Side - Team Members Carousel */}
-          <div className="flex items-center justify-center lg:justify-start order-1 lg:order-2">
+          {/* Right Side - Team Members with Navigation */}
+          <div className="flex items-center justify-center lg:justify-end gap-4 order-1 lg:order-2">
             {/* Left Navigation Button */}
             {validMembers.length > itemsPerView && (
               <button
                 type="button"
                 onClick={handlePrev}
                 disabled={!canGoPrev}
-                className={`flex-shrink-0 w-10 h-10 mr-4 flex items-center justify-center rounded-full border-2 transition-all ${
+                className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all ${
                   canGoPrev
                     ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
                     : 'border-gray-200 text-gray-300 cursor-not-allowed'
@@ -161,24 +122,27 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
 
             {/* Team Members */}
             <div className="flex gap-6">
-              {visibleMembers.map((member) => (
-                <div key={member.id} className="flex-shrink-0 text-center w-40 md:w-48">
+              {visibleMembers.map((member, index) => (
+                <div key={`${member.id}-${index}`} className="group text-center">
                   {/* Photo Card */}
-                  <div className="relative h-52 md:h-60 mb-4 rounded-2xl overflow-hidden shadow-lg">
-                    <Media resource={member.photo as MediaType} fill imgClassName="object-cover" />
+                  <div className="relative w-44 md:w-56 h-56 md:h-72 mb-4 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-300 bg-white">
+                    {member.photo && typeof member.photo === 'object' && (
+                      <Media resource={member.photo} fill imgClassName="object-cover" />
+                    )}
                     {/* LinkedIn Overlay */}
                     {member.linkedIn && (
                       <a
                         href={member.linkedIn}
                         target="_blank"
                         rel="noopener noreferrer"
-                        title={`${member.name} on LinkedIn`}
-                        className="absolute inset-0 bg-blue-600/0 hover:bg-blue-600/20 transition-colors flex items-center justify-center"
+                        aria-label={`Visit ${member.name}'s LinkedIn profile`}
+                        className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 transition-colors flex items-center justify-center"
                       >
                         <svg
-                          className="w-10 h-10 text-white opacity-0 hover:opacity-100 transition-opacity drop-shadow-lg"
+                          className="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg"
                           fill="currentColor"
                           viewBox="0 0 24 24"
+                          aria-hidden="true"
                         >
                           <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                         </svg>
@@ -187,10 +151,10 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
                   </div>
 
                   {/* Info */}
-                  <h3 className="text-base font-bold text-gray-900 dark:text-white">
-                    {member.name}
-                  </h3>
-                  {member.role && <p className="text-sm text-red-500 mt-1">{member.role}</p>}
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
+                  {member.role && (
+                    <p className="text-sm text-red-500 mt-1">{member.role}</p>
+                  )}
                 </div>
               ))}
             </div>
@@ -201,7 +165,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
                 type="button"
                 onClick={handleNext}
                 disabled={!canGoNext}
-                className={`flex-shrink-0 w-10 h-10 ml-4 flex items-center justify-center rounded-full border-2 transition-all ${
+                className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all ${
                   canGoNext
                     ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
                     : 'border-gray-200 text-gray-300 cursor-not-allowed'

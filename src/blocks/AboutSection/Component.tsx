@@ -17,18 +17,12 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
     backgroundColor,
   } = props
 
-  const isImageLeft = imagePosition === 'left'
-
   return (
     <section className="py-6 md:py-6" style={{ backgroundColor: backgroundColor || '#f3f4f6' }}>
       <div className="container">
-        <div
-          className={`grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center ${
-            isImageLeft ? 'lg:flex-row-reverse' : ''
-          }`}
-        >
-          {/* Content Side */}
-          <div className={`${isImageLeft ? 'lg:order-2' : 'lg:order-1'}`}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center">
+          {/* Content Side - left */}
+          <div className="lg:order-1">
             {/* Heading */}
             {heading && (
               <h2
@@ -71,8 +65,8 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
             )}
           </div>
 
-          {/* Image Side */}
-          <div className={`${isImageLeft ? 'lg:order-1' : 'lg:order-2'}`}>
+          {/* Image Side - right */}
+          <div className="lg:order-2">
             {image && typeof image === 'object' && (
               <div className="rounded-lg overflow-hidden shadow-xl">
                 <Media resource={image} imgClassName="w-full h-auto object-cover" />
