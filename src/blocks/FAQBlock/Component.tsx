@@ -23,62 +23,67 @@ export const FAQBlockComponent: React.FC<Props> = ({
   resolvedFaqs,
 }) => {
   const faqItems = resolvedFaqs || faqs || []
-  const [openItems, setOpenItems] = useState<Set<number>>(defaultOpen ? new Set([0]) : new Set())
+  const [openIndex, setOpenIndex] = useState<number | null>(defaultOpen ? 0 : null)
 
   if (faqItems.length === 0) {
     return null
   }
 
   const toggleItem = (index: number) => {
-    const newOpenItems = new Set(openItems)
-    if (newOpenItems.has(index)) {
-      newOpenItems.delete(index)
-    } else {
-      newOpenItems.add(index)
-    }
-    setOpenItems(newOpenItems)
+    // Only one item can be open at a time - clicking same item closes it
+    setOpenIndex(openIndex === index ? null : index)
   }
 
   const renderAccordion = () => (
-    <div className="space-y-4 max-w-3xl mx-auto">
-      {faqItems.map((faq, index) => (
-        <div
-          key={`${faq.id}-${index}`}
-          className="border border-gray-200 rounded-lg overflow-hidden"
-        >
-          <button
-            onClick={() => toggleItem(index)}
-            className="w-full flex items-center justify-between p-4 text-left bg-white hover:bg-gray-50 transition-colors"
-          >
-            <span className="font-semibold text-gray-900">{faq.question}</span>
-            <svg
-              className={`w-5 h-5 text-gray-500 transition-transform ${
-                openItems.has(index) ? 'rotate-180' : ''
-              }`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-
+    <div className="bg-white max-w-4xl mx-auto rounded-lg shadow-md">
+      {faqItems.map((faq, index) => {
+        const isOpen = openIndex === index
+        return (
           <div
-            className={`transition-all duration-300 overflow-hidden ${
-              openItems.has(index) ? 'max-h-[1000px]' : 'max-h-0'
-            }`}
+            key={`${faq.id}-${index}`}
+            className={index < faqItems.length - 1 ? 'border-b border-gray-200' : ''}
           >
-            <div className="p-4 bg-gray-50 text-gray-600">
-              <RichText data={faq.answer} />
+            <button
+              type="button"
+              onClick={() => toggleItem(index)}
+              className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition-colors"
+            >
+              <span
+                className={`text-sm md:text-base transition-colors ${
+                  isOpen ? 'text-red-500 font-medium' : 'text-gray-700'
+                }`}
+              >
+                {faq.question}
+              </span>
+              <svg
+                className={`w-5 h-5 text-gray-400 transition-transform flex-shrink-0 ml-4 ${
+                  isOpen ? 'rotate-180' : ''
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <div
+              className={`transition-all duration-300 overflow-hidden ${
+                isOpen ? 'max-h-[1000px]' : 'max-h-0'
+              }`}
+            >
+              <div className="px-6 pb-4 text-gray-600 text-sm leading-relaxed">
+                <RichText data={faq.answer} />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 
@@ -105,13 +110,13 @@ export const FAQBlockComponent: React.FC<Props> = ({
         >
           <div className="flex items-start gap-3">
             <span
-              className={`mt-1 transition-transform ${openItems.has(index) ? 'rotate-90' : ''}`}
+              className={`mt-1 transition-transform ${openIndex === index ? 'rotate-90' : ''}`}
             >
               ▶
             </span>
             <div>
               <h3 className="font-semibold text-gray-900">{faq.question}</h3>
-              {openItems.has(index) && (
+              {openIndex === index && (
                 <div className="mt-2 text-gray-600">
                   <RichText data={faq.answer} />
                 </div>
@@ -124,10 +129,10 @@ export const FAQBlockComponent: React.FC<Props> = ({
   )
 
   return (
-    <section className="py-6 bg-white">
+    <section className="py-6 bg-gray-50">
       <div className="container mx-auto px-4">
         {title && (
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-8 text-center uppercase tracking-wide">
             {title}
           </h2>
         )}
