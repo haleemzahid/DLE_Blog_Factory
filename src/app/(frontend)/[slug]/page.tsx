@@ -12,6 +12,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -66,13 +67,25 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page
 
-  // Pages that should have full width layout (no max-width constraint)
-  const fullWidthPages = ['masterclarament']
-  const isFullWidth = fullWidthPages.includes(decodedSlug)
+  // Get hero image URL for preloading
+  const heroImageUrl =
+    hero?.media && typeof hero.media === 'object' && hero.media.url
+      ? getMediaUrl(hero.media.url, hero.media.updatedAt)
+      : null
 
   return (
     <article className={isFullWidth ? 'full-width-page' : ''}>
       <PageClient />
+      {/* Preload hero image for faster LCP */}
+      {heroImageUrl && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroImageUrl}
+          // @ts-expect-error fetchpriority is valid HTML attribute
+          fetchpriority="high"
+        />
+      )}
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
