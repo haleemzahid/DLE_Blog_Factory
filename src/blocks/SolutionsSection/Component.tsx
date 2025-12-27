@@ -19,7 +19,7 @@ export const SolutionsSectionBlock: React.FC<SolutionsSectionBlockProps> = (prop
 
   const buttonClasses = {
     dark: 'bg-gray-900 hover:bg-gray-800 text-white',
-    red: 'bg-red-500 hover:bg-red-600 text-white',
+    red: 'bg-red-600 hover:bg-red-700 text-white',
     outline: 'bg-transparent border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white',
   }
 

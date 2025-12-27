@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import Google Fonts for premium typography */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto+Slab:wght@400;500;600;700&display=swap');
+/* Google Fonts are now loaded via next/font in layout.tsx for better performance */
 
 @layer base {
   h1,
@@ -230,12 +229,12 @@ html[data-theme='light'] {
 }
 
 .section-heading {
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
 }
 
 .section-subheading {
-  font-family: 'Roboto Slab', serif;
+  font-family: var(--font-roboto-slab), 'Roboto Slab', serif;
   @apply text-lg md:text-xl text-muted-foreground;
 }
 
@@ -282,12 +281,12 @@ html[data-theme='light'] {
 }
 
 .hero-title {
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-subtitle {
-  font-family: 'Roboto Slab', serif;
+  font-family: var(--font-roboto-slab), 'Roboto Slab', serif;
 }
 
 /* ============================================
@@ -348,11 +347,11 @@ html {
    ============================================ */
 
 .font-heading {
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
 .font-body {
-  font-family: 'Roboto Slab', serif;
+  font-family: var(--font-roboto-slab), 'Roboto Slab', serif;
 }
 
 /* Text gradient effect */
