@@ -274,7 +274,7 @@ export const AgentContactBlock: React.FC<Props> = ({
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+                  className="w-full bg-red-600 hover:bg-black text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
                 >
                   {submitting ? 'Sending...' : 'Send a Message'}
                 </button>

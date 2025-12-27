@@ -54,7 +54,7 @@ export const AgentHero: React.FC<Props> = ({ agent }) => {
             {agent.phone && (
               <a
                 href={`tel:${agent.phone}`}
-                className="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-colors"
+                className="inline-block bg-red-600 hover:bg-black text-white font-bold py-3 px-8 rounded-full text-lg transition-colors"
               >
                 Call Me Today: {agent.phone}
               </a>

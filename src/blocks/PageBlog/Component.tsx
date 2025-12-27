@@ -172,7 +172,7 @@ export const PageBlogBlock: React.FC<PageBlogBlockProps> = async (props) => {
           <div className="text-center mt-10">
             <Link
               href={ctaLink}
-              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-3 rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 bg-red-600 hover:bg-black text-white font-medium px-6 py-3 rounded-lg transition-colors"
             >
               {ctaLabel}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
