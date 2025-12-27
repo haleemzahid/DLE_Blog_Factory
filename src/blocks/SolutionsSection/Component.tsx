@@ -1,6 +1,7 @@
 import React from 'react'
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
+import { ArrowRight } from 'lucide-react'
 
 import type { SolutionsSectionBlock as SolutionsSectionBlockProps } from '@/payload-types'
 
@@ -74,7 +75,9 @@ export const SolutionsSectionBlock: React.FC<SolutionsSectionBlockProps> = (prop
                 <CMSLink
                   {...link}
                   className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-colors ${buttonClasses[buttonStyle || 'dark']}`}
-                />
+                >
+                  <ArrowRight className="w-4 h-4" />
+                </CMSLink>
               </div>
             )}
           </div>
