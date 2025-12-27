@@ -83,6 +83,8 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata(): Metadata {
   return {
-    title: `DleBlogFactory Search`,
+    title: 'DleBlogFactory Search',
+    description:
+      'Search our knowledge base for articles on real estate SEO, AI visibility, and marketing strategies. Find the insights you need.',
   }
 }

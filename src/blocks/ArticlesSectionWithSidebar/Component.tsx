@@ -491,11 +491,13 @@ function SocialLink({ href, icon, color }: { href: string; icon: string; color?:
     ),
   }
 
+  const iconName = icon.charAt(0).toUpperCase() + icon.slice(1)
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label={`Visit our ${iconName} page`}
       className="w-8 h-8 flex items-center justify-center rounded-full text-white transition-opacity hover:opacity-80"
       style={{ backgroundColor: color || '#6b7280' }}
     >

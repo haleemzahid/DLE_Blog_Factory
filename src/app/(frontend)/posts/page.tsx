@@ -58,6 +58,8 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `DleBlogFactory Posts`,
+    title: 'DleBlogFactory Posts',
+    description:
+      'Explore our latest articles on real estate SEO, AI visibility, and local market strategies. Stay updated with expert insights and industry trends.',
   }
 }

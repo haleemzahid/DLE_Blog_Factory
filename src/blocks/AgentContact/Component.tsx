@@ -200,12 +200,14 @@ export const AgentContactBlock: React.FC<Props> = ({
               <div className="flex gap-3">
                 {Object.entries(socialLinks).map(([platform, url]) => {
                   if (!url || platform === 'id') return null
+                  const platformName = platform.charAt(0).toUpperCase() + platform.slice(1).replace(/([A-Z])/g, ' $1')
                   return (
                     <a
                       key={platform}
                       href={url as string}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`Visit our ${platformName} page`}
                       className={`p-2 rounded-full transition-colors ${
                         backgroundColor === 'dark'
                           ? 'bg-gray-700 hover:bg-gray-600 text-white'
