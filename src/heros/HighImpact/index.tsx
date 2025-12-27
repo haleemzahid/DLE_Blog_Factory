@@ -86,7 +86,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
             <div className="mt-8 flex justify-center">
               <Media
                 resource={logo}
-                className="max-w-[220px] h-auto"
+                className="max-w-[320px] h-auto"
                 imgClassName="object-contain"
               />
             </div>
