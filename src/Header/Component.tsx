@@ -9,11 +9,8 @@ import type { Header, Designation, State } from '@/payload-types'
 export async function Header() {
   const payload = await getPayload({ config: configPromise })
 
-  // Fetch header data directly (bypass cache for testing)
-  const headerData = await payload.findGlobal({
-    slug: 'header',
-    depth: 1,
-  }) as Header
+  // Fetch header data with caching and revalidation tag
+  const headerData = await getCachedGlobal('header', 1)() as Header
   
   // Fetch parent designations (top-level) with their children
   const designationsResult = await payload.find({
