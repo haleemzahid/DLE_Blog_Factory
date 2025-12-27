@@ -66,8 +66,12 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page
 
+  // Pages that should have full width layout (no max-width constraint)
+  const fullWidthPages = ['masterclarament']
+  const isFullWidth = fullWidthPages.includes(decodedSlug)
+
   return (
-    <article>
+    <article className={isFullWidth ? 'full-width-page' : ''}>
       <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
