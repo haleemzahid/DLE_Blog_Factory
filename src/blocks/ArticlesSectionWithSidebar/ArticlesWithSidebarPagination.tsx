@@ -94,12 +94,11 @@ export const ArticlesWithSidebarPagination: React.FC<ArticlesWithSidebarPaginati
                 type="button"
                 key={page}
                 onClick={() => goToPage(page)}
-                className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                className={`w-10 h-10 rounded-lg font-medium transition-colors border ${
                   currentPage === page
-                    ? 'text-white'
-                    : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
+                    ? 'border-gray-900 text-gray-900 bg-white'
+                    : 'border-gray-300 text-gray-600 hover:bg-gray-50'
                 }`}
-                style={currentPage === page ? { backgroundColor: accentColor } : {}}
               >
                 {page}
               </button>
