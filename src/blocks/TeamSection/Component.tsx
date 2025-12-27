@@ -117,7 +117,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
               <div className="mt-8">
                 <Link
                   href={ctaLink}
-                  className="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-medium px-8 py-3 rounded-full transition-colors shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-medium px-8 py-3 rounded-full transition-colors shadow-lg hover:shadow-xl"
                 >
                   {ctaLabel}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -143,7 +143,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
                 disabled={!canGoPrev}
                 className={`flex-shrink-0 w-10 h-10 mr-4 flex items-center justify-center rounded-full border-2 transition-all ${
                   canGoPrev
-                    ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
+                    ? 'border-gray-300 hover:border-red-600 hover:bg-red-600 hover:text-white text-gray-600'
                     : 'border-gray-200 text-gray-300 cursor-not-allowed'
                 }`}
                 aria-label="Previous"
@@ -203,7 +203,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
                 disabled={!canGoNext}
                 className={`flex-shrink-0 w-10 h-10 ml-4 flex items-center justify-center rounded-full border-2 transition-all ${
                   canGoNext
-                    ? 'border-gray-300 hover:border-red-500 hover:bg-red-500 hover:text-white text-gray-600'
+                    ? 'border-gray-300 hover:border-red-600 hover:bg-red-600 hover:text-white text-gray-600'
                     : 'border-gray-200 text-gray-300 cursor-not-allowed'
                 }`}
                 aria-label="Next"

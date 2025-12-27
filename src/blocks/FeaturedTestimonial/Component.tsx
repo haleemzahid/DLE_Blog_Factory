@@ -122,17 +122,21 @@ export const FeaturedTestimonialBlock: React.FC<FeaturedTestimonialBlockProps> =
 
                 {/* Dots indicator */}
                 {testimonials.length > 1 && (
-                  <div className="flex gap-2 mt-6 justify-center md:justify-start">
+                  <div className="flex gap-1 mt-6 justify-center md:justify-start">
                     {testimonials.map((_, index) => (
                       <button
                         type="button"
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                          index === currentIndex ? 'bg-gray-800' : 'bg-gray-300'
-                        }`}
+                        className="p-3 -m-2 group"
                         aria-label={`Go to testimonial ${index + 1}`}
-                      />
+                      >
+                        <span
+                          className={`block w-2 h-2 rounded-full transition-colors ${
+                            index === currentIndex ? 'bg-gray-800' : 'bg-gray-300 group-hover:bg-gray-400'
+                          }`}
+                        />
+                      </button>
                     ))}
                   </div>
                 )}

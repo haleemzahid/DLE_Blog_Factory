@@ -138,7 +138,7 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
           <div className="text-center mt-10">
             <Link
               href={ctaLink}
-              className="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-medium px-6 py-3 rounded-full transition-colors"
+              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-3 rounded-full transition-colors"
             >
               {ctaLabel}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

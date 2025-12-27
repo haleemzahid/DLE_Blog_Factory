@@ -19,6 +19,9 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   return url
 }
 
+const DEFAULT_DESCRIPTION =
+  'Your trusted partner in real estate SEO, AI visibility, and local market domination. Get expert solutions for your real estate business.'
+
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post> | null
 }): Promise<Metadata> => {
@@ -27,13 +30,15 @@ export const generateMeta = async (args: {
   const ogImage = getImageURL(doc?.meta?.image)
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
-    : 'Payload Website Template'
+    ? doc?.meta?.title + ' | DLE Network'
+    : 'DLE Network'
+
+  const description = doc?.meta?.description || DEFAULT_DESCRIPTION
 
   return {
-    description: doc?.meta?.description,
+    description,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description,
       images: ogImage
         ? [
             {
