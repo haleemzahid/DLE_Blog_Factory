@@ -25,10 +25,7 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
           <div className="lg:order-1">
             {/* Heading */}
             {heading && (
-              <h2
-                className="text-xl md:text-2xl font-bold mb-4"
-                style={{ color: headingColor || '#dc2626' }}
-              >
+              <h2 className="text-xl md:text-2xl mb-4" style={{ color: headingColor || '#dc2626' }}>
                 {heading}
               </h2>
             )}
