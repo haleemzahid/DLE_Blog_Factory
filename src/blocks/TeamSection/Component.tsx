@@ -61,14 +61,12 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-100/40 rounded-full blur-3xl -z-10" />
 
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           {/* Left Side - Content (Text) */}
           <div className="text-center lg:text-left order-2 lg:order-1">
-            {eyebrow && (
-              <span className="text-red-500 font-medium text-base italic">{eyebrow}</span>
-            )}
+            {eyebrow && <span className="text-red-500 text-lg font-normal">{eyebrow}</span>}
             {title && (
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mt-3 leading-tight">
+              <h2 className="text-3xl  font-bold text-gray-900 dark:text-white mt-3 leading-tight">
                 {title}
               </h2>
             )}
@@ -152,9 +150,7 @@ export const TeamSectionBlock: React.FC<TeamSectionBlockProps> = ({
 
                   {/* Info */}
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">{member.name}</h3>
-                  {member.role && (
-                    <p className="text-sm text-red-500 mt-1">{member.role}</p>
-                  )}
+                  {member.role && <p className="text-sm text-red-500 mt-1">{member.role}</p>}
                 </div>
               ))}
             </div>
