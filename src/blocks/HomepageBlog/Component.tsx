@@ -118,16 +118,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
     title: post.title,
     slug: post.slug || '',
     publishedAt: post.publishedAt,
-    heroImage:
-      post.heroImage && typeof post.heroImage === 'object'
-        ? {
-            id: post.heroImage.id,
-            url: post.heroImage.url,
-            alt: post.heroImage.alt,
-            width: post.heroImage.width,
-            height: post.heroImage.height,
-          }
-        : null,
+    heroImage: post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null,
     description: getPostDescription(post),
     isFeatured: (post as Post & { isFeatured?: boolean }).isFeatured,
   }))
