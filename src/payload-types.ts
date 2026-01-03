@@ -76,6 +76,16 @@ export interface Config {
     states: State;
     designations: Designation;
     testimonials: Testimonial;
+    tenants: Tenant;
+    'tenant-headers': TenantHeader;
+    'tenant-footers': TenantFooter;
+    'analytics-events': AnalyticsEvent;
+    'post-analytics': PostAnalytic;
+    'agent-analytics': AgentAnalytic;
+    'network-analytics': NetworkAnalytic;
+    'conversion-funnels': ConversionFunnel;
+    'keyword-rankings': KeywordRanking;
+    'ab-tests': AbTest;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -103,6 +113,16 @@ export interface Config {
     states: StatesSelect<false> | StatesSelect<true>;
     designations: DesignationsSelect<false> | DesignationsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    tenants: TenantsSelect<false> | TenantsSelect<true>;
+    'tenant-headers': TenantHeadersSelect<false> | TenantHeadersSelect<true>;
+    'tenant-footers': TenantFootersSelect<false> | TenantFootersSelect<true>;
+    'analytics-events': AnalyticsEventsSelect<false> | AnalyticsEventsSelect<true>;
+    'post-analytics': PostAnalyticsSelect<false> | PostAnalyticsSelect<true>;
+    'agent-analytics': AgentAnalyticsSelect<false> | AgentAnalyticsSelect<true>;
+    'network-analytics': NetworkAnalyticsSelect<false> | NetworkAnalyticsSelect<true>;
+    'conversion-funnels': ConversionFunnelsSelect<false> | ConversionFunnelsSelect<true>;
+    'keyword-rankings': KeywordRankingsSelect<false> | KeywordRankingsSelect<true>;
+    'ab-tests': AbTestsSelect<false> | AbTestsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -326,6 +346,49 @@ export interface Post {
    */
   syndicatedAgents?: (number | Agent)[] | null;
   /**
+   * Primary tenant for canonical URL (prevents duplicate content)
+   */
+  primaryTenant?: (number | null) | Tenant;
+  /**
+   * Custom SEO for each tenant (prevents duplicate content penalties)
+   */
+  tenantSeoOverrides?:
+    | {
+        tenant: number | Tenant;
+        /**
+         * Custom title for this tenant (e.g., "5 Tips by Mr. Dallas™")
+         */
+        titleOverride?: string | null;
+        /**
+         * Custom meta description for this tenant
+         */
+        descriptionOverride?: string | null;
+        /**
+         * Custom opening paragraph for this tenant (makes content unique)
+         */
+        introOverride?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Different URL on this tenant (optional)
+         */
+        customSlug?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Highlight this post as featured
    */
   isFeatured?: boolean | null;
@@ -333,6 +396,31 @@ export interface Post {
    * Display this post on specific pages (e.g., Google SEO Services page)
    */
   relatedPages?: (number | Page)[] | null;
+  /**
+   * How to determine related posts
+   */
+  relatedPostsMode?: ('auto' | 'manual' | 'hybrid') | null;
+  /**
+   * Control where this post appears on each tenant site
+   */
+  displayLocations?:
+    | {
+        tenant: number | Tenant;
+        /**
+         * Select display locations for this tenant
+         */
+        locations?: ('homepage' | 'blog-listing' | 'sidebar')[] | null;
+        /**
+         * Show in related posts on these agent pages
+         */
+        showOnAgentPages?: (number | Agent)[] | null;
+        /**
+         * Show on these specific pages
+         */
+        showOnPages?: (number | Page)[] | null;
+        id?: string | null;
+      }[]
+    | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -501,6 +589,9 @@ export interface User {
   name?: string | null;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -694,6 +785,42 @@ export interface Agent {
    * Show this agent in featured sections
    */
   featured?: boolean | null;
+  /**
+   * The tenant site for this agent
+   */
+  tenant?: (number | null) | Tenant;
+  /**
+   * Title prefix for designation (e.g., Mr., Ms., Mrs.)
+   */
+  designationPrefix?: ('Mr.' | 'Ms.' | 'Mrs.') | null;
+  /**
+   * Auto-generated: Mr./Ms./Mrs. [City]™
+   */
+  fullDesignation?: string | null;
+  /**
+   * Automatically create a tenant site for this agent on save
+   */
+  autoCreateTenant?: boolean | null;
+  /**
+   * City name for designation (e.g., "Dallas" for Mr. Dallas). If blank, uses city field.
+   */
+  designationCity?: string | null;
+  /**
+   * Additional specialty designations (e.g., Mr. SEO, Ms. Luxury)
+   */
+  designationSpecialties?: (number | Designation)[] | null;
+  /**
+   * Is this agent the exclusive Mr./Ms. for their city?
+   */
+  territoryExclusive?: boolean | null;
+  /**
+   * Show this agent in the public directory
+   */
+  showInDirectory?: boolean | null;
+  /**
+   * Order within directory listings (lower = first)
+   */
+  directoryOrder?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -716,6 +843,9 @@ export interface State {
    * Check if this is an unincorporated area directory
    */
   isUnincorporated?: boolean | null;
+  /**
+   * Description for the state network page
+   */
   description?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -723,6 +853,53 @@ export interface State {
   generateSlug?: boolean | null;
   slug: string;
   headerImage?: (number | null) | Media;
+  /**
+   * YouTube or Vimeo embed URL (e.g., https://www.youtube.com/embed/...)
+   */
+  featuredVideo?: string | null;
+  /**
+   * All available cities in this state for Mr./Ms. designations
+   */
+  cities?:
+    | {
+        cityName: string;
+        /**
+         * URL-friendly version (e.g., los-angeles)
+         */
+        citySlug: string;
+        /**
+         * For sorting by market size
+         */
+        population?: number | null;
+        /**
+         * Mr. designation holder for this city
+         */
+        mrAgent?: (number | null) | Agent;
+        /**
+         * Ms./Mrs. designation holder for this city
+         */
+        msAgent?: (number | null) | Agent;
+        /**
+         * Is this city available for new agents?
+         */
+        isAvailable?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Number of agents in this state (auto-calculated)
+   */
+  agentCount?: number | null;
+  showInNavigation?: boolean | null;
+  /**
+   * Order in navigation menus (lower = first)
+   */
+  navigationOrder?: number | null;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -790,6 +967,111 @@ export interface Designation {
    */
   featured?: boolean | null;
   sortOrder?: number | null;
+  /**
+   * Hex color for badge display (e.g., #dc2626)
+   */
+  badgeColor?: string | null;
+  /**
+   * Show this designation in menus and listings
+   */
+  isActive?: boolean | null;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Manage tenant sites (main site and agent sites)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: number;
+  /**
+   * Display name for this tenant (e.g., "DLE Main Site" or "Mr. Dallas")
+   */
+  name: string;
+  /**
+   * URL-friendly identifier (e.g., "main" or "mr-dallas")
+   */
+  slug: string;
+  /**
+   * Main site is the primary DLE site, Agent sites are individual realtor sites
+   */
+  type: 'main' | 'agent';
+  status: 'active' | 'inactive' | 'pending';
+  /**
+   * All domains that should route to this tenant
+   */
+  domains?:
+    | {
+        domain: string;
+        /**
+         * Primary domain used for canonical URLs
+         */
+        isPrimary?: boolean | null;
+        /**
+         * Domain ownership verified
+         */
+        isVerified?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The agent this tenant belongs to
+   */
+  linkedAgent?: (number | null) | Agent;
+  /**
+   * Custom branding for this tenant
+   */
+  branding?: {
+    logo?: (number | null) | Media;
+    favicon?: (number | null) | Media;
+    /**
+     * Primary brand color (hex)
+     */
+    primaryColor?: string | null;
+    /**
+     * Secondary brand color (hex)
+     */
+    secondaryColor?: string | null;
+    /**
+     * Accent color (hex)
+     */
+    accentColor?: string | null;
+  };
+  seoDefaults?: {
+    /**
+     * Site name for SEO (appears in title tags)
+     */
+    siteName?: string | null;
+    /**
+     * Default meta description for pages without custom description
+     */
+    defaultDescription?: string | null;
+    /**
+     * Default OG image for social sharing
+     */
+    defaultImage?: (number | null) | Media;
+  };
+  analytics?: {
+    /**
+     * Google Analytics 4 Measurement ID (optional)
+     */
+    googleAnalyticsId?: string | null;
+    /**
+     * Google Tag Manager ID (optional)
+     */
+    googleTagManagerId?: string | null;
+    /**
+     * Facebook Pixel ID (optional)
+     */
+    facebookPixelId?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1930,6 +2212,562 @@ export interface ArticlesSidebarBlock {
   blockType: 'articlesSidebar';
 }
 /**
+ * Custom navigation header for each tenant site
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenant-headers".
+ */
+export interface TenantHeader {
+  id: number;
+  /**
+   * The tenant this header belongs to
+   */
+  tenant: number | Tenant;
+  /**
+   * Override tenant logo for header (falls back to tenant branding logo)
+   */
+  logo?: (number | null) | Media;
+  navItems?:
+    | {
+        /**
+         * Navigation link text
+         */
+        label: string;
+        linkType?: ('internal' | 'custom') | null;
+        internalLink?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        customUrl?: string | null;
+        newTab?: boolean | null;
+        /**
+         * Make this nav item stand out (e.g., for important pages)
+         */
+        highlight?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaButton?: {
+    show?: boolean | null;
+    text?: string | null;
+    linkType?: ('internal' | 'custom') | null;
+    internalLink?: {
+      relationTo: 'pages';
+      value: number | Page;
+    } | null;
+    customUrl?: string | null;
+    style?: ('primary' | 'secondary') | null;
+  };
+  showSearch?: boolean | null;
+  /**
+   * Keep header fixed at top when scrolling
+   */
+  sticky?: boolean | null;
+  /**
+   * Make header transparent over hero sections
+   */
+  transparent?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Custom footer for each tenant site
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenant-footers".
+ */
+export interface TenantFooter {
+  id: number;
+  /**
+   * The tenant this footer belongs to
+   */
+  tenant: number | Tenant;
+  columns?:
+    | {
+        /**
+         * Column heading (e.g., "Quick Links", "Services")
+         */
+        title: string;
+        links?:
+          | {
+              label: string;
+              linkType?: ('internal' | 'custom') | null;
+              internalLink?:
+                | ({
+                    relationTo: 'pages';
+                    value: number | Page;
+                  } | null)
+                | ({
+                    relationTo: 'posts';
+                    value: number | Post;
+                  } | null);
+              customUrl?: string | null;
+              newTab?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    linkedin?: string | null;
+    youtube?: string | null;
+    twitter?: string | null;
+    tiktok?: string | null;
+    pinterest?: string | null;
+  };
+  contactInfo?: {
+    phone?: string | null;
+    email?: string | null;
+    address?: string | null;
+  };
+  /**
+   * Privacy policy, terms of service, etc.
+   */
+  legalLinks?:
+    | {
+        label: string;
+        linkType?: ('internal' | 'custom') | null;
+        internalLink?: {
+          relationTo: 'pages';
+          value: number | Page;
+        } | null;
+        customUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Use {year} for dynamic year
+   */
+  copyrightText?: string | null;
+  /**
+   * Display "Powered by Designated Local Expert" badge
+   */
+  showDleBadge?: boolean | null;
+  /**
+   * Disclaimers, license info, or other required text
+   */
+  additionalText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Raw analytics events collected from the website
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics-events".
+ */
+export interface AnalyticsEvent {
+  id: number;
+  event:
+    | 'page_view'
+    | 'scroll_depth'
+    | 'time_on_page'
+    | 'link_click'
+    | 'form_submission'
+    | 'video_play'
+    | 'cta_click'
+    | 'core_web_vitals'
+    | 'page_exit'
+    | 'download'
+    | 'share'
+    | 'lead_magnet_download'
+    | 'email_click'
+    | 'phone_click'
+    | 'demo_scheduled'
+    | 'comment_submitted';
+  sessionId: string;
+  postId?: (number | null) | Post;
+  pageId?: (number | null) | Page;
+  agentId?: (number | null) | Agent;
+  tenantId?: (number | null) | Tenant;
+  /**
+   * Additional event-specific data
+   */
+  eventData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Hashed/anonymized IP address
+   */
+  ipAddress?: string | null;
+  country?: string | null;
+  region?: string | null;
+  city?: string | null;
+  timezone?: string | null;
+  deviceType?: ('desktop' | 'mobile' | 'tablet') | null;
+  browser?: string | null;
+  os?: string | null;
+  screenSize?: string | null;
+  userAgent?: string | null;
+  referrer?: string | null;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  clientTimestamp?: string | null;
+  serverTimestamp: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Aggregated analytics data per post per day
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "post-analytics".
+ */
+export interface PostAnalytic {
+  id: number;
+  post: number | Post;
+  date: string;
+  pageviews?: number | null;
+  uniqueVisitors?: number | null;
+  sessions?: number | null;
+  newVisitors?: number | null;
+  returningVisitors?: number | null;
+  /**
+   * Average time in seconds
+   */
+  avgTimeOnPage?: number | null;
+  /**
+   * Average scroll depth percentage
+   */
+  avgScrollDepth?: number | null;
+  /**
+   * Bounce rate percentage
+   */
+  bounceRate?: number | null;
+  /**
+   * Exit rate percentage
+   */
+  exitRate?: number | null;
+  pagesPerSession?: number | null;
+  organicTraffic?: number | null;
+  directTraffic?: number | null;
+  referralTraffic?: number | null;
+  socialTraffic?: number | null;
+  emailTraffic?: number | null;
+  paidTraffic?: number | null;
+  /**
+   * Search Console impressions
+   */
+  impressions?: number | null;
+  /**
+   * Search Console clicks
+   */
+  clicks?: number | null;
+  /**
+   * Click-through rate
+   */
+  ctr?: number | null;
+  /**
+   * Average search position
+   */
+  avgPosition?: number | null;
+  formSubmissions?: number | null;
+  downloads?: number | null;
+  videoPlays?: number | null;
+  linkClicks?: number | null;
+  ctaClicks?: number | null;
+  leadsGenerated?: number | null;
+  qualifiedLeads?: number | null;
+  agentsSigned?: number | null;
+  /**
+   * Revenue in USD
+   */
+  revenueAttributed?: number | null;
+  shares?: number | null;
+  likes?: number | null;
+  comments?: number | null;
+  /**
+   * Average load time in ms
+   */
+  avgPageLoadTime?: number | null;
+  /**
+   * Largest Contentful Paint
+   */
+  avgLcp?: number | null;
+  /**
+   * First Input Delay
+   */
+  avgFid?: number | null;
+  /**
+   * Cumulative Layout Shift
+   */
+  avgCls?: number | null;
+  errors?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Aggregated analytics data per agent site per day
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agent-analytics".
+ */
+export interface AgentAnalytic {
+  id: number;
+  agent: number | Agent;
+  date: string;
+  totalPageviews?: number | null;
+  uniqueVisitors?: number | null;
+  sessions?: number | null;
+  /**
+   * Average session duration in seconds
+   */
+  avgSessionDuration?: number | null;
+  /**
+   * Bounce rate percentage
+   */
+  bounceRate?: number | null;
+  organicTraffic?: number | null;
+  directTraffic?: number | null;
+  referralTraffic?: number | null;
+  socialTraffic?: number | null;
+  leadsGenerated?: number | null;
+  formSubmissions?: number | null;
+  phoneCalls?: number | null;
+  emailClicks?: number | null;
+  topPost?: (number | null) | Post;
+  topPostViews?: number | null;
+  totalImpressions?: number | null;
+  totalClicks?: number | null;
+  avgCtr?: number | null;
+  avgPosition?: number | null;
+  /**
+   * Number of keywords ranking in top 100
+   */
+  keywordsRanking?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Network-wide aggregated analytics data per day
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "network-analytics".
+ */
+export interface NetworkAnalytic {
+  id: number;
+  date: string;
+  totalPageviews?: number | null;
+  totalUniqueVisitors?: number | null;
+  totalSessions?: number | null;
+  totalPosts?: number | null;
+  postsPublishedToday?: number | null;
+  avgPageviewsPerPost?: number | null;
+  totalAgents?: number | null;
+  /**
+   * Agents who published in last 30 days
+   */
+  activeAgents?: number | null;
+  totalLeads?: number | null;
+  totalAgentsSigned?: number | null;
+  /**
+   * Total revenue in USD
+   */
+  totalRevenue?: number | null;
+  /**
+   * Overall conversion rate %
+   */
+  conversionRate?: number | null;
+  totalKeywordsRanking?: number | null;
+  keywordsTop10?: number | null;
+  keywordsTop3?: number | null;
+  featuredSnippets?: number | null;
+  totalBacklinks?: number | null;
+  domainAuthority?: number | null;
+  youtubeSubscribers?: number | null;
+  youtubeViews?: number | null;
+  linkedinFollowers?: number | null;
+  twitterFollowers?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Tracks user journey through the conversion funnel
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "conversion-funnels".
+ */
+export interface ConversionFunnel {
+  id: number;
+  sessionId: string;
+  step1Visitor?: string | null;
+  step2Engaged?: string | null;
+  step3Lead?: string | null;
+  step4Qualified?: string | null;
+  step5Demo?: string | null;
+  step6Signed?: string | null;
+  firstPost?: (number | null) | Post;
+  lastPost?: (number | null) | Post;
+  totalPostsViewed?: number | null;
+  totalSessions?: number | null;
+  /**
+   * Seconds from first visit to conversion
+   */
+  timeToConvert?: number | null;
+  /**
+   * Array of posts visited with timestamps
+   */
+  touchpoints?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  tenant?: (number | null) | Tenant;
+  agent?: (number | null) | Agent;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Tracks keyword rankings from Google Search Console
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "keyword-rankings".
+ */
+export interface KeywordRanking {
+  id: number;
+  post?: (number | null) | Post;
+  keyword: string;
+  date: string;
+  position: number;
+  impressions?: number | null;
+  clicks?: number | null;
+  /**
+   * Click-through rate
+   */
+  ctr?: number | null;
+  searchEngine?: ('google' | 'bing' | 'yahoo') | null;
+  country?: string | null;
+  device?: ('desktop' | 'mobile' | 'tablet') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Manage A/B tests for optimization
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ab-tests".
+ */
+export interface AbTest {
+  id: number;
+  name: string;
+  description?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  status: 'draft' | 'running' | 'paused' | 'completed';
+  controlVariant?: {
+    name?: string | null;
+    /**
+     * Configuration for the control variant
+     */
+    config?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+  };
+  testVariants?:
+    | {
+        name: string;
+        /**
+         * Configuration for this test variant
+         */
+        config?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        /**
+         * Traffic percentage for this variant (0-100)
+         */
+        weight?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Name of the winning variant
+   */
+  winningVariant?: string | null;
+  /**
+   * Statistical confidence level (%)
+   */
+  confidenceLevel?: number | null;
+  /**
+   * Total number of participants
+   */
+  sampleSize?: number | null;
+  /**
+   * Detailed results per variant
+   */
+  results?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Specific pages to run this test on
+   */
+  targetPages?:
+    | (
+        | {
+            relationTo: 'posts';
+            value: number | Post;
+          }
+        | {
+            relationTo: 'pages';
+            value: number | Page;
+          }
+      )[]
+    | null;
+  targetAudience?: ('all' | 'new' | 'returning' | 'mobile' | 'desktop') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -2229,6 +3067,46 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'testimonials';
         value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'tenants';
+        value: number | Tenant;
+      } | null)
+    | ({
+        relationTo: 'tenant-headers';
+        value: number | TenantHeader;
+      } | null)
+    | ({
+        relationTo: 'tenant-footers';
+        value: number | TenantFooter;
+      } | null)
+    | ({
+        relationTo: 'analytics-events';
+        value: number | AnalyticsEvent;
+      } | null)
+    | ({
+        relationTo: 'post-analytics';
+        value: number | PostAnalytic;
+      } | null)
+    | ({
+        relationTo: 'agent-analytics';
+        value: number | AgentAnalytic;
+      } | null)
+    | ({
+        relationTo: 'network-analytics';
+        value: number | NetworkAnalytic;
+      } | null)
+    | ({
+        relationTo: 'conversion-funnels';
+        value: number | ConversionFunnel;
+      } | null)
+    | ({
+        relationTo: 'keyword-rankings';
+        value: number | KeywordRanking;
+      } | null)
+    | ({
+        relationTo: 'ab-tests';
+        value: number | AbTest;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2960,8 +3838,29 @@ export interface PostsSelect<T extends boolean = true> {
   showOnHomepage?: T;
   agent?: T;
   syndicatedAgents?: T;
+  primaryTenant?: T;
+  tenantSeoOverrides?:
+    | T
+    | {
+        tenant?: T;
+        titleOverride?: T;
+        descriptionOverride?: T;
+        introOverride?: T;
+        customSlug?: T;
+        id?: T;
+      };
   isFeatured?: T;
   relatedPages?: T;
+  relatedPostsMode?: T;
+  displayLocations?:
+    | T
+    | {
+        tenant?: T;
+        locations?: T;
+        showOnAgentPages?: T;
+        showOnPages?: T;
+        id?: T;
+      };
   populatedAuthors?:
     | T
     | {
@@ -3097,6 +3996,9 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -3209,6 +4111,15 @@ export interface AgentsSelect<T extends boolean = true> {
   generateSlug?: T;
   slug?: T;
   featured?: T;
+  tenant?: T;
+  designationPrefix?: T;
+  fullDesignation?: T;
+  autoCreateTenant?: T;
+  designationCity?: T;
+  designationSpecialties?: T;
+  territoryExclusive?: T;
+  showInDirectory?: T;
+  directoryOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3225,6 +4136,28 @@ export interface StatesSelect<T extends boolean = true> {
   generateSlug?: T;
   slug?: T;
   headerImage?: T;
+  featuredVideo?: T;
+  cities?:
+    | T
+    | {
+        cityName?: T;
+        citySlug?: T;
+        population?: T;
+        mrAgent?: T;
+        msAgent?: T;
+        isAvailable?: T;
+        id?: T;
+      };
+  agentCount?: T;
+  showInNavigation?: T;
+  navigationOrder?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3247,6 +4180,15 @@ export interface DesignationsSelect<T extends boolean = true> {
   slug?: T;
   featured?: T;
   sortOrder?: T;
+  badgeColor?: T;
+  isActive?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3266,6 +4208,352 @@ export interface TestimonialsSelect<T extends boolean = true> {
   date?: T;
   featured?: T;
   approved?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants_select".
+ */
+export interface TenantsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  type?: T;
+  status?: T;
+  domains?:
+    | T
+    | {
+        domain?: T;
+        isPrimary?: T;
+        isVerified?: T;
+        id?: T;
+      };
+  linkedAgent?: T;
+  branding?:
+    | T
+    | {
+        logo?: T;
+        favicon?: T;
+        primaryColor?: T;
+        secondaryColor?: T;
+        accentColor?: T;
+      };
+  seoDefaults?:
+    | T
+    | {
+        siteName?: T;
+        defaultDescription?: T;
+        defaultImage?: T;
+      };
+  analytics?:
+    | T
+    | {
+        googleAnalyticsId?: T;
+        googleTagManagerId?: T;
+        facebookPixelId?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenant-headers_select".
+ */
+export interface TenantHeadersSelect<T extends boolean = true> {
+  tenant?: T;
+  logo?: T;
+  navItems?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        internalLink?: T;
+        customUrl?: T;
+        newTab?: T;
+        highlight?: T;
+        id?: T;
+      };
+  ctaButton?:
+    | T
+    | {
+        show?: T;
+        text?: T;
+        linkType?: T;
+        internalLink?: T;
+        customUrl?: T;
+        style?: T;
+      };
+  showSearch?: T;
+  sticky?: T;
+  transparent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenant-footers_select".
+ */
+export interface TenantFootersSelect<T extends boolean = true> {
+  tenant?: T;
+  columns?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              linkType?: T;
+              internalLink?: T;
+              customUrl?: T;
+              newTab?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        linkedin?: T;
+        youtube?: T;
+        twitter?: T;
+        tiktok?: T;
+        pinterest?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        phone?: T;
+        email?: T;
+        address?: T;
+      };
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        internalLink?: T;
+        customUrl?: T;
+        id?: T;
+      };
+  copyrightText?: T;
+  showDleBadge?: T;
+  additionalText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics-events_select".
+ */
+export interface AnalyticsEventsSelect<T extends boolean = true> {
+  event?: T;
+  sessionId?: T;
+  postId?: T;
+  pageId?: T;
+  agentId?: T;
+  tenantId?: T;
+  eventData?: T;
+  ipAddress?: T;
+  country?: T;
+  region?: T;
+  city?: T;
+  timezone?: T;
+  deviceType?: T;
+  browser?: T;
+  os?: T;
+  screenSize?: T;
+  userAgent?: T;
+  referrer?: T;
+  utmSource?: T;
+  utmMedium?: T;
+  utmCampaign?: T;
+  clientTimestamp?: T;
+  serverTimestamp?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "post-analytics_select".
+ */
+export interface PostAnalyticsSelect<T extends boolean = true> {
+  post?: T;
+  date?: T;
+  pageviews?: T;
+  uniqueVisitors?: T;
+  sessions?: T;
+  newVisitors?: T;
+  returningVisitors?: T;
+  avgTimeOnPage?: T;
+  avgScrollDepth?: T;
+  bounceRate?: T;
+  exitRate?: T;
+  pagesPerSession?: T;
+  organicTraffic?: T;
+  directTraffic?: T;
+  referralTraffic?: T;
+  socialTraffic?: T;
+  emailTraffic?: T;
+  paidTraffic?: T;
+  impressions?: T;
+  clicks?: T;
+  ctr?: T;
+  avgPosition?: T;
+  formSubmissions?: T;
+  downloads?: T;
+  videoPlays?: T;
+  linkClicks?: T;
+  ctaClicks?: T;
+  leadsGenerated?: T;
+  qualifiedLeads?: T;
+  agentsSigned?: T;
+  revenueAttributed?: T;
+  shares?: T;
+  likes?: T;
+  comments?: T;
+  avgPageLoadTime?: T;
+  avgLcp?: T;
+  avgFid?: T;
+  avgCls?: T;
+  errors?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agent-analytics_select".
+ */
+export interface AgentAnalyticsSelect<T extends boolean = true> {
+  agent?: T;
+  date?: T;
+  totalPageviews?: T;
+  uniqueVisitors?: T;
+  sessions?: T;
+  avgSessionDuration?: T;
+  bounceRate?: T;
+  organicTraffic?: T;
+  directTraffic?: T;
+  referralTraffic?: T;
+  socialTraffic?: T;
+  leadsGenerated?: T;
+  formSubmissions?: T;
+  phoneCalls?: T;
+  emailClicks?: T;
+  topPost?: T;
+  topPostViews?: T;
+  totalImpressions?: T;
+  totalClicks?: T;
+  avgCtr?: T;
+  avgPosition?: T;
+  keywordsRanking?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "network-analytics_select".
+ */
+export interface NetworkAnalyticsSelect<T extends boolean = true> {
+  date?: T;
+  totalPageviews?: T;
+  totalUniqueVisitors?: T;
+  totalSessions?: T;
+  totalPosts?: T;
+  postsPublishedToday?: T;
+  avgPageviewsPerPost?: T;
+  totalAgents?: T;
+  activeAgents?: T;
+  totalLeads?: T;
+  totalAgentsSigned?: T;
+  totalRevenue?: T;
+  conversionRate?: T;
+  totalKeywordsRanking?: T;
+  keywordsTop10?: T;
+  keywordsTop3?: T;
+  featuredSnippets?: T;
+  totalBacklinks?: T;
+  domainAuthority?: T;
+  youtubeSubscribers?: T;
+  youtubeViews?: T;
+  linkedinFollowers?: T;
+  twitterFollowers?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "conversion-funnels_select".
+ */
+export interface ConversionFunnelsSelect<T extends boolean = true> {
+  sessionId?: T;
+  step1Visitor?: T;
+  step2Engaged?: T;
+  step3Lead?: T;
+  step4Qualified?: T;
+  step5Demo?: T;
+  step6Signed?: T;
+  firstPost?: T;
+  lastPost?: T;
+  totalPostsViewed?: T;
+  totalSessions?: T;
+  timeToConvert?: T;
+  touchpoints?: T;
+  tenant?: T;
+  agent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "keyword-rankings_select".
+ */
+export interface KeywordRankingsSelect<T extends boolean = true> {
+  post?: T;
+  keyword?: T;
+  date?: T;
+  position?: T;
+  impressions?: T;
+  clicks?: T;
+  ctr?: T;
+  searchEngine?: T;
+  country?: T;
+  device?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ab-tests_select".
+ */
+export interface AbTestsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  startDate?: T;
+  endDate?: T;
+  status?: T;
+  controlVariant?:
+    | T
+    | {
+        name?: T;
+        config?: T;
+      };
+  testVariants?:
+    | T
+    | {
+        name?: T;
+        config?: T;
+        weight?: T;
+        id?: T;
+      };
+  winningVariant?: T;
+  confidenceLevel?: T;
+  sampleSize?: T;
+  results?: T;
+  targetPages?: T;
+  targetAudience?: T;
   updatedAt?: T;
   createdAt?: T;
 }

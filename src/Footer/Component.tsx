@@ -1,9 +1,16 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import {
+  getTenantFooter,
+  getSocialLinks,
+  formatCopyrightText,
+  getContactInfo,
+  resolveNavLink,
+} from '@/utilities/getTenantNavigation'
 import Link from 'next/link'
 import React from 'react'
-import { Facebook, Instagram, Linkedin, Youtube, Users } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, Youtube, Users, Phone, Mail, MapPin } from 'lucide-react'
 
-import type { Footer } from '@/payload-types'
+import type { Footer as FooterType, Tenant } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { ScrollToTopButton } from './ScrollToTop'
@@ -15,8 +22,28 @@ const PinterestIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export async function Footer() {
-  const footerData = (await getCachedGlobal('footer', 1)()) as Footer
+// TikTok icon
+const TikTokIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" />
+  </svg>
+)
+
+interface FooterProps {
+  tenant?: Tenant | null
+}
+
+export async function Footer({ tenant }: FooterProps) {
+  // Check if tenant has a custom footer
+  const tenantFooter = tenant?.id ? await getTenantFooter(String(tenant.id)) : null
+
+  // If tenant has custom footer and is an agent site, render tenant-specific footer
+  if (tenantFooter && tenant?.type === 'agent') {
+    return <TenantFooter tenantFooter={tenantFooter} tenant={tenant} />
+  }
+
+  // Otherwise, render default main site footer
+  const footerData = (await getCachedGlobal('footer', 1)()) as FooterType
 
   const legalLinks = footerData?.legalLinks || []
   const socialLinks = footerData?.socialLinks
@@ -115,6 +142,174 @@ export async function Footer() {
             </p>
           </div>
         )}
+      </div>
+
+      {/* Scroll to top button */}
+      <ScrollToTopButton />
+    </footer>
+  )
+}
+
+// Tenant-specific footer component
+import type { TenantFooter as TenantFooterType } from '@/payload-types'
+
+interface TenantFooterProps {
+  tenantFooter: TenantFooterType
+  tenant: Tenant
+}
+
+function TenantFooter({ tenantFooter, tenant }: TenantFooterProps) {
+  const columns = tenantFooter.columns || []
+  const socialLinks = getSocialLinks(tenantFooter)
+  const contactInfo = getContactInfo(tenantFooter)
+  const legalLinks = tenantFooter.legalLinks || []
+  const copyrightText = formatCopyrightText(tenantFooter.copyrightText || undefined)
+  const showDleBadge = tenantFooter.showDleBadge !== false
+  const tenantName =
+    tenant.name || (tenant.seoDefaults as { siteName?: string })?.siteName || 'Agent Site'
+
+  // Map social platform to icon
+  const getSocialIcon = (icon: string) => {
+    switch (icon) {
+      case 'facebook':
+        return Facebook
+      case 'instagram':
+        return Instagram
+      case 'linkedin':
+        return Linkedin
+      case 'youtube':
+        return Youtube
+      case 'pinterest':
+        return PinterestIcon
+      case 'tiktok':
+        return TikTokIcon
+      default:
+        return Users
+    }
+  }
+
+  return (
+    <footer className="mt-auto bg-[#0a1628] text-white font-sans">
+      <div className="container py-10">
+        {/* Footer Columns */}
+        {columns.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+            {columns.map((column, colIndex) => (
+              <div key={colIndex}>
+                <h4 className="text-lg font-semibold mb-4">{column.title}</h4>
+                <ul className="space-y-2">
+                  {(column.links || []).map((link, linkIndex) => (
+                    <li key={linkIndex}>
+                      <Link
+                        href={resolveNavLink(link)}
+                        target={link.newTab ? '_blank' : undefined}
+                        rel={link.newTab ? 'noopener noreferrer' : undefined}
+                        className="text-gray-300 hover:text-white transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+
+            {/* Contact Info Column (if present) */}
+            {(contactInfo.phone || contactInfo.email || contactInfo.address) && (
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Contact</h4>
+                <ul className="space-y-3">
+                  {contactInfo.phone && (
+                    <li className="flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-gray-400" />
+                      <Link
+                        href={`tel:${contactInfo.phone.replace(/\D/g, '')}`}
+                        className="text-gray-300 hover:text-white transition-colors"
+                      >
+                        {contactInfo.phone}
+                      </Link>
+                    </li>
+                  )}
+                  {contactInfo.email && (
+                    <li className="flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-gray-400" />
+                      <Link
+                        href={`mailto:${contactInfo.email}`}
+                        className="text-gray-300 hover:text-white transition-colors"
+                      >
+                        {contactInfo.email}
+                      </Link>
+                    </li>
+                  )}
+                  {contactInfo.address && (
+                    <li className="flex items-start gap-2">
+                      <MapPin className="w-4 h-4 text-gray-400 mt-1" />
+                      <span className="text-gray-300 whitespace-pre-line">{contactInfo.address}</span>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Social Icons */}
+        {socialLinks.length > 0 && (
+          <div className="flex justify-center lg:justify-start gap-3 mb-8">
+            {socialLinks.map((social, i) => {
+              const Icon = getSocialIcon(social.icon)
+              return (
+                <Link
+                  key={i}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.platform}
+                  className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0a1628] hover:bg-gray-200 transition-colors"
+                >
+                  <Icon className="w-5 h-5" />
+                </Link>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Bottom Section: Copyright + Legal Links */}
+        <div className="border-t border-gray-700 pt-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="text-center lg:text-left">
+            <p className="text-gray-300 text-sm">
+              {copyrightText || `© ${new Date().getFullYear()} ${tenantName}. All rights reserved.`}
+            </p>
+            {showDleBadge && (
+              <p className="text-gray-500 text-xs mt-1">
+                Powered by{' '}
+                <Link
+                  href="https://designatedlocalexpert.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gray-400 transition-colors"
+                >
+                  Designated Local Expert
+                </Link>
+              </p>
+            )}
+          </div>
+
+          {/* Legal Links */}
+          {legalLinks.length > 0 && (
+            <div className="flex flex-wrap justify-center lg:justify-end gap-x-4 gap-y-1 text-sm">
+              {legalLinks.map((link, i) => (
+                <Link
+                  key={i}
+                  href={resolveNavLink(link)}
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Scroll to top button */}

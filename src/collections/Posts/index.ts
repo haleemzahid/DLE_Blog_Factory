@@ -250,6 +250,66 @@ export const Posts: CollectionConfig<'posts'> = {
       relationTo: 'agents',
       label: 'Syndicated to Agents',
     },
+    // Multi-Tenant SEO Override Fields
+    {
+      name: 'primaryTenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      admin: {
+        position: 'sidebar',
+        description: 'Primary tenant for canonical URL (prevents duplicate content)',
+        condition: (data) => data?.postType === 'syndicated',
+      },
+    },
+    {
+      name: 'tenantSeoOverrides',
+      type: 'array',
+      label: 'Tenant SEO Overrides',
+      admin: {
+        description: 'Custom SEO for each tenant (prevents duplicate content penalties)',
+        condition: (data) => data?.postType === 'syndicated',
+      },
+      fields: [
+        {
+          name: 'tenant',
+          type: 'relationship',
+          relationTo: 'tenants',
+          required: true,
+        },
+        {
+          name: 'titleOverride',
+          type: 'text',
+          label: 'Custom Title',
+          admin: {
+            description: 'Custom title for this tenant (e.g., "5 Tips by Mr. Dallas™")',
+          },
+        },
+        {
+          name: 'descriptionOverride',
+          type: 'textarea',
+          label: 'Custom Description',
+          admin: {
+            description: 'Custom meta description for this tenant',
+          },
+        },
+        {
+          name: 'introOverride',
+          type: 'richText',
+          label: 'Custom Introduction',
+          admin: {
+            description: 'Custom opening paragraph for this tenant (makes content unique)',
+          },
+        },
+        {
+          name: 'customSlug',
+          type: 'text',
+          label: 'Custom URL Slug',
+          admin: {
+            description: 'Different URL on this tenant (optional)',
+          },
+        },
+      ],
+    },
     {
       name: 'isFeatured',
       type: 'checkbox',
@@ -270,6 +330,70 @@ export const Posts: CollectionConfig<'posts'> = {
       hasMany: true,
       relationTo: 'pages',
       label: 'Show on Pages',
+    },
+    // Related Posts Configuration
+    {
+      name: 'relatedPostsMode',
+      type: 'select',
+      defaultValue: 'hybrid',
+      options: [
+        { label: 'Auto (by category)', value: 'auto' },
+        { label: 'Manual only', value: 'manual' },
+        { label: 'Manual + Auto fill', value: 'hybrid' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'How to determine related posts',
+      },
+    },
+    // Display Location Controls
+    {
+      name: 'displayLocations',
+      type: 'array',
+      label: 'Display Location Controls',
+      admin: {
+        description: 'Control where this post appears on each tenant site',
+        condition: (data) => data?.postType === 'syndicated',
+      },
+      fields: [
+        {
+          name: 'tenant',
+          type: 'relationship',
+          relationTo: 'tenants',
+          required: true,
+        },
+        {
+          name: 'locations',
+          type: 'select',
+          hasMany: true,
+          options: [
+            { label: 'Homepage (Featured)', value: 'homepage' },
+            { label: 'Blog Listing', value: 'blog-listing' },
+            { label: 'Sidebar Widget', value: 'sidebar' },
+          ],
+          admin: {
+            description: 'Select display locations for this tenant',
+          },
+        },
+        {
+          name: 'showOnAgentPages',
+          type: 'relationship',
+          relationTo: 'agents',
+          hasMany: true,
+          admin: {
+            description: 'Show in related posts on these agent pages',
+          },
+        },
+        {
+          name: 'showOnPages',
+          type: 'relationship',
+          relationTo: 'pages',
+          hasMany: true,
+          admin: {
+            description: 'Show on these specific pages',
+          },
+        },
+      ],
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
