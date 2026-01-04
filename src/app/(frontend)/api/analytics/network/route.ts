@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     const payload = await getPayload({ config: configPromise })
 
     // Calculate date range
-    let dateFrom = new Date()
+    const dateFrom = new Date()
     const dateTo = new Date()
 
     switch (period) {

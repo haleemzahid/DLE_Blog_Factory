@@ -126,6 +126,43 @@ function getTrafficSource(
   }
 }
 
+/**
+ * Validate if a value is a valid Payload CMS document ID
+ * PostgreSQL adapter uses integer IDs (serial), not MongoDB ObjectIds
+ * Also accepts UUIDs for compatibility
+ */
+function isValidPayloadId(id: unknown): boolean {
+  if (id === null || id === undefined || id === '') return false
+
+  // Handle number IDs (PostgreSQL serial)
+  if (typeof id === 'number') {
+    return Number.isInteger(id) && id > 0
+  }
+
+  if (typeof id !== 'string') return false
+
+  const idStr = id.trim()
+  if (idStr === '') return false
+
+  // Check for integer ID (PostgreSQL serial) - most common
+  if (/^\d+$/.test(idStr)) {
+    const num = parseInt(idStr, 10)
+    return num > 0
+  }
+
+  // Check for UUID format (some Payload configs use UUIDs)
+  if (/^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/.test(idStr)) {
+    return true
+  }
+
+  // Check for MongoDB ObjectId format (24 hex chars) for backwards compatibility
+  if (/^[a-fA-F0-9]{24}$/.test(idStr)) {
+    return true
+  }
+
+  return false
+}
+
 export async function POST(req: NextRequest) {
   try {
     const event = await req.json()
@@ -146,16 +183,10 @@ export async function POST(req: NextRequest) {
     // Determine traffic source
     const trafficSource = getTrafficSource(event.referrer, event.utmSource)
 
-    // Build enriched event
-    const enrichedEvent = {
+    // Build enriched event - start with required fields
+    const enrichedEvent: Record<string, unknown> = {
       event: event.event,
       sessionId: event.sessionId,
-
-      // Content context
-      postId: event.postId || undefined,
-      pageId: event.pageId || undefined,
-      agentId: event.agentId || undefined,
-      tenantId: event.tenantId || undefined,
 
       // Event data (all additional fields)
       eventData: {
@@ -181,6 +212,11 @@ export async function POST(req: NextRequest) {
         timeOnPage: event.timeOnPage,
         maxScrollDepth: event.maxScrollDepth,
         trafficSource,
+        // Store original IDs in eventData for reference even if not valid ObjectIds
+        payloadPostId: event.postId,
+        payloadPageId: event.pageId,
+        payloadAgentId: event.agentId,
+        payloadTenantId: event.tenantId,
         ...event.eventData,
       },
 
@@ -207,6 +243,21 @@ export async function POST(req: NextRequest) {
       // Timestamps
       clientTimestamp: event.timestamp,
       serverTimestamp: new Date().toISOString(),
+    }
+
+    // Only add relationship fields if they are valid Payload document IDs
+    // PostgreSQL uses integer IDs, so we validate for integers, UUIDs, or ObjectIds
+    if (isValidPayloadId(event.postId)) {
+      enrichedEvent.postId = event.postId
+    }
+    if (isValidPayloadId(event.pageId)) {
+      enrichedEvent.pageId = event.pageId
+    }
+    if (isValidPayloadId(event.agentId)) {
+      enrichedEvent.agentId = event.agentId
+    }
+    if (isValidPayloadId(event.tenantId)) {
+      enrichedEvent.tenantId = event.tenantId
     }
 
     // Save to database

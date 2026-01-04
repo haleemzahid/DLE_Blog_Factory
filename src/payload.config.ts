@@ -128,6 +128,9 @@ export default buildConfig({
     getServerSideURL(),
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    // WordPress analytics tracking
+    'http://localhost:8082',
+    'http://host.docker.internal:8082',
     // Allow network access during development
     ...(process.env.NODE_ENV === 'development' ? ['http://172.22.176.1:3000'] : []),
   ].filter(Boolean),

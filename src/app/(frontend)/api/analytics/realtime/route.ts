@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
     // Calculate time window
     const now = new Date()
-    let windowStart = new Date()
+    const windowStart = new Date()
 
     switch (window) {
       case '1h':
