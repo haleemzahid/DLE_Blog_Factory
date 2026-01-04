@@ -100,7 +100,7 @@ export async function GET(
     // Get top performing posts
     const postSummaries = new Map<string, { pageviews: number; leads: number }>()
     postAnalytics.docs.forEach((doc) => {
-      const postId = typeof doc.post === 'string' ? doc.post : doc.post?.id
+      const postId = typeof doc.post === 'number' ? String(doc.post) : doc.post?.id?.toString()
       if (!postId) return
 
       const existing = postSummaries.get(postId) || { pageviews: 0, leads: 0 }

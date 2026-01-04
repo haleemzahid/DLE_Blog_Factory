@@ -48,16 +48,34 @@ pnpm run clean:dev-migrations
 
 ## Deployment
 
-This project is configured for deployment on Vercel. Make sure to:
+This project is configured for deployment on Vercel. The build process automatically handles database migrations when the required environment variables are present.
 
-1. Set the required environment variables in Vercel:
-   - `NODE_ENV=production`
-   - `POSTGRES_URL`
-   - `PAYLOAD_SECRET`
-   - `BLOB_READ_WRITE_TOKEN`
-   - `CRON_SECRET`
+### Required Environment Variables
 
-2. If your database was previously used in dev mode, run the cleanup script before deploying (see [Migration Guide](./docs/MIGRATION_GUIDE.md))
+Set these environment variables in your Vercel project settings:
+
+1. **Required for build and runtime:**
+   - `POSTGRES_URL` - PostgreSQL connection string
+   - `PAYLOAD_SECRET` - Secret key for Payload CMS (generate with: `openssl rand -base64 32`)
+   - `BLOB_READ_WRITE_TOKEN` - Vercel Blob Storage token for media uploads
+
+2. **Optional but recommended:**
+   - `CRON_SECRET` - Secret for authenticating Vercel Cron requests (generate with: `openssl rand -base64 32`)
+   - `NEXT_PUBLIC_SERVER_URL` - Public URL of your application
+
+### Build Process
+
+The build script (`scripts/vercel-build.js`) automatically:
+- Checks for required environment variables
+- Runs database migrations if environment variables are present
+- Skips migrations gracefully if environment variables are missing
+- Proceeds with Next.js build
+
+**Important Notes:**
+- If your database was previously used in dev mode, run the cleanup script before deploying (see [Migration Guide](./docs/MIGRATION_GUIDE.md))
+- Ensure all environment variables are set in Vercel project settings before deployment
+- Database migrations run automatically during build if credentials are available
+- ESLint warnings are not treated as errors during production builds to prevent deployment failures
 
 ## Documentation
 
