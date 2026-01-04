@@ -32,7 +32,7 @@ function runCommand(command, description) {
   }
 }
 
-async function build() {
+function build() {
   console.log('🚀 Starting Vercel build process...\n')
 
   const hasPayloadSecret = !!process.env.PAYLOAD_SECRET
@@ -74,7 +74,9 @@ async function build() {
 }
 
 // Run the build
-build().catch((error) => {
+try {
+  build()
+} catch (error) {
   console.error('❌ Build process failed:', error)
   process.exit(1)
-})
+}
