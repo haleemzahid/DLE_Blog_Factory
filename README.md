@@ -75,6 +75,7 @@ The build script (`scripts/vercel-build.js`) automatically:
 - If your database was previously used in dev mode, run the cleanup script before deploying (see [Migration Guide](./docs/MIGRATION_GUIDE.md))
 - Ensure all environment variables are set in Vercel project settings before deployment
 - Database migrations run automatically during build if credentials are available
+- ESLint warnings are not treated as errors during production builds to prevent deployment failures
 
 ## Documentation
 
