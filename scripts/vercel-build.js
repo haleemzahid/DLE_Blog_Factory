@@ -77,6 +77,7 @@ function build() {
 try {
   build()
 } catch (error) {
-  console.error('❌ Build process failed:', error)
+  // This catches unexpected errors not already handled by build()
+  console.error('❌ Unexpected error during build:', error)
   process.exit(1)
 }
