@@ -98,7 +98,10 @@ export const FeaturedAgentsBlock: React.FC<FeaturedAgentsBlockProps> = async (pr
         {/* Header */}
         <div className="text-center mb-12">
           {eyebrow && (
-            <span className="text-lg " style={{ color: eyebrowColor || '#dc2626' }}>
+            <span
+              className="font-normal text-lg uppercase tracking-wide"
+              style={{ color: eyebrowColor || '#dc2626' }}
+            >
               {eyebrow}
             </span>
           )}

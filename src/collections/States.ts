@@ -14,7 +14,8 @@ export const States: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'abbreviation', 'country'],
+    defaultColumns: ['name', 'abbreviation', 'country', 'showInNavigation'],
+    group: 'Directory',
   },
   fields: [
     {
@@ -62,6 +63,9 @@ export const States: CollectionConfig = {
       name: 'description',
       type: 'textarea',
       label: 'Description',
+      admin: {
+        description: 'Description for the state network page',
+      },
     },
     slugField({
       position: undefined,
@@ -71,6 +75,134 @@ export const States: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       label: 'Header Image',
+    },
+    {
+      name: 'featuredVideo',
+      type: 'text',
+      label: 'Featured Video URL',
+      admin: {
+        description: 'YouTube or Vimeo embed URL (e.g., https://www.youtube.com/embed/...)',
+        placeholder: 'https://www.youtube.com/embed/...',
+      },
+    },
+    // Cities within this state for directory listing
+    {
+      name: 'cities',
+      type: 'array',
+      label: 'Cities',
+      admin: {
+        description: 'All available cities in this state for Mr./Ms. designations',
+      },
+      fields: [
+        {
+          name: 'cityName',
+          type: 'text',
+          required: true,
+          label: 'City Name',
+        },
+        {
+          name: 'citySlug',
+          type: 'text',
+          required: true,
+          label: 'City Slug',
+          admin: {
+            description: 'URL-friendly version (e.g., los-angeles)',
+          },
+        },
+        {
+          name: 'population',
+          type: 'number',
+          label: 'Population',
+          admin: {
+            description: 'For sorting by market size',
+          },
+        },
+        {
+          name: 'mrAgent',
+          type: 'relationship',
+          relationTo: 'agents',
+          label: 'Mr. [City] Agent',
+          admin: {
+            description: 'Mr. designation holder for this city',
+          },
+        },
+        {
+          name: 'msAgent',
+          type: 'relationship',
+          relationTo: 'agents',
+          label: 'Ms./Mrs. [City] Agent',
+          admin: {
+            description: 'Ms./Mrs. designation holder for this city',
+          },
+        },
+        {
+          name: 'isAvailable',
+          type: 'checkbox',
+          defaultValue: true,
+          label: 'Available',
+          admin: {
+            description: 'Is this city available for new agents?',
+          },
+        },
+      ],
+    },
+    // Virtual field for agent count (read-only)
+    {
+      name: 'agentCount',
+      type: 'number',
+      label: 'Agent Count',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+        description: 'Number of agents in this state (auto-calculated)',
+      },
+    },
+    // Navigation settings
+    {
+      name: 'showInNavigation',
+      type: 'checkbox',
+      defaultValue: true,
+      label: 'Show in Navigation',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'navigationOrder',
+      type: 'number',
+      label: 'Navigation Order',
+      admin: {
+        position: 'sidebar',
+        description: 'Order in navigation menus (lower = first)',
+      },
+    },
+    // SEO for state network pages
+    {
+      name: 'seo',
+      type: 'group',
+      label: 'SEO Settings',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'SEO Title',
+          admin: {
+            placeholder: 'e.g., California Real Estate Network | DLE',
+          },
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'SEO Description',
+          maxLength: 160,
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'OG Image',
+        },
+      ],
     },
   ],
 }

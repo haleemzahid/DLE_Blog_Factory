@@ -10,9 +10,13 @@ import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
+import { TenantProvider } from '@/providers/Tenant'
+import { AnalyticsProvider } from '@/providers/Analytics'
+import { CookieConsent } from '@/providers/Analytics/CookieConsent'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { draftMode } from 'next/headers'
+import { getTenantByDomain, getMainTenant } from '@/utilities/getTenant'
+import { draftMode, headers } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -34,6 +38,16 @@ const robotoSlab = Roboto_Slab({
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
+  // Get tenant based on current hostname
+  const headersList = await headers()
+  const host = headersList.get('host') || headersList.get('x-tenant-host') || 'localhost:3000'
+
+  // Try to get tenant by domain, fall back to main tenant
+  let tenant = await getTenantByDomain(host)
+  if (!tenant) {
+    tenant = await getMainTenant()
+  }
+
   return (
     <html
       className={cn(
@@ -51,15 +65,27 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+          <TenantProvider tenant={tenant}>
+            <AnalyticsProvider
+              config={{
+                tenantId: tenant?.id,
+                debug: process.env.NODE_ENV === 'development',
+              }}
+            >
+              <AdminBar
+                adminBarProps={{
+                  preview: isEnabled,
+                }}
+              />
 
-          <Header />
-          {children}
-          <Footer />
+              <Header tenant={tenant} />
+              {children}
+              <Footer tenant={tenant} />
+
+              {/* Cookie Consent Banner for GDPR/CCPA compliance */}
+              <CookieConsent privacyPolicyUrl="/privacy-policy" />
+            </AnalyticsProvider>
+          </TenantProvider>
         </Providers>
       </body>
     </html>

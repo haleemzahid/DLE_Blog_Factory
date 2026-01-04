@@ -56,7 +56,9 @@ export const PartnersLogosBlock: React.FC<PartnersLogosBlockProps> = ({
         {/* Header */}
         <div className="text-center mb-10">
           {eyebrow && (
-            <span className="text-red-600 text-lg uppercase tracking-wide">{eyebrow}</span>
+            <span className="text-red-600 font-medium text-lg uppercase tracking-wide">
+              {eyebrow}
+            </span>
           )}
           {title && (
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-2">
