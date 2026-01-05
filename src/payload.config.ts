@@ -16,6 +16,17 @@ import { Agents } from './collections/Agents'
 import { States } from './collections/States'
 import { Designations } from './collections/Designations'
 import { Testimonials } from './collections/Testimonials'
+import { Tenants } from './collections/Tenants'
+import { TenantHeaders } from './collections/TenantHeaders'
+import { TenantFooters } from './collections/TenantFooters'
+// Analytics Collections
+import { AnalyticsEvents } from './collections/AnalyticsEvents'
+import { PostAnalytics } from './collections/PostAnalytics'
+import { AgentAnalytics } from './collections/AgentAnalytics'
+import { NetworkAnalytics } from './collections/NetworkAnalytics'
+import { ConversionFunnels } from './collections/ConversionFunnels'
+import { KeywordRankings } from './collections/KeywordRankings'
+import { ABTests } from './collections/ABTests'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -48,10 +59,18 @@ export default buildConfig({
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
       beforeDashboard: ['@/components/BeforeDashboard'],
+      afterNavLinks: ['@/components/Admin/AnalyticsDashboardNavLink'],
       providers: ['@/components/DocumentVoiceButton#DocumentVoiceButton'],
       graphics: {
         Logo: '@/components/Logo',
         Icon: '@/components/Logo/Icon',
+      },
+      views: {
+        analyticsDashboard: {
+          Component: '@/components/Admin/AnalyticsDashboardView',
+          path: '/analytics-dashboard',
+          exact: true,
+        },
       },
     },
     importMap: {
@@ -81,8 +100,37 @@ export default buildConfig({
     migrationDir: path.resolve(dirname, './migrations'),
     prodMigrations: migrations,
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Agents, States, Designations, Testimonials],
-  cors: [getServerSideURL()].filter(Boolean),
+  collections: [
+    // Content Collections
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Agents,
+    States,
+    Designations,
+    Testimonials,
+    // Multi-Tenant Collections
+    Tenants,
+    TenantHeaders,
+    TenantFooters,
+    // Analytics Collections
+    AnalyticsEvents,
+    PostAnalytics,
+    AgentAnalytics,
+    NetworkAnalytics,
+    ConversionFunnels,
+    KeywordRankings,
+    ABTests,
+  ],
+  cors: [
+    getServerSideURL(),
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    // Allow network access during development
+    ...(process.env.NODE_ENV === 'development' ? ['http://172.22.176.1:3000'] : []),
+  ].filter(Boolean),
   globals: [Header, Footer],
   plugins: [
     ...plugins,

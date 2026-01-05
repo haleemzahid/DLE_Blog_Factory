@@ -14,6 +14,7 @@ import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { AnalyticsTracker } from '@/components/Analytics'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -51,8 +52,22 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   if (!post) return <PayloadRedirects url={url} />
 
+  // Get agent ID from post authors
+  const agentId = post.authors?.[0]
+    ? typeof post.authors[0] === 'object'
+      ? (post.authors[0] as { value?: { id?: string } | string }).value
+        ? typeof (post.authors[0] as { value: { id: string } }).value === 'string'
+          ? (post.authors[0] as { value: string }).value
+          : (post.authors[0] as { value: { id: string } }).value?.id
+        : undefined
+      : undefined
+    : undefined
+
   return (
     <article className="pt-16 pb-16">
+      {/* Analytics Tracker for post-specific tracking */}
+      <AnalyticsTracker postId={post.id} postSlug={post.slug || ''} agentId={agentId} />
+
       <PageClient />
 
       {/* Allows redirects for valid pages too */}

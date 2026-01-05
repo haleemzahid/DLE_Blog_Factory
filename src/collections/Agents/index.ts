@@ -42,8 +42,52 @@ export const Agents: CollectionConfig<'agents'> = {
     },
   },
   hooks: {
-    beforeChange: [populatePublishedAt],
-    afterChange: [revalidateAgent],
+    beforeChange: [
+      populatePublishedAt,
+      // Auto-generate fullDesignation
+      async ({ data }) => {
+        if (data.designationPrefix) {
+          const cityName = data.designationCity || data.city
+          if (cityName) {
+            data.fullDesignation = `${data.designationPrefix} ${cityName}™`
+          }
+        }
+        return data
+      },
+    ],
+    afterChange: [
+      revalidateAgent,
+      // Auto-create tenant for agents if requested
+      async ({ doc, req, operation }) => {
+        if (operation === 'create' && doc.autoCreateTenant && !doc.tenant) {
+          try {
+            const tenant = await req.payload.create({
+              collection: 'tenants',
+              data: {
+                name: doc.fullDesignation || doc.displayName || doc.name,
+                slug: doc.slug,
+                type: 'agent',
+                status: 'pending',
+                linkedAgent: doc.id,
+                seoDefaults: {
+                  siteName: doc.fullDesignation || doc.displayName || doc.name,
+                  defaultDescription: `${doc.fullDesignation || doc.displayName} - Your Designated Local Expert real estate agent in ${doc.city}. Find your dream home with the top-rated agent in the area.`,
+                },
+              },
+            })
+
+            // Link tenant back to agent
+            await req.payload.update({
+              collection: 'agents',
+              id: doc.id,
+              data: { tenant: tenant.id, autoCreateTenant: false },
+            })
+          } catch (error) {
+            console.error('Error auto-creating tenant:', error)
+          }
+        }
+      },
+    ],
     afterDelete: [revalidateDelete],
   },
   fields: [
@@ -489,6 +533,93 @@ export const Agents: CollectionConfig<'agents'> = {
       admin: {
         position: 'sidebar',
         description: 'Show this agent in featured sections',
+      },
+    },
+    // Multi-Tenant Fields
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      admin: {
+        position: 'sidebar',
+        description: 'The tenant site for this agent',
+      },
+    },
+    {
+      name: 'designationPrefix',
+      type: 'select',
+      options: [
+        { label: 'Mr.', value: 'Mr.' },
+        { label: 'Ms.', value: 'Ms.' },
+        { label: 'Mrs.', value: 'Mrs.' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Title prefix for designation (e.g., Mr., Ms., Mrs.)',
+      },
+    },
+    {
+      name: 'fullDesignation',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'Auto-generated: Mr./Ms./Mrs. [City]™',
+      },
+    },
+    {
+      name: 'autoCreateTenant',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Automatically create a tenant site for this agent on save',
+        condition: (data) => !data?.tenant,
+      },
+    },
+    // Directory System Fields
+    {
+      name: 'designationCity',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        description: 'City name for designation (e.g., "Dallas" for Mr. Dallas). If blank, uses city field.',
+      },
+    },
+    {
+      name: 'designationSpecialties',
+      type: 'relationship',
+      relationTo: 'designations',
+      hasMany: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Additional specialty designations (e.g., Mr. SEO, Ms. Luxury)',
+      },
+    },
+    {
+      name: 'territoryExclusive',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Is this agent the exclusive Mr./Ms. for their city?',
+      },
+    },
+    {
+      name: 'showInDirectory',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Show this agent in the public directory',
+      },
+    },
+    {
+      name: 'directoryOrder',
+      type: 'number',
+      admin: {
+        position: 'sidebar',
+        description: 'Order within directory listings (lower = first)',
       },
     },
   ],

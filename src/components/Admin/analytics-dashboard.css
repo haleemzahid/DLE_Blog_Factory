@@ -1,0 +1,1304 @@
+/* Analytics Dashboard Styles for Payload Admin */
+/* This file contains all necessary styles for the analytics dashboard within the admin panel */
+
+/* ========================================
+   CSS RESET & BASE STYLES (scoped)
+   ======================================== */
+
+.analytics-dashboard-wrapper {
+  --ad-gray-50: #f9fafb;
+  --ad-gray-100: #f3f4f6;
+  --ad-gray-200: #e5e7eb;
+  --ad-gray-300: #d1d5db;
+  --ad-gray-400: #9ca3af;
+  --ad-gray-500: #6b7280;
+  --ad-gray-600: #4b5563;
+  --ad-gray-700: #374151;
+  --ad-gray-800: #1f2937;
+  --ad-gray-900: #111827;
+  --ad-blue-50: #eff6ff;
+  --ad-blue-100: #dbeafe;
+  --ad-blue-400: #60a5fa;
+  --ad-blue-500: #3b82f6;
+  --ad-blue-600: #2563eb;
+  --ad-blue-700: #1d4ed8;
+  --ad-green-400: #4ade80;
+  --ad-green-500: #22c55e;
+  --ad-red-50: #fef2f2;
+  --ad-red-200: #fecaca;
+  --ad-red-400: #f87171;
+  --ad-red-500: #ef4444;
+  --ad-red-700: #b91c1c;
+  --ad-red-800: #991b1b;
+  --ad-indigo-600: #4f46e5;
+  --ad-amber-500: #f59e0b;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--ad-gray-50);
+}
+
+.analytics-dashboard-wrapper *,
+.analytics-dashboard-wrapper *::before,
+.analytics-dashboard-wrapper *::after {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   LAYOUT UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .min-h-screen {
+  min-height: 100vh;
+}
+
+.analytics-dashboard-wrapper .bg-gray-50 {
+  background-color: var(--ad-gray-50);
+}
+
+.analytics-dashboard-wrapper .bg-white {
+  background-color: #ffffff;
+}
+
+.analytics-dashboard-wrapper .bg-gray-100 {
+  background-color: var(--ad-gray-100);
+}
+
+.analytics-dashboard-wrapper .bg-gray-200 {
+  background-color: var(--ad-gray-200);
+}
+
+.analytics-dashboard-wrapper .bg-gray-700 {
+  background-color: var(--ad-gray-700);
+}
+
+.analytics-dashboard-wrapper .bg-gray-800 {
+  background-color: var(--ad-gray-800);
+}
+
+.analytics-dashboard-wrapper .bg-blue-50 {
+  background-color: var(--ad-blue-50);
+}
+
+.analytics-dashboard-wrapper .bg-blue-600 {
+  background-color: var(--ad-blue-600);
+}
+
+.analytics-dashboard-wrapper .bg-red-50 {
+  background-color: var(--ad-red-50);
+}
+
+/* Gradient backgrounds */
+.analytics-dashboard-wrapper .bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.analytics-dashboard-wrapper .from-blue-600 {
+  --tw-gradient-from: var(--ad-blue-600);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent);
+}
+
+.analytics-dashboard-wrapper .to-indigo-600 {
+  --tw-gradient-to: var(--ad-indigo-600);
+}
+
+/* ========================================
+   FLEXBOX UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .flex {
+  display: flex;
+}
+
+.analytics-dashboard-wrapper .flex-col {
+  flex-direction: column;
+}
+
+.analytics-dashboard-wrapper .flex-1 {
+  flex: 1 1 0%;
+}
+
+.analytics-dashboard-wrapper .items-center {
+  align-items: center;
+}
+
+.analytics-dashboard-wrapper .justify-between {
+  justify-content: space-between;
+}
+
+.analytics-dashboard-wrapper .justify-center {
+  justify-content: center;
+}
+
+.analytics-dashboard-wrapper .gap-1 {
+  gap: 0.25rem;
+}
+
+.analytics-dashboard-wrapper .gap-2 {
+  gap: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .gap-4 {
+  gap: 1rem;
+}
+
+.analytics-dashboard-wrapper .gap-6 {
+  gap: 1.5rem;
+}
+
+/* ========================================
+   GRID UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .grid {
+  display: grid;
+}
+
+.analytics-dashboard-wrapper .grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .analytics-dashboard-wrapper .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .analytics-dashboard-wrapper .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .analytics-dashboard-wrapper .sm\:items-center {
+    align-items: center;
+  }
+
+  .analytics-dashboard-wrapper .sm\:justify-between {
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1024px) {
+  .analytics-dashboard-wrapper .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .analytics-dashboard-wrapper .lg\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+}
+
+@media (min-width: 1280px) {
+  .analytics-dashboard-wrapper .xl\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .analytics-dashboard-wrapper .md\:flex-row {
+    flex-direction: row;
+  }
+
+  .analytics-dashboard-wrapper .md\:items-center {
+    align-items: center;
+  }
+
+  .analytics-dashboard-wrapper .md\:justify-between {
+    justify-content: space-between;
+  }
+}
+
+/* ========================================
+   SPACING UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .p-1 {
+  padding: 0.25rem;
+}
+
+.analytics-dashboard-wrapper .p-2 {
+  padding: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .p-4 {
+  padding: 1rem;
+}
+
+.analytics-dashboard-wrapper .p-6 {
+  padding: 1.5rem;
+}
+
+.analytics-dashboard-wrapper .px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.analytics-dashboard-wrapper .px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.analytics-dashboard-wrapper .py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+
+.analytics-dashboard-wrapper .py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.analytics-dashboard-wrapper .py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.analytics-dashboard-wrapper .mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.analytics-dashboard-wrapper .mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .mb-4 {
+  margin-bottom: 1rem;
+}
+
+.analytics-dashboard-wrapper .mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.analytics-dashboard-wrapper .mb-8 {
+  margin-bottom: 2rem;
+}
+
+.analytics-dashboard-wrapper .mt-1 {
+  margin-top: 0.25rem;
+}
+
+.analytics-dashboard-wrapper .ml-1 {
+  margin-left: 0.25rem;
+}
+
+.analytics-dashboard-wrapper .min-w-0 {
+  min-width: 0;
+}
+
+/* ========================================
+   TYPOGRAPHY UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.analytics-dashboard-wrapper .text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.analytics-dashboard-wrapper .text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.analytics-dashboard-wrapper .text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.analytics-dashboard-wrapper .text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.analytics-dashboard-wrapper .text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.analytics-dashboard-wrapper .text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+.analytics-dashboard-wrapper .font-medium {
+  font-weight: 500;
+}
+
+.analytics-dashboard-wrapper .font-semibold {
+  font-weight: 600;
+}
+
+.analytics-dashboard-wrapper .font-bold {
+  font-weight: 700;
+}
+
+.analytics-dashboard-wrapper .text-white {
+  color: #ffffff;
+}
+
+.analytics-dashboard-wrapper .text-gray-400 {
+  color: var(--ad-gray-400);
+}
+
+.analytics-dashboard-wrapper .text-gray-500 {
+  color: var(--ad-gray-500);
+}
+
+.analytics-dashboard-wrapper .text-gray-600 {
+  color: var(--ad-gray-600);
+}
+
+.analytics-dashboard-wrapper .text-gray-700 {
+  color: var(--ad-gray-700);
+}
+
+.analytics-dashboard-wrapper .text-gray-900 {
+  color: var(--ad-gray-900);
+}
+
+.analytics-dashboard-wrapper .text-blue-100 {
+  color: var(--ad-blue-100);
+}
+
+.analytics-dashboard-wrapper .text-blue-400 {
+  color: var(--ad-blue-400);
+}
+
+.analytics-dashboard-wrapper .text-blue-600 {
+  color: var(--ad-blue-600);
+}
+
+.analytics-dashboard-wrapper .text-green-500 {
+  color: var(--ad-green-500);
+}
+
+.analytics-dashboard-wrapper .text-red-500 {
+  color: var(--ad-red-500);
+}
+
+.analytics-dashboard-wrapper .text-red-700 {
+  color: var(--ad-red-700);
+}
+
+.analytics-dashboard-wrapper .truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.analytics-dashboard-wrapper .text-left {
+  text-align: left;
+}
+
+.analytics-dashboard-wrapper .text-right {
+  text-align: right;
+}
+
+/* ========================================
+   BORDER & SHADOW UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .rounded {
+  border-radius: 0.25rem;
+}
+
+.analytics-dashboard-wrapper .rounded-md {
+  border-radius: 0.375rem;
+}
+
+.analytics-dashboard-wrapper .rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .rounded-xl {
+  border-radius: 0.75rem;
+}
+
+.analytics-dashboard-wrapper .rounded-full {
+  border-radius: 9999px;
+}
+
+.analytics-dashboard-wrapper .border {
+  border-width: 1px;
+}
+
+.analytics-dashboard-wrapper .border-0 {
+  border-width: 0;
+}
+
+.analytics-dashboard-wrapper .border-gray-200 {
+  border-color: var(--ad-gray-200);
+}
+
+.analytics-dashboard-wrapper .border-gray-700 {
+  border-color: var(--ad-gray-700);
+}
+
+.analytics-dashboard-wrapper .border-red-200 {
+  border-color: var(--ad-red-200);
+}
+
+.analytics-dashboard-wrapper .border-red-800 {
+  border-color: var(--ad-red-800);
+}
+
+.analytics-dashboard-wrapper .shadow {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.analytics-dashboard-wrapper .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.analytics-dashboard-wrapper .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* ========================================
+   WIDTH & HEIGHT UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .w-2 {
+  width: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .w-3 {
+  width: 0.75rem;
+}
+
+.analytics-dashboard-wrapper .w-4 {
+  width: 1rem;
+}
+
+.analytics-dashboard-wrapper .w-5 {
+  width: 1.25rem;
+}
+
+.analytics-dashboard-wrapper .w-8 {
+  width: 2rem;
+}
+
+.analytics-dashboard-wrapper .w-12 {
+  width: 3rem;
+}
+
+.analytics-dashboard-wrapper .w-16 {
+  width: 4rem;
+}
+
+.analytics-dashboard-wrapper .w-20 {
+  width: 5rem;
+}
+
+.analytics-dashboard-wrapper .w-24 {
+  width: 6rem;
+}
+
+.analytics-dashboard-wrapper .w-48 {
+  width: 12rem;
+}
+
+.analytics-dashboard-wrapper .w-full {
+  width: 100%;
+}
+
+.analytics-dashboard-wrapper .h-2 {
+  height: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .h-3 {
+  height: 0.75rem;
+}
+
+.analytics-dashboard-wrapper .h-4 {
+  height: 1rem;
+}
+
+.analytics-dashboard-wrapper .h-5 {
+  height: 1.25rem;
+}
+
+.analytics-dashboard-wrapper .h-6 {
+  height: 1.5rem;
+}
+
+.analytics-dashboard-wrapper .h-8 {
+  height: 2rem;
+}
+
+.analytics-dashboard-wrapper .h-10 {
+  height: 2.5rem;
+}
+
+.analytics-dashboard-wrapper .h-16 {
+  height: 4rem;
+}
+
+.analytics-dashboard-wrapper .h-80 {
+  height: 20rem;
+}
+
+/* ========================================
+   POSITION UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .relative {
+  position: relative;
+}
+
+.analytics-dashboard-wrapper .absolute {
+  position: absolute;
+}
+
+.analytics-dashboard-wrapper .inset-0 {
+  inset: 0;
+}
+
+.analytics-dashboard-wrapper .hidden {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .analytics-dashboard-wrapper .sm\:block {
+    display: block;
+  }
+}
+
+/* ========================================
+   INTERACTIVE UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .cursor-pointer {
+  cursor: pointer;
+}
+
+.analytics-dashboard-wrapper .transition-colors {
+  transition-property: color, background-color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.analytics-dashboard-wrapper .transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.analytics-dashboard-wrapper .duration-500 {
+  transition-duration: 500ms;
+}
+
+.analytics-dashboard-wrapper .duration-1000 {
+  transition-duration: 1000ms;
+}
+
+.analytics-dashboard-wrapper .hover\:bg-blue-700:hover {
+  background-color: var(--ad-blue-700);
+}
+
+.analytics-dashboard-wrapper .hover\:text-gray-900:hover {
+  color: var(--ad-gray-900);
+}
+
+.analytics-dashboard-wrapper .hover\:text-white:hover {
+  color: #ffffff;
+}
+
+.analytics-dashboard-wrapper .disabled\:opacity-50:disabled {
+  opacity: 0.5;
+}
+
+/* ========================================
+   OPACITY UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .opacity-0 {
+  opacity: 0;
+}
+
+.analytics-dashboard-wrapper .opacity-50 {
+  opacity: 0.5;
+}
+
+.analytics-dashboard-wrapper .opacity-100 {
+  opacity: 1;
+}
+
+/* ========================================
+   TRANSFORM UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .scale-100 {
+  transform: scale(1);
+}
+
+.analytics-dashboard-wrapper .scale-125 {
+  transform: scale(1.25);
+}
+
+.analytics-dashboard-wrapper .scale-150 {
+  transform: scale(1.5);
+}
+
+/* ========================================
+   FORM ELEMENTS
+   ======================================== */
+
+.analytics-dashboard-wrapper select,
+.analytics-dashboard-wrapper input,
+.analytics-dashboard-wrapper button {
+  font-family: inherit;
+}
+
+.analytics-dashboard-wrapper select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+.analytics-dashboard-wrapper button {
+  cursor: pointer;
+}
+
+.analytics-dashboard-wrapper .focus\:ring-2:focus {
+  box-shadow: 0 0 0 2px var(--ad-blue-500);
+  outline: none;
+}
+
+.analytics-dashboard-wrapper .focus\:ring-blue-500:focus {
+  box-shadow: 0 0 0 2px var(--ad-blue-500);
+}
+
+/* ========================================
+   ANIMATION UTILITIES
+   ======================================== */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.analytics-dashboard-wrapper .animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.analytics-dashboard-wrapper .animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ========================================
+   CONTAINER
+   ======================================== */
+
+.analytics-dashboard-wrapper .container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .analytics-dashboard-wrapper .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .analytics-dashboard-wrapper .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .analytics-dashboard-wrapper .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .analytics-dashboard-wrapper .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .analytics-dashboard-wrapper .container {
+    max-width: 1536px;
+  }
+}
+
+/* ========================================
+   TABLE STYLES
+   ======================================== */
+
+.analytics-dashboard-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.analytics-dashboard-wrapper th,
+.analytics-dashboard-wrapper td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.analytics-dashboard-wrapper thead {
+  border-bottom: 1px solid var(--ad-gray-200);
+}
+
+.analytics-dashboard-wrapper tbody tr {
+  border-bottom: 1px solid var(--ad-gray-100);
+}
+
+.analytics-dashboard-wrapper tbody tr:hover {
+  background-color: var(--ad-gray-50);
+}
+
+.analytics-dashboard-wrapper th {
+  font-weight: 600;
+  color: var(--ad-gray-700);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   SCROLL & OVERFLOW
+   ======================================== */
+
+.analytics-dashboard-wrapper .overflow-hidden {
+  overflow: hidden;
+}
+
+.analytics-dashboard-wrapper .overflow-x-auto {
+  overflow-x: auto;
+}
+
+/* ========================================
+   DIVIDER
+   ======================================== */
+
+.analytics-dashboard-wrapper .w-px {
+  width: 1px;
+}
+
+.analytics-dashboard-wrapper .bg-blue-400\/30 {
+  background-color: rgba(96, 165, 250, 0.3);
+}
+
+.analytics-dashboard-wrapper .bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.analytics-dashboard-wrapper .bg-blue-900\/20 {
+  background-color: rgba(30, 58, 138, 0.2);
+}
+
+.analytics-dashboard-wrapper .bg-red-900\/20 {
+  background-color: rgba(127, 29, 29, 0.2);
+}
+
+/* ========================================
+   RECHARTS SPECIFIC FIXES
+   ======================================== */
+
+.analytics-dashboard-wrapper .recharts-wrapper {
+  width: 100% !important;
+}
+
+.analytics-dashboard-wrapper .recharts-surface {
+  overflow: visible;
+}
+
+.analytics-dashboard-wrapper .recharts-legend-wrapper {
+  padding-top: 10px !important;
+}
+
+.analytics-dashboard-wrapper .recharts-default-tooltip {
+  background-color: var(--ad-gray-800) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+}
+
+.analytics-dashboard-wrapper .recharts-tooltip-label {
+  color: var(--ad-gray-400) !important;
+}
+
+.analytics-dashboard-wrapper .recharts-tooltip-item {
+  color: #ffffff !important;
+}
+
+/* ========================================
+   PIE CHART SPECIFIC
+   ======================================== */
+
+.analytics-dashboard-wrapper .recharts-pie-sector {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+/* ========================================
+   DARK MODE SUPPORT (within admin)
+   ======================================== */
+
+.analytics-dashboard-wrapper.dark,
+[data-theme="dark"] .analytics-dashboard-wrapper {
+  --ad-gray-50: #111827;
+  --ad-gray-100: #1f2937;
+  --ad-gray-200: #374151;
+  background-color: var(--ad-gray-900);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .bg-white {
+  background-color: var(--ad-gray-800);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .bg-gray-50 {
+  background-color: var(--ad-gray-900);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .text-gray-900 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .text-gray-700 {
+  color: var(--ad-gray-300);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .text-gray-500 {
+  color: var(--ad-gray-400);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .border-gray-200 {
+  border-color: var(--ad-gray-700);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper tbody tr:hover {
+  background-color: var(--ad-gray-700);
+}
+
+/* ========================================
+   ADDITIONAL UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+.analytics-dashboard-wrapper .space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.analytics-dashboard-wrapper .gap-3 {
+  gap: 0.75rem;
+}
+
+.analytics-dashboard-wrapper .py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.analytics-dashboard-wrapper .py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.analytics-dashboard-wrapper .px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .pb-2 {
+  padding-bottom: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .mt-4 {
+  margin-top: 1rem;
+}
+
+.analytics-dashboard-wrapper .h-full {
+  height: 100%;
+}
+
+.analytics-dashboard-wrapper .h-48 {
+  height: 12rem;
+}
+
+.analytics-dashboard-wrapper .h-64 {
+  height: 16rem;
+}
+
+.analytics-dashboard-wrapper .w-3 {
+  width: 0.75rem;
+}
+
+.analytics-dashboard-wrapper .w-5 {
+  width: 1.25rem;
+}
+
+.analytics-dashboard-wrapper .border-b {
+  border-bottom-width: 1px;
+}
+
+.analytics-dashboard-wrapper .border-b-2 {
+  border-bottom-width: 2px;
+}
+
+.analytics-dashboard-wrapper .border-transparent {
+  border-color: transparent;
+}
+
+.analytics-dashboard-wrapper .border-blue-600 {
+  border-color: var(--ad-blue-600);
+}
+
+.analytics-dashboard-wrapper .border-gray-100 {
+  border-color: var(--ad-gray-100);
+}
+
+.analytics-dashboard-wrapper .text-blue-700 {
+  color: var(--ad-blue-700);
+}
+
+.analytics-dashboard-wrapper .text-blue-400 {
+  color: var(--ad-blue-400);
+}
+
+.analytics-dashboard-wrapper .text-gray-300 {
+  color: var(--ad-gray-300);
+}
+
+.analytics-dashboard-wrapper .text-yellow-500 {
+  color: #eab308;
+}
+
+.analytics-dashboard-wrapper .text-center {
+  text-align: center;
+}
+
+.analytics-dashboard-wrapper .block {
+  display: block;
+}
+
+.analytics-dashboard-wrapper .hover\:text-blue-600:hover {
+  color: var(--ad-blue-600);
+}
+
+.analytics-dashboard-wrapper .hover\:text-blue-700:hover {
+  color: var(--ad-blue-700);
+}
+
+.analytics-dashboard-wrapper .hover\:text-blue-400:hover {
+  color: var(--ad-blue-400);
+}
+
+.analytics-dashboard-wrapper .hover\:text-gray-300:hover {
+  color: var(--ad-gray-300);
+}
+
+.analytics-dashboard-wrapper .hover\:text-gray-700:hover {
+  color: var(--ad-gray-700);
+}
+
+.analytics-dashboard-wrapper .hover\:bg-gray-50:hover {
+  background-color: var(--ad-gray-50);
+}
+
+.analytics-dashboard-wrapper .border-gray-700\/50 {
+  border-color: rgba(55, 65, 81, 0.5);
+}
+
+.analytics-dashboard-wrapper .hover\:bg-gray-700\/50:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+.analytics-dashboard-wrapper .max-w-\[200px\] {
+  max-width: 200px;
+}
+
+.analytics-dashboard-wrapper .max-w-\[300px\] {
+  max-width: 300px;
+}
+
+@media (min-width: 640px) {
+  .analytics-dashboard-wrapper .sm\:max-w-\[300px\] {
+    max-width: 300px;
+  }
+
+  .analytics-dashboard-wrapper .sm\:table-cell {
+    display: table-cell;
+  }
+}
+
+@media (min-width: 768px) {
+  .analytics-dashboard-wrapper .md\:table-cell {
+    display: table-cell;
+  }
+}
+
+.analytics-dashboard-wrapper .py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.analytics-dashboard-wrapper .rounded-full {
+  border-radius: 9999px;
+}
+
+.analytics-dashboard-wrapper .border-b-2 {
+  border-bottom-width: 2px;
+}
+
+/* ========================================
+   PURPLE & PINK COLORS (for charts)
+   ======================================== */
+
+.analytics-dashboard-wrapper .text-purple-500 {
+  color: #8b5cf6;
+}
+
+.analytics-dashboard-wrapper .text-pink-500 {
+  color: #ec4899;
+}
+
+/* ========================================
+   DATE PICKER STYLES
+   ======================================== */
+
+.analytics-dashboard-wrapper input[type="date"] {
+  appearance: none;
+  background-color: var(--ad-gray-100);
+  border: 1px solid var(--ad-gray-200);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--ad-gray-700);
+}
+
+.analytics-dashboard-wrapper input[type="date"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ad-blue-500);
+}
+
+/* ========================================
+   LINK STYLES
+   ======================================== */
+
+.analytics-dashboard-wrapper a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.analytics-dashboard-wrapper a:hover {
+  text-decoration: none;
+}
+
+/* ========================================
+   OVERFLOW UTILITIES
+   ======================================== */
+
+.analytics-dashboard-wrapper .overflow-visible {
+  overflow: visible;
+}
+
+/* ========================================
+   Z-INDEX
+   ======================================== */
+
+.analytics-dashboard-wrapper .z-10 {
+  z-index: 10;
+}
+
+/* ========================================
+   ADDITIONAL DARK MODE
+   ======================================== */
+
+[data-theme="dark"] .analytics-dashboard-wrapper .bg-gray-100 {
+  background-color: var(--ad-gray-700);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .text-gray-600 {
+  color: var(--ad-gray-400);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper input[type="date"] {
+  background-color: var(--ad-gray-700);
+  border-color: var(--ad-gray-600);
+  color: var(--ad-gray-200);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .border-gray-100 {
+  border-color: rgba(55, 65, 81, 0.5);
+}
+
+/* ========================================
+   DATE RANGE PICKER ADDITIONAL STYLES
+   ======================================== */
+
+.analytics-dashboard-wrapper .z-50 {
+  z-index: 50;
+}
+
+.analytics-dashboard-wrapper .right-0 {
+  right: 0;
+}
+
+.analytics-dashboard-wrapper .mt-2 {
+  margin-top: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.analytics-dashboard-wrapper .w-80 {
+  width: 20rem;
+}
+
+.analytics-dashboard-wrapper .grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.analytics-dashboard-wrapper .uppercase {
+  text-transform: uppercase;
+}
+
+.analytics-dashboard-wrapper .hover\:bg-gray-200:hover {
+  background-color: var(--ad-gray-200);
+}
+
+.analytics-dashboard-wrapper .hover\:bg-gray-600:hover {
+  background-color: #4b5563;
+}
+
+.analytics-dashboard-wrapper .hover\:bg-gray-700:hover {
+  background-color: var(--ad-gray-700);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .hover\:bg-gray-600:hover {
+  background-color: #4b5563;
+}
+
+/* ========================================
+   GEOGRAPHY MAP ADDITIONAL STYLES
+   ======================================== */
+
+.analytics-dashboard-wrapper .top-2 {
+  top: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .right-2 {
+  right: 0.5rem;
+}
+
+.analytics-dashboard-wrapper .h-1\.5 {
+  height: 0.375rem;
+}
+
+.analytics-dashboard-wrapper .bg-gray-600 {
+  background-color: #4b5563;
+}
+
+.analytics-dashboard-wrapper .mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.analytics-dashboard-wrapper .mt-6 {
+  margin-top: 1.5rem;
+}
+
+.analytics-dashboard-wrapper .hover\:text-blue-300:hover {
+  color: #93c5fd;
+}
+
+.analytics-dashboard-wrapper .bg-gray-700\/50 {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+.analytics-dashboard-wrapper .hover\:bg-gray-100:hover {
+  background-color: var(--ad-gray-100);
+}
+
+/* ========================================
+   BUTTON BORDERS
+   ======================================== */
+
+.analytics-dashboard-wrapper .border-gray-200 {
+  border-color: var(--ad-gray-200);
+}
+
+/* ========================================
+   ADDITIONAL DARK MODE FIXES
+   ======================================== */
+
+[data-theme="dark"] .analytics-dashboard-wrapper .bg-gray-50 {
+  background-color: rgba(55, 65, 81, 0.3);
+}
+
+[data-theme="dark"] .analytics-dashboard-wrapper .hover\:bg-gray-100:hover {
+  background-color: var(--ad-gray-700);
+}
+
+/* ========================================
+   RESPONSIVE GRID FOR GEOGRAPHY
+   ======================================== */
+
+@media (min-width: 640px) {
+  .analytics-dashboard-wrapper .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .analytics-dashboard-wrapper .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ========================================
+   FORM INPUTS IN DARK MODE
+   ======================================== */
+
+[data-theme="dark"] .analytics-dashboard-wrapper select,
+[data-theme="dark"] .analytics-dashboard-wrapper input {
+  background-color: var(--ad-gray-700);
+  color: #ffffff;
+  border-color: var(--ad-gray-600);
+}
+
+/* ========================================
+   BLUE BUTTON GRADIENT BG
+   ======================================== */
+
+.analytics-dashboard-wrapper .from-blue-600.to-indigo-600 {
+  background: linear-gradient(to right, var(--ad-blue-600), var(--ad-indigo-600));
+}

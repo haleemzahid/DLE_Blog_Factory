@@ -128,5 +128,54 @@ export const Designations: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'badgeColor',
+      type: 'text',
+      defaultValue: '#dc2626',
+      label: 'Badge Color',
+      admin: {
+        position: 'sidebar',
+        description: 'Hex color for badge display (e.g., #dc2626)',
+        placeholder: '#dc2626',
+      },
+    },
+    {
+      name: 'isActive',
+      type: 'checkbox',
+      defaultValue: true,
+      label: 'Active',
+      admin: {
+        position: 'sidebar',
+        description: 'Show this designation in menus and listings',
+      },
+    },
+    // SEO for designation pages
+    {
+      name: 'seo',
+      type: 'group',
+      label: 'SEO Settings',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'SEO Title',
+          admin: {
+            placeholder: 'e.g., Find Your Local SEO Real Estate Expert',
+          },
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'SEO Description',
+          maxLength: 160,
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'OG Image',
+        },
+      ],
+    },
   ],
 }

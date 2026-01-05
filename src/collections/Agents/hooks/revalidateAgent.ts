@@ -1,14 +1,16 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
-import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { Agent } from '../../../payload-types'
 
-export const revalidateAgent: CollectionAfterChangeHook<Agent> = ({
+export const revalidateAgent: CollectionAfterChangeHook<Agent> = async ({
   doc,
   previousDoc,
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
+    // Dynamic import to prevent Next.js bundler from including this in admin bundle
+    const { revalidatePath, revalidateTag } = await import('next/cache')
+
     if (doc._status === 'published') {
       const path = `/agents/${doc.slug}`
 
@@ -32,8 +34,14 @@ export const revalidateAgent: CollectionAfterChangeHook<Agent> = ({
   return doc
 }
 
-export const revalidateDelete: CollectionAfterDeleteHook<Agent> = ({ doc, req: { context } }) => {
+export const revalidateDelete: CollectionAfterDeleteHook<Agent> = async ({
+  doc,
+  req: { context },
+}) => {
   if (!context.disableRevalidate) {
+    // Dynamic import to prevent Next.js bundler from including this in admin bundle
+    const { revalidatePath, revalidateTag } = await import('next/cache')
+
     const path = `/agents/${doc?.slug}`
 
     revalidatePath(path)
