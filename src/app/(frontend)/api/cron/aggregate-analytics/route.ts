@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
     // Group events by post
     const postGroups = new Map<string, typeof events.docs>()
     events.docs.forEach((event) => {
-      const postId = typeof event.postId === 'string' ? event.postId : (event.postId as { id: string })?.id
+      const postId = typeof event.postId === 'string' ? event.postId : typeof event.postId === 'number' ? String(event.postId) : (event.postId as unknown as { id: string })?.id
       if (!postId) return
 
       if (!postGroups.has(postId)) {
@@ -86,7 +86,7 @@ export async function GET(req: NextRequest) {
       })
 
       const analyticsData = {
-        post: postId,
+        post: parseInt(postId, 10),
         date: startOfDay.toISOString(),
         pageviews: pageViews.length,
         uniqueVisitors: sessions.size,

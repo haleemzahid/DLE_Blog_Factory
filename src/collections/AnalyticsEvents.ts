@@ -12,7 +12,7 @@ export const AnalyticsEvents: CollectionConfig = {
     create: () => true, // Allow anonymous event tracking
     read: ({ req: { user } }) => Boolean(user), // Only authenticated users can read
     update: () => false, // Events are immutable
-    delete: ({ req: { user } }) => Boolean(user?.role === 'admin'),
+    delete: ({ req: { user } }) => Boolean(user && 'role' in user && user.role === 'admin'),
   },
   fields: [
     {

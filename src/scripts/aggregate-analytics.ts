@@ -56,7 +56,7 @@ async function aggregatePostAnalytics(
   const postGroups = new Map<string, typeof events.docs>()
 
   events.docs.forEach((event) => {
-    const postId = typeof event.postId === 'string' ? event.postId : (event.postId as { id: string })?.id
+    const postId = typeof event.postId === 'string' ? event.postId : typeof event.postId === 'number' ? String(event.postId) : (event.postId as unknown as { id: string })?.id
     if (!postId) return
 
     if (!postGroups.has(postId)) {
@@ -194,7 +194,7 @@ async function aggregatePostAnalytics(
     })
 
     const analyticsData = {
-      post: postId,
+      post: parseInt(postId, 10),
       date: startOfDay.toISOString(),
       pageviews: pageViews.length,
       uniqueVisitors: sessions.size,
@@ -259,7 +259,7 @@ async function aggregateAgentAnalytics(
   // Get post -> agent mapping
   const postAgentMap = new Map<string, string>()
   const postIds = postAnalytics.docs.map((pa) =>
-    typeof pa.post === 'string' ? pa.post : pa.post?.id,
+    typeof pa.post === 'string' ? pa.post : typeof pa.post === 'number' ? String(pa.post) : String(pa.post?.id),
   ).filter(Boolean) as string[]
 
   if (postIds.length === 0) {
@@ -283,7 +283,7 @@ async function aggregateAgentAnalytics(
       const author = authors[0]
       const agentId = typeof author.value === 'string' ? author.value : author.value?.id
       if (agentId) {
-        postAgentMap.set(post.id, agentId)
+        postAgentMap.set(String(post.id), String(agentId))
       }
     }
   })
@@ -292,7 +292,7 @@ async function aggregateAgentAnalytics(
   const agentGroups = new Map<string, typeof postAnalytics.docs>()
 
   postAnalytics.docs.forEach((pa) => {
-    const postId = typeof pa.post === 'string' ? pa.post : pa.post?.id
+    const postId = typeof pa.post === 'string' ? pa.post : typeof pa.post === 'number' ? String(pa.post) : String(pa.post?.id)
     if (!postId) return
 
     const agentId = postAgentMap.get(postId)
@@ -332,7 +332,7 @@ async function aggregateAgentAnalytics(
 
       if ((pa.pageviews || 0) > topPostViews) {
         topPostViews = pa.pageviews || 0
-        topPostId = typeof pa.post === 'string' ? pa.post : pa.post?.id
+        topPostId = typeof pa.post === 'string' ? pa.post : typeof pa.post === 'number' ? String(pa.post) : String(pa.post?.id)
       }
     })
 
@@ -349,7 +349,7 @@ async function aggregateAgentAnalytics(
     })
 
     const analyticsData = {
-      agent: agentId,
+      agent: parseInt(agentId, 10),
       date: startOfDay.toISOString(),
       totalPageviews,
       uniqueVisitors,
@@ -360,7 +360,7 @@ async function aggregateAgentAnalytics(
       socialTraffic,
       leadsGenerated,
       formSubmissions,
-      topPost: topPostId,
+      topPost: topPostId ? parseInt(topPostId, 10) : undefined,
       topPostViews,
     }
 

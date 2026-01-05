@@ -207,8 +207,9 @@ export async function GET(req: NextRequest) {
       })
 
       posts.docs.forEach((post) => {
-        if (pageMap.has(post.id)) {
-          const page = pageMap.get(post.id)!
+        const postIdStr = String(post.id)
+        if (pageMap.has(postIdStr)) {
+          const page = pageMap.get(postIdStr)!
           page.title = post.title || page.slug
           page.slug = post.slug || page.slug
         }

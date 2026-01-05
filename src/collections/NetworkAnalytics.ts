@@ -9,10 +9,10 @@ export const NetworkAnalytics: CollectionConfig = {
     description: 'Network-wide aggregated analytics data per day',
   },
   access: {
-    create: ({ req: { user } }) => Boolean(user?.role === 'admin'),
+    create: ({ req: { user } }) => Boolean(user && 'role' in user && user.role === 'admin'),
     read: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user?.role === 'admin'),
-    delete: ({ req: { user } }) => Boolean(user?.role === 'admin'),
+    update: ({ req: { user } }) => Boolean(user && 'role' in user && user.role === 'admin'),
+    delete: ({ req: { user } }) => Boolean(user && 'role' in user && user.role === 'admin'),
   },
   fields: [
     {

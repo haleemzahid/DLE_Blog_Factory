@@ -227,9 +227,10 @@ async function saveEvent(eventData: Record<string, unknown>): Promise<void> {
   try {
     const payload = await getPayload({ config: configPromise })
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await payload.create({
       collection: 'analytics-events',
-      data: eventData,
+      data: eventData as any,
     })
   } catch (error) {
     console.error('Failed to save analytics event:', error)

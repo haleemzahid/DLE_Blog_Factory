@@ -53,20 +53,22 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />
 
   // Get agent ID from post authors
-  const agentId = post.authors?.[0]
-    ? typeof post.authors[0] === 'object'
-      ? (post.authors[0] as { value?: { id?: string } | string }).value
-        ? typeof (post.authors[0] as { value: { id: string } }).value === 'string'
-          ? (post.authors[0] as { value: string }).value
-          : (post.authors[0] as { value: { id: string } }).value?.id
-        : undefined
-      : undefined
-    : undefined
+  const getAgentId = (): string | undefined => {
+    const author = post.authors?.[0]
+    if (!author || typeof author !== 'object') return undefined
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const authorObj = author as any
+    if (authorObj.value) {
+      return typeof authorObj.value === 'string' ? authorObj.value : String(authorObj.value?.id)
+    }
+    return authorObj.id ? String(authorObj.id) : undefined
+  }
+  const agentId = getAgentId()
 
   return (
     <article className="pt-16 pb-16">
       {/* Analytics Tracker for post-specific tracking */}
-      <AnalyticsTracker postId={post.id} postSlug={post.slug || ''} agentId={agentId} />
+      <AnalyticsTracker postId={String(post.id)} postSlug={post.slug || ''} agentId={agentId} />
 
       <PageClient />
 

@@ -68,7 +68,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <TenantProvider tenant={tenant}>
             <AnalyticsProvider
               config={{
-                tenantId: tenant?.id,
+                tenantId: tenant?.id !== undefined ? String(tenant.id) : undefined,
                 debug: process.env.NODE_ENV === 'development',
               }}
             >

@@ -100,7 +100,7 @@ export async function GET(
     // Get top performing posts
     const postSummaries = new Map<string, { pageviews: number; leads: number }>()
     postAnalytics.docs.forEach((doc) => {
-      const postId = typeof doc.post === 'string' ? doc.post : typeof doc.post === 'number' ? String(doc.post) : doc.post?.id
+      const postId = typeof doc.post === 'string' ? doc.post : typeof doc.post === 'number' ? String(doc.post) : String(doc.post?.id)
       if (!postId) return
 
       const existing = postSummaries.get(postId) || { pageviews: 0, leads: 0 }
@@ -113,7 +113,7 @@ export async function GET(
     // Sort and get top 10
     const topPosts = Array.from(postSummaries.entries())
       .map(([postId, stats]) => {
-        const post = agentPosts.docs.find((p) => p.id === postId)
+        const post = agentPosts.docs.find((p) => String(p.id) === postId)
         return {
           id: postId,
           title: post?.title || 'Unknown',
