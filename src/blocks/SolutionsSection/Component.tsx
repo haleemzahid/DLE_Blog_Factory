@@ -74,7 +74,7 @@ export const SolutionsSectionBlock: React.FC<SolutionsSectionBlockProps> = (prop
               <div className="mt-6">
                 <CMSLink
                   {...link}
-                  className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-colors ${buttonClasses[buttonStyle || 'dark']}`}
+                  className={`inline-flex items-center gap-8 px-6 py-2.5 rounded-full text-sm font-medium transition-colors ${buttonClasses[buttonStyle || 'dark']}`}
                 >
                   <ArrowRight className="w-4 h-4" />
                 </CMSLink>

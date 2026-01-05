@@ -63,7 +63,7 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
             <div className="mt-4 md:mt-0">
               <CMSLink
                 {...headerLink}
-                className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-medium text-sm transition-colors ${buttonClasses[buttonStyle || 'red']}`}
+                className={`inline-flex items-center gap-8 px-6 py-2.5 rounded-full font-medium text-sm transition-colors ${buttonClasses[buttonStyle || 'red']}`}
               >
                 <ArrowRight className="w-4 h-4" />
               </CMSLink>
