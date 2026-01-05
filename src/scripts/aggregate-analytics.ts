@@ -69,8 +69,8 @@ async function aggregatePostAnalytics(
   for (const [postId, postEvents] of postGroups) {
     const pageViews = postEvents.filter((e) => e.event === 'page_view')
     const sessions = new Set(postEvents.map((e) => e.sessionId))
-    const scrollEvents = postEvents.filter((e) => e.event === 'scroll_depth')
-    const timeEvents = postEvents.filter((e) => e.event === 'time_on_page')
+    const _scrollEvents = postEvents.filter((e) => e.event === 'scroll_depth')
+    const _timeEvents = postEvents.filter((e) => e.event === 'time_on_page')
     const formEvents = postEvents.filter((e) => e.event === 'form_submission')
     const downloadEvents = postEvents.filter((e) => e.event === 'download')
     const videoEvents = postEvents.filter((e) => e.event === 'video_play')
@@ -242,7 +242,7 @@ async function aggregateAgentAnalytics(
 ): Promise<void> {
   const dateStr = date.toISOString().split('T')[0]
   const startOfDay = new Date(dateStr + 'T00:00:00.000Z')
-  const endOfDay = new Date(dateStr + 'T23:59:59.999Z')
+  const _endOfDay = new Date(dateStr + 'T23:59:59.999Z')
 
   console.log(`Aggregating agent analytics for ${dateStr}...`)
 

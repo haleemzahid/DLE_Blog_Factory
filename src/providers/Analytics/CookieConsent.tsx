@@ -18,7 +18,7 @@ export function CookieConsent({
 }: CookieConsentProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
-  const { setConsent, isConsentGiven } = useAnalytics()
+  const { setConsent, isConsentGiven: _isConsentGiven } = useAnalytics()
 
   useEffect(() => {
     // Check if user has already made a choice
@@ -44,7 +44,7 @@ export function CookieConsent({
     setIsVisible(false)
   }
 
-  const handleRejectAll = () => {
+  const _handleRejectAll = () => {
     setConsent('none')
     setIsVisible(false)
   }
