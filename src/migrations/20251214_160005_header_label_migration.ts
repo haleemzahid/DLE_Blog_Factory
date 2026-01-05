@@ -1,6 +1,6 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-vercel-postgres'
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_pages_blocks_home_value_form_style" AS ENUM('centered', 'left', 'sidebar');
   CREATE TYPE "public"."enum_pages_blocks_testimonials_block_layout" AS ENUM('grid', 'carousel', 'list');
@@ -1138,7 +1138,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "header_nav_items" DROP COLUMN "link_label";`)
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db, payload: _payload, req: _req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
    ALTER TABLE "pages_blocks_home_value_form" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "pages_blocks_testimonials_block" DISABLE ROW LEVEL SECURITY;

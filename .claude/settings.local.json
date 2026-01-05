@@ -128,7 +128,8 @@
       "Bash(git -C \"d:\\DLE\\CMS\\Blog Factory\" commit -m \"$(cat <<''EOF''\nAdd multi-tenant support and analytics dashboard\n\n- Add tenant management (Tenants, TenantHeaders, TenantFooters collections)\n- Add comprehensive analytics system with tracking and dashboards\n- Add agent and post analytics collections\n- Add network analytics support\n- Add cookie consent and analytics providers\n- Update header/footer components for tenant support\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(cmd /c \"cd /d d:\\\\DLE_Blog_Factory && pnpm add recharts\")",
       "Bash(cmd /c \"cd /d d:\\\\DLE_Blog_Factory && pnpm add recharts 2>&1\")",
-      "Bash(npx tsc --noEmit)"
+      "Bash(npx tsc --noEmit)",
+      "Bash(pnpm run build:*)"
     ],
     "deny": [],
     "ask": []
