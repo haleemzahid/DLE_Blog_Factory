@@ -31,14 +31,14 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
-import { getServerSideURL } from './utilities/getURL'
 import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  serverURL: getServerSideURL(),
+  // serverURL is intentionally not set to allow admin to work from any domain
+  // The admin panel will use relative URLs for API calls
   admin: {
     meta: {
       title: 'DleBlogFactory',

@@ -6,10 +6,9 @@ export const getServerSideURL = () => {
     return process.env.NEXT_PUBLIC_SERVER_URL
   }
 
-  // For Vercel deployments, use empty string to enable relative URLs
-  // This allows the admin to work from any domain
-  if (process.env.VERCEL) {
-    return ''
+  // For Vercel deployments, use the Vercel URL
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   }
 
   // Fallback for local development
