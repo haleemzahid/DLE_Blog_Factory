@@ -124,7 +124,7 @@ export default buildConfig({
     KeywordRankings,
     ABTests,
   ],
-  cors: '*',
+  cors: [],
   globals: [Header, Footer],
   plugins: [
     ...plugins,
