@@ -37,25 +37,34 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const origin = request.headers.get('origin')
 
-  // Handle CORS preflight requests for API and admin routes
-  if (request.method === 'OPTIONS' && (pathname.startsWith('/api') || pathname.startsWith('/admin'))) {
+  // Handle CORS preflight (OPTIONS) requests
+  if (request.method === 'OPTIONS') {
     const response = new NextResponse(null, { status: 204 })
     return addCorsHeaders(response, origin, hostname)
   }
 
-  // Add CORS headers to API and admin responses
+  // Skip middleware for static files (but not API routes)
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/favicon')
+  ) {
+    return NextResponse.next()
+  }
+
+  // Add CORS headers to all responses when there's a cross-origin request
+  if (origin) {
+    const response = NextResponse.next()
+    return addCorsHeaders(response, origin, hostname)
+  }
+
+  // Add CORS headers to API and admin responses (even same-origin for consistency)
   if (pathname.startsWith('/api') || pathname.startsWith('/admin')) {
     const response = NextResponse.next()
     return addCorsHeaders(response, origin, hostname)
   }
 
-  // Skip middleware for static files
-  if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/favicon') ||
-    pathname.startsWith('/media') ||
-    pathname.includes('.')
-  ) {
+  // Skip static media files
+  if (pathname.startsWith('/media') || pathname.includes('.')) {
     return NextResponse.next()
   }
 
