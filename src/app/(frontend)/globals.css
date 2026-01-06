@@ -142,12 +142,10 @@ html {
   display: none;
 }
 
-/* Reduce spacing for consecutive empty-looking paragraphs */
+/* Hide paragraphs that only contain a line break */
 .payload-richtext p:has(br:only-child),
 .prose p:has(br:only-child) {
-  margin: 0;
-  padding: 0;
-  line-height: 0.5;
+  display: none;
 }
 
 /* ============================================
