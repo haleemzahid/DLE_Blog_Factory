@@ -131,7 +131,8 @@
       "Bash(npx tsc --noEmit)",
       "Bash(pnpm run build:*)",
       "Bash(mkdir:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(pnpm payload migrate:create:*)"
     ],
     "deny": [],
     "ask": []
