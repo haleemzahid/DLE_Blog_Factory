@@ -124,13 +124,7 @@ export default buildConfig({
     KeywordRankings,
     ABTests,
   ],
-  cors: [
-    getServerSideURL(),
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    // Allow network access during development
-    ...(process.env.NODE_ENV === 'development' ? ['http://172.22.176.1:3000'] : []),
-  ].filter(Boolean),
+  cors: '*',
   globals: [Header, Footer],
   plugins: [
     ...plugins,
