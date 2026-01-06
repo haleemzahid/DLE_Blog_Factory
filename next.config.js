@@ -45,23 +45,32 @@ const nextConfig = {
   reactStrictMode: true,
   redirects,
   async headers() {
+    const corsHeaders = [
+      {
+        key: 'Access-Control-Allow-Origin',
+        value: '*',
+      },
+      {
+        key: 'Access-Control-Allow-Methods',
+        value: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      },
+      {
+        key: 'Access-Control-Allow-Headers',
+        value: 'Content-Type, Authorization, X-Requested-With',
+      },
+      {
+        key: 'Access-Control-Allow-Credentials',
+        value: 'true',
+      },
+    ]
     return [
       {
         source: '/api/:path*',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*',
-          },
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET, POST, PUT, DELETE, OPTIONS',
-          },
-          {
-            key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type, Authorization',
-          },
-        ],
+        headers: corsHeaders,
+      },
+      {
+        source: '/admin/:path*',
+        headers: corsHeaders,
       },
       {
         source: '/(.*)',
