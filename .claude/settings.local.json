@@ -132,7 +132,8 @@
       "Bash(pnpm run build:*)",
       "Bash(mkdir:*)",
       "Bash(wc:*)",
-      "Bash(pnpm payload migrate:create:*)"
+      "Bash(pnpm payload migrate:create:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
