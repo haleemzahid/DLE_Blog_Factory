@@ -45,29 +45,8 @@ const nextConfig = {
   reactStrictMode: true,
   redirects,
   async headers() {
-    const corsHeaders = [
-      {
-        key: 'Access-Control-Allow-Origin',
-        value: '*',
-      },
-      {
-        key: 'Access-Control-Allow-Methods',
-        value: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      },
-      {
-        key: 'Access-Control-Allow-Headers',
-        value: 'Content-Type, Authorization, X-Requested-With',
-      },
-    ]
+    // CORS is handled dynamically in middleware.ts to support credentials
     return [
-      {
-        source: '/api/:path*',
-        headers: corsHeaders,
-      },
-      {
-        source: '/admin/:path*',
-        headers: corsHeaders,
-      },
       {
         source: '/(.*)',
         headers: [

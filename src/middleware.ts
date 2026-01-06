@@ -2,21 +2,46 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 /**
+ * Add CORS headers to response
+ */
+function addCorsHeaders(response: NextResponse, origin: string | null) {
+  // Set the origin to the requesting origin (required for credentials)
+  if (origin) {
+    response.headers.set('Access-Control-Allow-Origin', origin)
+  }
+  response.headers.set('Access-Control-Allow-Credentials', 'true')
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+  return response
+}
+
+/**
  * Multi-tenant middleware for domain-based routing
  *
  * This middleware:
- * 1. Detects the current hostname
- * 2. Sets tenant context headers for downstream use
- * 3. Skips admin, API, and static file routes
+ * 1. Handles CORS for API and admin routes
+ * 2. Detects the current hostname
+ * 3. Sets tenant context headers for downstream use
  */
 export async function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') || ''
   const pathname = request.nextUrl.pathname
+  const origin = request.headers.get('origin')
 
-  // Skip middleware for admin, API, and static files
+  // Handle CORS preflight requests for API and admin routes
+  if (request.method === 'OPTIONS' && (pathname.startsWith('/api') || pathname.startsWith('/admin'))) {
+    const response = new NextResponse(null, { status: 204 })
+    return addCorsHeaders(response, origin)
+  }
+
+  // Add CORS headers to API and admin responses
+  if (pathname.startsWith('/api') || pathname.startsWith('/admin')) {
+    const response = NextResponse.next()
+    return addCorsHeaders(response, origin)
+  }
+
+  // Skip middleware for static files
   if (
-    pathname.startsWith('/admin') ||
-    pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon') ||
     pathname.startsWith('/media') ||
@@ -48,8 +73,7 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder assets
-     * - api routes (handled separately)
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\..*|api).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)',
   ],
 }
