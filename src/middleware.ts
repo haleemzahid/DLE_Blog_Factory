@@ -19,7 +19,7 @@ function addCorsHeaders(response: NextResponse, origin: string | null, host: str
   response.headers.set('Access-Control-Allow-Origin', allowOrigin)
   response.headers.set('Access-Control-Allow-Credentials', 'true')
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-Payload-Http-Method-Override')
   response.headers.set('Vary', 'Origin')
   return response
 }
