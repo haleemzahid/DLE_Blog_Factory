@@ -4,14 +4,23 @@ import type { NextRequest } from 'next/server'
 /**
  * Add CORS headers to response
  */
-function addCorsHeaders(response: NextResponse, origin: string | null) {
-  // Set the origin to the requesting origin (required for credentials)
+function addCorsHeaders(response: NextResponse, origin: string | null, host: string | null) {
+  // For credentials to work, we must echo back the exact origin (not wildcard)
+  // If origin is provided, use it directly (handles any external domain)
+  // If no origin (same-origin), construct from host
+  let allowOrigin = '*'
   if (origin) {
-    response.headers.set('Access-Control-Allow-Origin', origin)
+    allowOrigin = origin
+  } else if (host) {
+    const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1')
+    const protocol = isLocalhost ? 'http' : 'https'
+    allowOrigin = `${protocol}://${host}`
   }
+  response.headers.set('Access-Control-Allow-Origin', allowOrigin)
   response.headers.set('Access-Control-Allow-Credentials', 'true')
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+  response.headers.set('Vary', 'Origin')
   return response
 }
 
@@ -31,13 +40,13 @@ export async function middleware(request: NextRequest) {
   // Handle CORS preflight requests for API and admin routes
   if (request.method === 'OPTIONS' && (pathname.startsWith('/api') || pathname.startsWith('/admin'))) {
     const response = new NextResponse(null, { status: 204 })
-    return addCorsHeaders(response, origin)
+    return addCorsHeaders(response, origin, hostname)
   }
 
   // Add CORS headers to API and admin responses
   if (pathname.startsWith('/api') || pathname.startsWith('/admin')) {
     const response = NextResponse.next()
-    return addCorsHeaders(response, origin)
+    return addCorsHeaders(response, origin, hostname)
   }
 
   // Skip middleware for static files
