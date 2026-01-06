@@ -27,6 +27,8 @@ import { ServicesSectionBlock } from '@/blocks/ServicesSection/Component'
 import { FeaturedTestimonialBlock } from '@/blocks/FeaturedTestimonial/Component'
 import { ArticlesSectionBlock } from '@/blocks/ArticlesSection/Component'
 import { ArticlesSectionWithSidebarBlock } from '@/blocks/ArticlesSectionWithSidebar/Component'
+import { MissionVisionBlock } from '@/blocks/MissionVision/Component'
+import { DesignationDirectoryBlock } from '@/blocks/DesignationDirectory/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -54,6 +56,8 @@ const blockComponents = {
   featuredTestimonial: FeaturedTestimonialBlock,
   articlesSection: ArticlesSectionBlock,
   articlesSidebar: ArticlesSectionWithSidebarBlock,
+  missionVision: MissionVisionBlock,
+  designationDirectory: DesignationDirectoryBlock,
 }
 
 export const RenderBlocks: React.FC<{

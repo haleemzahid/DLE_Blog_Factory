@@ -102,11 +102,12 @@ export const hero: Field = {
     {
       name: 'media',
       type: 'upload',
+      label: 'Background Image',
       admin: {
         condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        description: 'Background image for the hero section',
       },
       relationTo: 'media',
-      required: true,
     },
     {
       name: 'logo',

@@ -243,6 +243,9 @@ export interface Page {
      * Color for paragraphs/body text
      */
     paragraphColor?: string | null;
+    /**
+     * Background image for the hero section
+     */
     media?: (number | null) | Media;
     /**
      * Logo displayed below the hero text (e.g., DLE Network logo)
@@ -275,6 +278,8 @@ export interface Page {
     | FeaturedTestimonialBlock
     | ArticlesSectionBlock
     | ArticlesSidebarBlock
+    | MissionVisionBlock
+    | DesignationDirectoryBlock
   )[];
   meta?: {
     title?: string | null;
@@ -2212,6 +2217,118 @@ export interface ArticlesSidebarBlock {
   blockType: 'articlesSidebar';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionVisionBlock".
+ */
+export interface MissionVisionBlock {
+  layout?: ('sideBySide' | 'stacked' | 'cards') | null;
+  /**
+   * Background color for the section
+   */
+  backgroundColor?: string | null;
+  mission: {
+    icon?: ('target' | 'rocket' | 'star' | 'flag' | 'compass' | 'lightning') | null;
+    iconColor?: string | null;
+    title: string;
+    titleColor?: string | null;
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+  };
+  vision: {
+    icon?: ('eye' | 'lightbulb' | 'globe' | 'mountain' | 'sparkle' | 'sun') | null;
+    iconColor?: string | null;
+    title: string;
+    titleColor?: string | null;
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'missionVision';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DesignationDirectoryBlock".
+ */
+export interface DesignationDirectoryBlock {
+  title: string;
+  subtitle?: string | null;
+  /**
+   * Background color for the header section
+   */
+  headerBackgroundColor?: string | null;
+  /**
+   * YouTube embed URL (e.g., https://www.youtube.com/embed/VIDEO_ID)
+   */
+  videoUrl?: string | null;
+  showVideo?: boolean | null;
+  /**
+   * Select a state to show designations for (optional - if not selected, designations will be entered manually)
+   */
+  state?: (number | null) | State;
+  /**
+   * List of Mr. designations (used if no state is selected)
+   */
+  mrDesignations?:
+    | {
+        title: string;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * List of Ms. designations (used if no state is selected)
+   */
+  msDesignations?:
+    | {
+        title: string;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  showMapBackground?: boolean | null;
+  /**
+   * Optional custom map background image
+   */
+  mapBackgroundImage?: (number | null) | Media;
+  showCTA?: boolean | null;
+  ctaTitle?: string | null;
+  ctaDescription?: string | null;
+  ctaButtonText?: string | null;
+  ctaButtonLink?: string | null;
+  ctaSecondaryText?: string | null;
+  ctaSecondaryLink?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'designationDirectory';
+}
+/**
  * Custom navigation header for each tenant site
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3235,6 +3352,8 @@ export interface PagesSelect<T extends boolean = true> {
         featuredTestimonial?: T | FeaturedTestimonialBlockSelect<T>;
         articlesSection?: T | ArticlesSectionBlockSelect<T>;
         articlesSidebar?: T | ArticlesSidebarBlockSelect<T>;
+        missionVision?: T | MissionVisionBlockSelect<T>;
+        designationDirectory?: T | DesignationDirectoryBlockSelect<T>;
       };
   meta?:
     | T
@@ -3812,6 +3931,71 @@ export interface ArticlesSidebarBlockSelect<T extends boolean = true> {
   titleBgColor?: T;
   accentColor?: T;
   backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionVisionBlock_select".
+ */
+export interface MissionVisionBlockSelect<T extends boolean = true> {
+  layout?: T;
+  backgroundColor?: T;
+  mission?:
+    | T
+    | {
+        icon?: T;
+        iconColor?: T;
+        title?: T;
+        titleColor?: T;
+        content?: T;
+      };
+  vision?:
+    | T
+    | {
+        icon?: T;
+        iconColor?: T;
+        title?: T;
+        titleColor?: T;
+        content?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DesignationDirectoryBlock_select".
+ */
+export interface DesignationDirectoryBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  headerBackgroundColor?: T;
+  videoUrl?: T;
+  showVideo?: T;
+  state?: T;
+  mrDesignations?:
+    | T
+    | {
+        title?: T;
+        link?: T;
+        id?: T;
+      };
+  msDesignations?:
+    | T
+    | {
+        title?: T;
+        link?: T;
+        id?: T;
+      };
+  showMapBackground?: T;
+  mapBackgroundImage?: T;
+  showCTA?: T;
+  ctaTitle?: T;
+  ctaDescription?: T;
+  ctaButtonText?: T;
+  ctaButtonLink?: T;
+  ctaSecondaryText?: T;
+  ctaSecondaryLink?: T;
   id?: T;
   blockName?: T;
 }
