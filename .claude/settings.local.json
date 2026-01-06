@@ -133,7 +133,8 @@
       "Bash(mkdir:*)",
       "Bash(wc:*)",
       "Bash(pnpm payload migrate:create:*)",
-      "Bash(git push)"
+      "Bash(git push)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: Enable multi-domain admin access with dynamic serverURL\n\n- Configure CORS to allow all origins with proper headers\n- Update getServerSideURL to return empty string on Vercel for relative URLs\n- This allows admin panel to work from any domain \\(Vercel URL or custom domain\\)\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ],
     "deny": [],
     "ask": []
