@@ -124,7 +124,10 @@ export default buildConfig({
     KeywordRankings,
     ABTests,
   ],
-  cors: [],
+  cors: {
+    origins: '*',
+    headers: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-Payload-Http-Method-Override'],
+  },
   globals: [Header, Footer],
   plugins: [
     ...plugins,

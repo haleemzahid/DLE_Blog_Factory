@@ -1,12 +1,19 @@
 import canUseDOM from './canUseDOM'
 
 export const getServerSideURL = () => {
-  return (
-    process.env.NEXT_PUBLIC_SERVER_URL ||
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : 'http://localhost:3000')
-  )
+  // If explicitly set, use it
+  if (process.env.NEXT_PUBLIC_SERVER_URL) {
+    return process.env.NEXT_PUBLIC_SERVER_URL
+  }
+
+  // For Vercel deployments, use empty string to enable relative URLs
+  // This allows the admin to work from any domain
+  if (process.env.VERCEL) {
+    return ''
+  }
+
+  // Fallback for local development
+  return 'http://localhost:3000'
 }
 
 export const getClientSideURL = () => {
