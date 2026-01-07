@@ -8,6 +8,7 @@ import {
   ItalicFeature,
 } from '@payloadcms/richtext-lexical'
 import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
+import { link } from '@/fields/link'
 
 export const MissionVision: Block = {
   slug: 'missionVision',
@@ -180,6 +181,51 @@ export const MissionVision: Block = {
           ],
         },
       ],
+    },
+    // CTA Button section
+    {
+      name: 'enableCta',
+      type: 'checkbox',
+      label: 'Show CTA Button',
+      defaultValue: false,
+      admin: {
+        description: 'Add a call-to-action button below the mission and vision sections',
+      },
+    },
+    link({
+      overrides: {
+        name: 'ctaLink',
+        label: 'CTA Button',
+        admin: {
+          condition: (_, siblingData) => siblingData?.enableCta,
+        },
+      },
+    }),
+    {
+      name: 'ctaButtonColor',
+      type: 'text',
+      label: 'Button Background Color',
+      defaultValue: '#dc2626',
+      admin: {
+        condition: (_, siblingData) => siblingData?.enableCta,
+        description: 'Background color for the CTA button',
+        components: {
+          Field: '@/components/ColorPickerField#ColorPickerField',
+        },
+      },
+    },
+    {
+      name: 'ctaTextColor',
+      type: 'text',
+      label: 'Button Text Color',
+      defaultValue: '#ffffff',
+      admin: {
+        condition: (_, siblingData) => siblingData?.enableCta,
+        description: 'Text color for the CTA button',
+        components: {
+          Field: '@/components/ColorPickerField#ColorPickerField',
+        },
+      },
     },
   ],
 }

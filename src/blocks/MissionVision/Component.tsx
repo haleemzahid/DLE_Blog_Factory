@@ -1,5 +1,6 @@
 import React from 'react'
 import RichText from '@/components/RichText'
+import { CMSLink } from '@/components/Link'
 
 import type { MissionVisionBlock as MissionVisionBlockProps } from '@/payload-types'
 
@@ -75,12 +76,43 @@ const icons = {
 type IconKey = keyof typeof icons
 
 export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => {
-  const { layout, backgroundColor, mission, vision } = props
+  const { layout, backgroundColor, mission, vision, enableCta, ctaLink, ctaButtonColor, ctaTextColor } = props
 
   const renderIcon = (iconName: string | null | undefined, color: string) => {
     if (!iconName) return null
     const iconFn = icons[iconName as IconKey]
     return iconFn ? iconFn(color) : null
+  }
+
+  const renderCtaButton = () => {
+    if (!enableCta || !ctaLink) return null
+
+    const bgColor = ctaButtonColor || '#dc2626'
+    const textColor = ctaTextColor || '#ffffff'
+
+    return (
+      <div className="flex justify-center pt-8 mt-8">
+        <a
+          href={
+            ctaLink.type === 'reference' && ctaLink.reference?.value
+              ? typeof ctaLink.reference.value === 'object'
+                ? `/${ctaLink.reference.value.slug}`
+                : ctaLink.url || '#'
+              : ctaLink.url || '#'
+          }
+          target={ctaLink.newTab ? '_blank' : undefined}
+          rel={ctaLink.newTab ? 'noopener noreferrer' : undefined}
+          className="inline-flex items-center justify-center rounded px-8 h-11 font-medium transition-opacity hover:opacity-90"
+          style={{
+            backgroundColor: bgColor,
+            color: textColor,
+            borderColor: bgColor,
+          }}
+        >
+          {ctaLink.label}
+        </a>
+      </div>
+    )
   }
 
   if (layout === 'cards') {
@@ -132,6 +164,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
               )}
             </div>
           </div>
+          {renderCtaButton()}
         </div>
       </section>
     )
@@ -187,6 +220,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
               />
             )}
           </div>
+          {renderCtaButton()}
         </div>
       </section>
     )
@@ -245,6 +279,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
             </div>
           </div>
         </div>
+        {renderCtaButton()}
       </div>
     </section>
   )

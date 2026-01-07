@@ -2268,6 +2268,41 @@ export interface MissionVisionBlock {
       [k: string]: unknown;
     };
   };
+  /**
+   * Add a call-to-action button below the mission and vision sections
+   */
+  enableCta?: boolean | null;
+  ctaLink?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+    /**
+     * Choose a hover color for the button
+     */
+    hoverColor?: string | null;
+  };
+  /**
+   * Background color for the CTA button
+   */
+  ctaButtonColor?: string | null;
+  /**
+   * Text color for the CTA button
+   */
+  ctaTextColor?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'missionVision';
@@ -3959,6 +3994,20 @@ export interface MissionVisionBlockSelect<T extends boolean = true> {
         titleColor?: T;
         content?: T;
       };
+  enableCta?: T;
+  ctaLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+        hoverColor?: T;
+      };
+  ctaButtonColor?: T;
+  ctaTextColor?: T;
   id?: T;
   blockName?: T;
 }

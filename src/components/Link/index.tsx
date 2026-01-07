@@ -17,6 +17,7 @@ type CMSLinkType = {
     value: Page | Post | string | number
   } | null
   size?: ButtonProps['size'] | null
+  style?: React.CSSProperties
   type?: 'custom' | 'reference' | null
   url?: string | null
 }
@@ -32,6 +33,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     newTab,
     reference,
     size: sizeFromProps,
+    style,
     url,
   } = props
 
@@ -61,13 +63,16 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     ? ({ '--hover-color': hoverColor } as React.CSSProperties)
     : undefined
 
+  // Combine hover style with custom style prop
+  const combinedStyle = { ...hoverStyle, ...style }
+
   return (
     <Button
       asChild
       className={cn(className, hoverColor && 'custom-hover-color')}
       size={size}
       variant={appearance}
-      style={hoverStyle}
+      style={combinedStyle}
     >
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}

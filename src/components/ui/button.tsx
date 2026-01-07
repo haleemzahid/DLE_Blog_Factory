@@ -43,10 +43,18 @@ const Button: React.FC<ButtonProps> = ({
   size,
   variant,
   ref,
+  style,
   ...props
 }) => {
   const Comp = asChild ? Slot : 'button'
-  return <Comp className={cn(buttonVariants({ className, size, variant }))} ref={ref} {...props} />
+  return (
+    <Comp
+      className={cn(buttonVariants({ className, size, variant }))}
+      ref={ref}
+      style={style}
+      {...props}
+    />
+  )
 }
 
 export { Button, buttonVariants }
