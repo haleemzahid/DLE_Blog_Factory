@@ -136,15 +136,17 @@ html {
   background-color: var(--hover-color) !important;
 }
 
-/* Hide empty paragraphs in rich text content */
-.payload-richtext p:empty,
-.prose p:empty {
-  display: none;
+/* Ensure linebreaks are rendered as block-level breaks in rich text */
+.payload-richtext br,
+.prose br {
+  display: block;
+  content: "";
+  margin-top: 0.5em;
 }
 
-/* Hide paragraphs that only contain a line break */
-.payload-richtext p:has(br:only-child),
-.prose p:has(br:only-child) {
+/* Hide truly empty paragraphs (no children at all) */
+.payload-richtext > p:empty,
+.prose > p:empty {
   display: none;
 }
 

@@ -1,0 +1,29 @@
+/* Custom Admin Panel Styles */
+
+/* Fix Lexical rich text editor height - prevent text cutoff */
+.lexical-rich-text-editor .ContentEditable__root {
+  min-height: 150px !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Ensure the editor container doesn't constrain height */
+.rich-text-lexical {
+  min-height: auto !important;
+}
+
+.rich-text-lexical .lexical-rich-text-editor {
+  min-height: auto !important;
+  overflow: visible !important;
+}
+
+/* Fix for nested block editors */
+.blocks-field .lexical-rich-text-editor .ContentEditable__root {
+  min-height: 120px !important;
+}
+
+/* Ensure paragraphs in editor are fully visible */
+.lexical-rich-text-editor .ContentEditable__root p {
+  margin-bottom: 0.5em !important;
+  line-height: 1.5 !important;
+}
