@@ -78,13 +78,42 @@ export const AboutSection: Block = {
       },
     }),
     {
+      name: 'mediaType',
+      type: 'select',
+      label: 'Media Type',
+      defaultValue: 'image',
+      options: [
+        { label: 'Image', value: 'image' },
+        { label: 'Video (YouTube/Vimeo)', value: 'video' },
+      ],
+    },
+    {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
       label: 'Side Image',
-      required: true,
       admin: {
-        description: 'Image displayed on the right side of the section',
+        description: 'Image displayed on the side of the section',
+        condition: (_, siblingData) => siblingData?.mediaType === 'image',
+      },
+    },
+    {
+      name: 'videoUrl',
+      type: 'text',
+      label: 'Video URL',
+      admin: {
+        description: 'YouTube or Vimeo video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)',
+        condition: (_, siblingData) => siblingData?.mediaType === 'video',
+      },
+    },
+    {
+      name: 'videoTitle',
+      type: 'text',
+      label: 'Video Title',
+      defaultValue: 'Video',
+      admin: {
+        description: 'Accessibility title for the video',
+        condition: (_, siblingData) => siblingData?.mediaType === 'video',
       },
     },
     {

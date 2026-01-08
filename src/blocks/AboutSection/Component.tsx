@@ -5,6 +5,27 @@ import { CMSLink } from '@/components/Link'
 
 import type { AboutSectionBlock as AboutSectionBlockProps } from '@/payload-types'
 
+// Helper function to extract video ID from YouTube/Vimeo URLs
+const getVideoEmbedUrl = (url: string): string | null => {
+  if (!url) return null
+
+  // YouTube formats
+  const youtubeMatch = url.match(
+    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
+  )
+  if (youtubeMatch) {
+    return `https://www.youtube.com/embed/${youtubeMatch[1]}`
+  }
+
+  // Vimeo formats
+  const vimeoMatch = url.match(/(?:vimeo\.com\/)(\d+)/)
+  if (vimeoMatch) {
+    return `https://player.vimeo.com/video/${vimeoMatch[1]}`
+  }
+
+  return null
+}
+
 export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
   const {
     heading,
@@ -12,10 +33,15 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
     content,
     enableButton,
     link,
+    mediaType,
     image,
+    videoUrl,
+    videoTitle,
     imagePosition,
     backgroundColor,
   } = props
+
+  const embedUrl = videoUrl ? getVideoEmbedUrl(videoUrl) : null
 
   return (
     <section className="py-6 md:py-6" style={{ backgroundColor: backgroundColor || '#f3f4f6' }}>
@@ -62,13 +88,25 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
             )}
           </div>
 
-          {/* Image Side - right */}
+          {/* Media Side - right */}
           <div className="lg:order-2">
-            {image && typeof image === 'object' && (
+            {mediaType === 'video' && embedUrl ? (
+              <div className="rounded-lg overflow-hidden shadow-xl">
+                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                  <iframe
+                    src={embedUrl}
+                    title={videoTitle || 'Video'}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full"
+                  />
+                </div>
+              </div>
+            ) : image && typeof image === 'object' ? (
               <div className="rounded-lg overflow-hidden shadow-xl">
                 <Media resource={image} imgClassName="w-full h-auto object-cover" />
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

@@ -1934,10 +1934,19 @@ export interface AboutSectionBlock {
      */
     hoverColor?: string | null;
   };
+  mediaType?: ('image' | 'video') | null;
   /**
-   * Image displayed on the right side of the section
+   * Image displayed on the side of the section
    */
-  image: number | Media;
+  image?: (number | null) | Media;
+  /**
+   * YouTube or Vimeo video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)
+   */
+  videoUrl?: string | null;
+  /**
+   * Accessibility title for the video
+   */
+  videoTitle?: string | null;
   imagePosition?: ('left' | 'right') | null;
   /**
    * Background color for the section
@@ -3797,7 +3806,10 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
         appearance?: T;
         hoverColor?: T;
       };
+  mediaType?: T;
   image?: T;
+  videoUrl?: T;
+  videoTitle?: T;
   imagePosition?: T;
   backgroundColor?: T;
   id?: T;
