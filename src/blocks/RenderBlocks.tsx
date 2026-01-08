@@ -29,6 +29,7 @@ import { ArticlesSectionBlock } from '@/blocks/ArticlesSection/Component'
 import { ArticlesSectionWithSidebarBlock } from '@/blocks/ArticlesSectionWithSidebar/Component'
 import { MissionVisionBlock } from '@/blocks/MissionVision/Component'
 import { DesignationDirectoryBlock } from '@/blocks/DesignationDirectory/Component'
+import { CaliforniaBlock } from '@/blocks/California/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -58,6 +59,7 @@ const blockComponents = {
   articlesSidebar: ArticlesSectionWithSidebarBlock,
   missionVision: MissionVisionBlock,
   designationDirectory: DesignationDirectoryBlock,
+  california: CaliforniaBlock,
 }
 
 export const RenderBlocks: React.FC<{

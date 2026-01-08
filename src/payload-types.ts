@@ -280,6 +280,7 @@ export interface Page {
     | ArticlesSidebarBlock
     | MissionVisionBlock
     | DesignationDirectoryBlock
+    | CaliforniaBlock
   )[];
   meta?: {
     title?: string | null;
@@ -2373,6 +2374,36 @@ export interface DesignationDirectoryBlock {
   blockType: 'designationDirectory';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaliforniaBlock".
+ */
+export interface CaliforniaBlock {
+  title: string;
+  /**
+   * List of Mr. California city designations
+   */
+  mrDesignations?:
+    | {
+        title: string;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * List of Ms. California city designations
+   */
+  msDesignations?:
+    | {
+        title: string;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'california';
+}
+/**
  * Custom navigation header for each tenant site
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3398,6 +3429,7 @@ export interface PagesSelect<T extends boolean = true> {
         articlesSidebar?: T | ArticlesSidebarBlockSelect<T>;
         missionVision?: T | MissionVisionBlockSelect<T>;
         designationDirectory?: T | DesignationDirectoryBlockSelect<T>;
+        california?: T | CaliforniaBlockSelect<T>;
       };
   meta?:
     | T
@@ -4057,6 +4089,29 @@ export interface DesignationDirectoryBlockSelect<T extends boolean = true> {
   ctaButtonLink?: T;
   ctaSecondaryText?: T;
   ctaSecondaryLink?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaliforniaBlock_select".
+ */
+export interface CaliforniaBlockSelect<T extends boolean = true> {
+  title?: T;
+  mrDesignations?:
+    | T
+    | {
+        title?: T;
+        link?: T;
+        id?: T;
+      };
+  msDesignations?:
+    | T
+    | {
+        title?: T;
+        link?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

@@ -104,6 +104,239 @@ export default async function DirectoryPage() {
         </div>
       </section>
 
+      {/* California Section */}
+      <section className="py-6">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
+            California
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+            {/* Mr. California Cities Column */}
+            <div>
+              <h3 className="font-bold text-lg text-gray-900 mb-4 border-b pb-2">
+                Mr. California Cities
+              </h3>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. California™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Adelanto™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Agoura Hills™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Alameda™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Albany™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Alhambra™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Aliso Viejo™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Alturas™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Amador City™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. American Canyon™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Anaheim™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Anderson™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Angels Camp™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Antioch™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Apple Valley™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Arcadia™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Arcata™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Arroyo Grande™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Artesia™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Arvin™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Atascadero™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Atherton™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Atwater™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Auburn™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Avalon™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Avenal™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Azusa™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Bakersfield™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Baldwin Park™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Banning™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Barstow™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Beaumont™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. Inland Empire™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Mr. San Gabriel Valley™
+                </Link>
+              </div>
+            </div>
+
+            {/* Ms. California Cities Column */}
+            <div>
+              <h3 className="font-bold text-lg text-gray-900 mb-4 border-b pb-2">
+                Ms. California Cities
+              </h3>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. California™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Adelanto™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Agoura Hills™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Alameda™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Albany™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Alhambra™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Aliso Viejo™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Alturas™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Amador City™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. American Canyon™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Anaheim™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Anderson™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Angels Camp™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Antioch™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Apple Valley™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Arcadia™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Arcata™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Arroyo Grande™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Artesia™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Arvin™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Atascadero™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Atherton™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Atwater™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Auburn™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Avalon™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Avenal™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Azusa™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Bakersfield™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Baldwin Park™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Banning™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Barstow™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Beaumont™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. Inland Empire™
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors py-1">
+                  <span className="text-blue-600">▶</span>Ms. San Gabriel Valley™
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer Links */}
       <section className="py-8 bg-white border-t">
         <div className="container mx-auto px-4">

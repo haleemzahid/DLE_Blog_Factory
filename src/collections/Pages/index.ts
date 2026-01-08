@@ -29,6 +29,7 @@ import { ArticlesSection } from '../../blocks/ArticlesSection/config'
 import { ArticlesSectionWithSidebar } from '../../blocks/ArticlesSectionWithSidebar/config'
 import { MissionVision } from '../../blocks/MissionVision/config'
 import { DesignationDirectory } from '../../blocks/DesignationDirectory/config'
+import { California } from '../../blocks/California/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -131,6 +132,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ArticlesSectionWithSidebar,
                 MissionVision,
                 DesignationDirectory,
+                California,
               ],
               required: true,
               admin: {
