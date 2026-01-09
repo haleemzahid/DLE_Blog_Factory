@@ -30,6 +30,7 @@ import { ArticlesSectionWithSidebar } from '../../blocks/ArticlesSectionWithSide
 import { MissionVision } from '../../blocks/MissionVision/config'
 import { DesignationDirectory } from '../../blocks/DesignationDirectory/config'
 import { California } from '../../blocks/California/config'
+import { VideoLayout } from '../../blocks/VideoLayout/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -133,6 +134,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MissionVision,
                 DesignationDirectory,
                 California,
+                VideoLayout,
               ],
               required: true,
               admin: {

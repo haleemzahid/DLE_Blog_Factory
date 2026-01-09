@@ -281,6 +281,7 @@ export interface Page {
     | MissionVisionBlock
     | DesignationDirectoryBlock
     | CaliforniaBlock
+    | VideoLayoutBlock
   )[];
   meta?: {
     title?: string | null;
@@ -2404,6 +2405,50 @@ export interface CaliforniaBlock {
   blockType: 'california';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoLayoutBlock".
+ */
+export interface VideoLayoutBlock {
+  /**
+   * Enter YouTube, Vimeo, or direct video URL
+   */
+  videoUrl: string;
+  /**
+   * Add up to 2 optional buttons below the video
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+          /**
+           * Choose a hover color for the button
+           */
+          hoverColor?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoLayout';
+}
+/**
  * Custom navigation header for each tenant site
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3430,6 +3475,7 @@ export interface PagesSelect<T extends boolean = true> {
         missionVision?: T | MissionVisionBlockSelect<T>;
         designationDirectory?: T | DesignationDirectoryBlockSelect<T>;
         california?: T | CaliforniaBlockSelect<T>;
+        videoLayout?: T | VideoLayoutBlockSelect<T>;
       };
   meta?:
     | T
@@ -4110,6 +4156,31 @@ export interface CaliforniaBlockSelect<T extends boolean = true> {
     | {
         title?: T;
         link?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoLayoutBlock_select".
+ */
+export interface VideoLayoutBlockSelect<T extends boolean = true> {
+  videoUrl?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+              hoverColor?: T;
+            };
         id?: T;
       };
   id?: T;

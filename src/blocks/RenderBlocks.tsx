@@ -30,6 +30,7 @@ import { ArticlesSectionWithSidebarBlock } from '@/blocks/ArticlesSectionWithSid
 import { MissionVisionBlock } from '@/blocks/MissionVision/Component'
 import { DesignationDirectoryBlock } from '@/blocks/DesignationDirectory/Component'
 import { CaliforniaBlock } from '@/blocks/California/Component'
+import { VideoLayoutBlock } from '@/blocks/VideoLayout/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -60,6 +61,7 @@ const blockComponents = {
   missionVision: MissionVisionBlock,
   designationDirectory: DesignationDirectoryBlock,
   california: CaliforniaBlock,
+  videoLayout: VideoLayoutBlock,
 }
 
 export const RenderBlocks: React.FC<{
