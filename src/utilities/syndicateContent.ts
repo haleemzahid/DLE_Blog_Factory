@@ -89,7 +89,8 @@ export async function syndicatePostToCities(
         )
 
         // Find agent for this city
-        const agent = await findAgentByCity(payload, city.cityName, city.state)
+        const stateId = typeof city.state === 'object' ? city.state.id : city.state
+        const agent = await findAgentByCity(payload, city.cityName, stateId)
 
         if (!agent) {
           console.warn(`⚠️  No agent found for ${city.cityName}, skipping...`)
@@ -242,33 +243,40 @@ async function getCitiesToProcess(payload: Payload, options: SyndicationOptions)
  * Find agent by city name and state
  */
 async function findAgentByCity(payload: Payload, cityName: string, stateId?: string): Promise<any> {
-  // Try to find agent matching city name
-  // Assuming agents have a 'city' field or designation like "Mr. Claremont"
-
-  // First, try exact match on designation title
-  const mrTitle = `Mr. ${cityName}`
-  const msTitle = `Ms. ${cityName}`
-
-  const { docs } = await payload.find({
-    collection: 'agents',
-    where: {
-      or: [
-        {
-          'designation.title': {
-            equals: mrTitle,
-          },
-        },
-        {
-          'designation.title': {
-            equals: msTitle,
-          },
-        },
-      ],
+  // Find agent matching city name in the 'city' field
+  const whereClause: any = {
+    city: {
+      equals: cityName,
     },
+  }
+
+  // If state provided, add it to query
+  if (stateId) {
+    whereClause.state = {
+      equals: stateId,
+    }
+  }
+
+  // Try published first
+  let result = await payload.find({
+    collection: 'agents',
+    where: whereClause,
     limit: 1,
   })
 
-  return docs[0] || null
+  // If not found, try drafts
+  if (result.docs.length === 0) {
+    result = await payload.find({
+      collection: 'agents',
+      where: {
+        ...whereClause,
+        _status: { equals: 'draft' },
+      },
+      limit: 1,
+    })
+  }
+
+  return result.docs[0] || null
 }
 
 /**
