@@ -395,6 +395,87 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
+    // AI Content Template Fields
+    {
+      name: 'isTemplate',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Is Template Post',
+      admin: {
+        position: 'sidebar',
+        description: 'This post will be used as a template for AI-generated city-specific content',
+      },
+    },
+    {
+      name: 'cityDataTokens',
+      type: 'group',
+      label: 'City Data Tokens',
+      admin: {
+        condition: (data) => data.isTemplate === true,
+        description: 'Select which city data fields to inject into AI-generated content',
+      },
+      fields: [
+        {
+          name: 'useCityName',
+          type: 'checkbox',
+          label: 'Insert City Name',
+          defaultValue: true,
+        },
+        {
+          name: 'useMedianPrice',
+          type: 'checkbox',
+          label: 'Insert Median Home Price',
+          defaultValue: false,
+        },
+        {
+          name: 'usePriceChange',
+          type: 'checkbox',
+          label: 'Insert Price Change %',
+          defaultValue: false,
+        },
+        {
+          name: 'useSchools',
+          type: 'checkbox',
+          label: 'Insert Top Schools',
+          defaultValue: false,
+        },
+        {
+          name: 'useNeighborhoods',
+          type: 'checkbox',
+          label: 'Insert Popular Neighborhoods',
+          defaultValue: false,
+        },
+        {
+          name: 'useUniqueFacts',
+          type: 'checkbox',
+          label: 'Insert Unique City Facts',
+          defaultValue: false,
+        },
+        {
+          name: 'useMarketStats',
+          type: 'checkbox',
+          label: 'Insert Market Statistics',
+          defaultValue: false,
+        },
+      ],
+    },
+    {
+      name: 'templateCategory',
+      type: 'select',
+      label: 'Template Category',
+      admin: {
+        condition: (data) => data.isTemplate === true,
+        position: 'sidebar',
+      },
+      options: [
+        { label: 'Market Report', value: 'market-report' },
+        { label: 'Neighborhood Guide', value: 'neighborhood-guide' },
+        { label: 'Home Valuation', value: 'home-valuation' },
+        { label: 'Buyer Guide', value: 'buyer-guide' },
+        { label: 'Seller Guide', value: 'seller-guide' },
+        { label: 'Investment Guide', value: 'investment-guide' },
+      ],
+    },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
     // GraphQL will also not return mutated user data that differs from the underlying schema

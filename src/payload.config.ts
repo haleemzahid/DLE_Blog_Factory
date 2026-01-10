@@ -19,6 +19,8 @@ import { Testimonials } from './collections/Testimonials'
 import { Tenants } from './collections/Tenants'
 import { TenantHeaders } from './collections/TenantHeaders'
 import { TenantFooters } from './collections/TenantFooters'
+import { CityData } from './collections/CityData'
+import { ContentTemplates } from './collections/ContentTemplates'
 // Analytics Collections
 import { AnalyticsEvents } from './collections/AnalyticsEvents'
 import { PostAnalytics } from './collections/PostAnalytics'
@@ -115,6 +117,9 @@ export default buildConfig({
     Tenants,
     TenantHeaders,
     TenantFooters,
+    // Content Management
+    CityData,
+    ContentTemplates,
     // Analytics Collections
     AnalyticsEvents,
     PostAnalytics,
@@ -126,7 +131,12 @@ export default buildConfig({
   ],
   cors: {
     origins: '*',
-    headers: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-Payload-Http-Method-Override'],
+    headers: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+      'X-Payload-Http-Method-Override',
+    ],
   },
   globals: [Header, Footer],
   plugins: [

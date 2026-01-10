@@ -79,6 +79,8 @@ export interface Config {
     tenants: Tenant;
     'tenant-headers': TenantHeader;
     'tenant-footers': TenantFooter;
+    cityData: CityDatum;
+    contentTemplates: ContentTemplate;
     'analytics-events': AnalyticsEvent;
     'post-analytics': PostAnalytic;
     'agent-analytics': AgentAnalytic;
@@ -116,6 +118,8 @@ export interface Config {
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     'tenant-headers': TenantHeadersSelect<false> | TenantHeadersSelect<true>;
     'tenant-footers': TenantFootersSelect<false> | TenantFootersSelect<true>;
+    cityData: CityDataSelect<false> | CityDataSelect<true>;
+    contentTemplates: ContentTemplatesSelect<false> | ContentTemplatesSelect<true>;
     'analytics-events': AnalyticsEventsSelect<false> | AnalyticsEventsSelect<true>;
     'post-analytics': PostAnalyticsSelect<false> | PostAnalyticsSelect<true>;
     'agent-analytics': AgentAnalyticsSelect<false> | AgentAnalyticsSelect<true>;
@@ -427,6 +431,25 @@ export interface Post {
         showOnPages?: (number | Page)[] | null;
         id?: string | null;
       }[]
+    | null;
+  /**
+   * This post will be used as a template for AI-generated city-specific content
+   */
+  isTemplate?: boolean | null;
+  /**
+   * Select which city data fields to inject into AI-generated content
+   */
+  cityDataTokens?: {
+    useCityName?: boolean | null;
+    useMedianPrice?: boolean | null;
+    usePriceChange?: boolean | null;
+    useSchools?: boolean | null;
+    useNeighborhoods?: boolean | null;
+    useUniqueFacts?: boolean | null;
+    useMarketStats?: boolean | null;
+  };
+  templateCategory?:
+    | ('market-report' | 'neighborhood-guide' | 'home-valuation' | 'buyer-guide' | 'seller-guide' | 'investment-guide')
     | null;
   populatedAuthors?:
     | {
@@ -2610,6 +2633,210 @@ export interface TenantFooter {
   createdAt: string;
 }
 /**
+ * Store market data and information for each city to use in AI-generated content
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cityData".
+ */
+export interface CityDatum {
+  id: number;
+  /**
+   * e.g., Claremont, Los Angeles, San Francisco
+   */
+  cityName: string;
+  state: number | State;
+  /**
+   * Geographic region within California
+   */
+  region?: ('northern' | 'central' | 'southern') | null;
+  /**
+   * Current population estimate
+   */
+  population?: number | null;
+  /**
+   * Current median home price in dollars
+   */
+  medianHomePrice?: number | null;
+  /**
+   * Median monthly rent in dollars
+   */
+  medianRent?: number | null;
+  /**
+   * Year-over-year price change percentage (e.g., 4.2 for 4.2% increase)
+   */
+  priceChange12Month?: number | null;
+  /**
+   * Number of homes sold in the last 30 days
+   */
+  salesCount30Days?: number | null;
+  /**
+   * Average number of days homes stay on the market
+   */
+  avgDaysOnMarket?: number | null;
+  inventoryLevel?: ('very-low' | 'low' | 'balanced' | 'high' | 'very-high') | null;
+  marketTrend?: ('hot-seller' | 'moderate-seller' | 'balanced' | 'moderate-buyer' | 'hot-buyer') | null;
+  /**
+   * Popular neighborhoods within the city
+   */
+  neighborhoods?:
+    | {
+        name: string;
+        /**
+         * Average home price in this neighborhood
+         */
+        avgPrice?: number | null;
+        /**
+         * Brief description of the neighborhood (e.g., "Family-friendly, near schools")
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Highly-rated schools in the area
+   */
+  topSchools?:
+    | {
+        name: string;
+        /**
+         * School rating (e.g., 9 out of 10)
+         */
+        rating?: number | null;
+        type?: ('elementary' | 'middle' | 'high' | 'k12') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Interesting facts about the city to personalize content
+   */
+  uniqueFacts?:
+    | {
+        /**
+         * e.g., "Known as the City of Trees and PhDs due to Claremont Colleges"
+         */
+        fact: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Closest major city for comparison (e.g., "Los Angeles" for Claremont)
+   */
+  nearbyCity?: string | null;
+  /**
+   * Major employers driving the local economy
+   */
+  keyEmployers?:
+    | {
+        name?: string | null;
+        industry?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * When this city data was last updated
+   */
+  lastUpdated?: string | null;
+  /**
+   * Where this data came from
+   */
+  dataSource?: ('manual' | 'zillow' | 'realtor' | 'census' | 'multiple') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Manage templates for AI-generated city-specific content
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contentTemplates".
+ */
+export interface ContentTemplate {
+  id: number;
+  /**
+   * e.g., "Housing Market Forecast Template"
+   */
+  name: string;
+  category:
+    | 'market-report'
+    | 'neighborhood-guide'
+    | 'home-valuation'
+    | 'buyer-guide'
+    | 'seller-guide'
+    | 'investment-guide'
+    | 'school-guide'
+    | 'moving-guide'
+    | 'luxury-homes'
+    | 'city-comparison';
+  /**
+   * The template post that will be used to generate city-specific versions
+   */
+  basePost: number | Post;
+  /**
+   * Which city data fields are needed for this template
+   */
+  requiredCityData?:
+    | {
+        dataField:
+          | 'cityName'
+          | 'population'
+          | 'medianHomePrice'
+          | 'medianRent'
+          | 'priceChange12Month'
+          | 'salesCount30Days'
+          | 'avgDaysOnMarket'
+          | 'inventoryLevel'
+          | 'marketTrend'
+          | 'neighborhoods'
+          | 'topSchools'
+          | 'uniqueFacts'
+          | 'nearbyCity'
+          | 'region';
+        /**
+         * Is this data field mandatory for content generation?
+         */
+        isRequired?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Instructions for how to customize this template for each city
+   */
+  customizationInstructions?: string | null;
+  /**
+   * The prompt to send to the AI for generating unique city-specific content. Use placeholders like {cityName}, {medianHomePrice}, etc.
+   */
+  aiPrompt: string;
+  /**
+   * Target percentage of unique content vs. template (minimum 30% recommended for SEO)
+   */
+  contentUniquenessTarget?: number | null;
+  /**
+   * Higher priority templates are generated first (1-100)
+   */
+  priority?: number | null;
+  /**
+   * Only active templates will be used for content generation
+   */
+  isActive?: boolean | null;
+  /**
+   * Which city tiers should use this template
+   */
+  targetCityTier?: ('all' | 'tier1' | 'tier2' | 'tier3' | 'tier1-2') | null;
+  /**
+   * Approximate reading time for generated content
+   */
+  estimatedReadTime?: number | null;
+  /**
+   * Number of times this template has been used to generate content
+   */
+  generatedCount?: number | null;
+  /**
+   * When this template was last used
+   */
+  lastGenerated?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Raw analytics events collected from the website
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3316,6 +3543,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tenant-footers';
         value: number | TenantFooter;
+      } | null)
+    | ({
+        relationTo: 'cityData';
+        value: number | CityDatum;
+      } | null)
+    | ({
+        relationTo: 'contentTemplates';
+        value: number | ContentTemplate;
       } | null)
     | ({
         relationTo: 'analytics-events';
@@ -4232,6 +4467,19 @@ export interface PostsSelect<T extends boolean = true> {
         showOnPages?: T;
         id?: T;
       };
+  isTemplate?: T;
+  cityDataTokens?:
+    | T
+    | {
+        useCityName?: T;
+        useMedianPrice?: T;
+        usePriceChange?: T;
+        useSchools?: T;
+        useNeighborhoods?: T;
+        useUniqueFacts?: T;
+        useMarketStats?: T;
+      };
+  templateCategory?: T;
   populatedAuthors?:
     | T
     | {
@@ -4712,6 +4960,84 @@ export interface TenantFootersSelect<T extends boolean = true> {
   copyrightText?: T;
   showDleBadge?: T;
   additionalText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cityData_select".
+ */
+export interface CityDataSelect<T extends boolean = true> {
+  cityName?: T;
+  state?: T;
+  region?: T;
+  population?: T;
+  medianHomePrice?: T;
+  medianRent?: T;
+  priceChange12Month?: T;
+  salesCount30Days?: T;
+  avgDaysOnMarket?: T;
+  inventoryLevel?: T;
+  marketTrend?: T;
+  neighborhoods?:
+    | T
+    | {
+        name?: T;
+        avgPrice?: T;
+        description?: T;
+        id?: T;
+      };
+  topSchools?:
+    | T
+    | {
+        name?: T;
+        rating?: T;
+        type?: T;
+        id?: T;
+      };
+  uniqueFacts?:
+    | T
+    | {
+        fact?: T;
+        id?: T;
+      };
+  nearbyCity?: T;
+  keyEmployers?:
+    | T
+    | {
+        name?: T;
+        industry?: T;
+        id?: T;
+      };
+  lastUpdated?: T;
+  dataSource?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contentTemplates_select".
+ */
+export interface ContentTemplatesSelect<T extends boolean = true> {
+  name?: T;
+  category?: T;
+  basePost?: T;
+  requiredCityData?:
+    | T
+    | {
+        dataField?: T;
+        isRequired?: T;
+        id?: T;
+      };
+  customizationInstructions?: T;
+  aiPrompt?: T;
+  contentUniquenessTarget?: T;
+  priority?: T;
+  isActive?: T;
+  targetCityTier?: T;
+  estimatedReadTime?: T;
+  generatedCount?: T;
+  lastGenerated?: T;
   updatedAt?: T;
   createdAt?: T;
 }
