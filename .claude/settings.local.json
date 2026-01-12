@@ -15,7 +15,8 @@
       "Bash(timeout /t 4)",
       "Bash(timeout 5 tail:*)",
       "Bash(git pull:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git rm:*)"
     ]
   }
 }
