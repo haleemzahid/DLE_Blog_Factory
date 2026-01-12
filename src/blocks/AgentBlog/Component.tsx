@@ -64,7 +64,12 @@ export const AgentBlogBlock: React.FC<Props> = async ({
     // Find posts that are either:
     // 1. Directly assigned to this agent (postType: 'agent')
     // 2. Syndicated to this agent (postType: 'syndicated' and agent is in syndicatedAgents)
-    where.or = [{ agent: { equals: agentId } }, { syndicatedAgents: { contains: agentId } }]
+    // 3. Network-wide posts (showOnAllAgents: true)
+    where.or = [
+      { agent: { equals: agentId } },
+      { syndicatedAgents: { contains: agentId } },
+      { showOnAllAgents: { equals: true } },
+    ]
   }
 
   if (categories && categories.length > 0) {

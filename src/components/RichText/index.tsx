@@ -61,7 +61,7 @@ type Props = {
   enableProse?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
-export default function RichText(props: Props) {
+function RichText(props: Props) {
   const { className, enableProse = true, enableGutter = true, ...rest } = props
   return (
     <ConvertRichText
@@ -79,3 +79,5 @@ export default function RichText(props: Props) {
     />
   )
 }
+
+export default RichText

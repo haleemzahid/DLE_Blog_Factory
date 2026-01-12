@@ -17,7 +17,13 @@
       "Bash(git pull:*)",
       "Bash(git add:*)",
       "Bash(git rm:*)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "Bash(pnpm generate:types:*)",
+      "Bash(pnpm payload migrate:status:*)",
+      "Bash(pnpm payload migrate:create:*)",
+      "Bash(pnpm payload migrate:*)",
+      "Bash(psql:*)",
+      "Bash(pnpm run build:*)"
     ]
   }
 }

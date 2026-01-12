@@ -357,6 +357,10 @@ export interface Post {
    */
   syndicatedAgents?: (number | Agent)[] | null;
   /**
+   * Check this to show this post on ALL agent pages (network-wide)
+   */
+  showOnAllAgents?: boolean | null;
+  /**
    * Primary tenant for canonical URL (prevents duplicate content)
    */
   primaryTenant?: (number | null) | Tenant;
@@ -4444,6 +4448,7 @@ export interface PostsSelect<T extends boolean = true> {
   showOnHomepage?: T;
   agent?: T;
   syndicatedAgents?: T;
+  showOnAllAgents?: T;
   primaryTenant?: T;
   tenantSeoOverrides?:
     | T

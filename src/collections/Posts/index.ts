@@ -250,6 +250,17 @@ export const Posts: CollectionConfig<'posts'> = {
       relationTo: 'agents',
       label: 'Syndicated to Agents',
     },
+    {
+      name: 'showOnAllAgents',
+      type: 'checkbox',
+      admin: {
+        position: 'sidebar',
+        description: 'Check this to show this post on ALL agent pages (network-wide)',
+        condition: (data) => data.postType === 'syndicated',
+      },
+      label: 'Show on All Agents',
+      defaultValue: false,
+    },
     // Multi-Tenant SEO Override Fields
     {
       name: 'primaryTenant',
