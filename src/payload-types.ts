@@ -658,7 +658,7 @@ export interface Agent {
    * Select the designation types for this agent (e.g., Mr. SEO, Mr. Luxury)
    */
   designation?: (number | Designation)[] | null;
-  profilePhoto: number | Media;
+  profilePhoto?: (number | null) | Media;
   heroImage?: (number | null) | Media;
   logo?: (number | null) | Media;
   /**

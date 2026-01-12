@@ -152,7 +152,7 @@ export const Agents: CollectionConfig<'agents'> = {
               name: 'profilePhoto',
               type: 'upload',
               relationTo: 'media',
-              required: true,
+              required: false,
               label: 'Profile Photo',
             },
             {

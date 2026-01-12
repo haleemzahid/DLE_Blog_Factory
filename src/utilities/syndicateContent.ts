@@ -7,6 +7,32 @@
 import type { Payload } from 'payload'
 import { generateCityContent } from './cityContent'
 
+// Helper function to convert string to Lexical rich text format
+function stringToLexical(text: string) {
+  return {
+    root: {
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          version: 1,
+          children: [
+            {
+              type: 'text',
+              version: 1,
+              text: text,
+            },
+          ],
+        },
+      ],
+      direction: 'ltr' as const,
+      format: '',
+      indent: 0,
+      version: 1,
+    },
+  }
+}
+
 export interface SyndicationOptions {
   templatePostId: string
   cityIds?: string[]
@@ -114,7 +140,7 @@ export async function syndicatePostToCities(
           depth: 1,
         })
 
-        const tenantId = typeof agentDoc.tenant === 'object' ? agentDoc.tenant.id : agentDoc.tenant
+        const tenantId = typeof agentDoc.tenant === 'object' ? agentDoc.tenant?.id : agentDoc.tenant
 
         // Update the post with syndication data
         console.log(`  💾 Updating post syndication...`)
@@ -141,7 +167,7 @@ export async function syndicatePostToCities(
               ...currentSeoOverrides[overrideIndex],
               titleOverride: uniqueContent.titleOverride,
               descriptionOverride: uniqueContent.descriptionOverride,
-              introOverride: uniqueContent.introOverride,
+              introOverride: stringToLexical(uniqueContent.introOverride),
               customSlug: uniqueContent.customSlug,
             }
           }
@@ -152,7 +178,7 @@ export async function syndicatePostToCities(
             tenant: tenantId,
             titleOverride: uniqueContent.titleOverride,
             descriptionOverride: uniqueContent.descriptionOverride,
-            introOverride: uniqueContent.introOverride,
+            introOverride: stringToLexical(uniqueContent.introOverride),
             customSlug: uniqueContent.customSlug,
           })
         }

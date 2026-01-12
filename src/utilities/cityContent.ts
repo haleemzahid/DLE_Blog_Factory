@@ -260,8 +260,8 @@ function generateSimpleContent(context: AIPromptContext): GeneratedContent {
   const { cityName, templateTitle, cityData } = context
 
   // Simple token replacement
-  let title = templateTitle.replace(/\[CITY\]/gi, cityName)
-  let description = `Learn about the ${cityName} real estate market. Get insights on home prices, neighborhoods, and market trends in ${cityName}.`
+  const title = templateTitle.replace(/\[CITY\]/gi, cityName)
+  const description = `Learn about the ${cityName} real estate market. Get insights on home prices, neighborhoods, and market trends in ${cityName}.`
   let intro = `Thinking about buying or selling a home in ${cityName}? `
 
   // Add city-specific details

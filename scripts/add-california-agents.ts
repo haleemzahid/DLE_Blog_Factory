@@ -126,11 +126,32 @@ async function main() {
             slug: slug,
             city: agentData.city,
             state: stateId,
-            designationPrefix: agentData.designationPrefix,
+            designationPrefix: agentData.designationPrefix as 'Mr.' | 'Ms.' | 'Mrs.' | null,
             designationCity: agentData.designationCity,
             fullDesignation: `${agentData.designationPrefix} ${agentData.designationCity}™`,
             tagline: agentData.tagline,
-            bio: agentData.bio,
+            bio: {
+              root: {
+                type: 'root',
+                children: [
+                  {
+                    type: 'paragraph',
+                    version: 1,
+                    children: [
+                      {
+                        type: 'text',
+                        version: 1,
+                        text: agentData.bio,
+                      },
+                    ],
+                  },
+                ],
+                direction: 'ltr' as const,
+                format: '',
+                indent: 0,
+                version: 1,
+              },
+            },
             phone: agentData.phone,
             email: agentData.email,
             _status: 'published',
