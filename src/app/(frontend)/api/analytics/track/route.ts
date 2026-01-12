@@ -146,16 +146,10 @@ export async function POST(req: NextRequest) {
     // Determine traffic source
     const trafficSource = getTrafficSource(event.referrer, event.utmSource)
 
-    // Build enriched event
-    const enrichedEvent = {
+    // Build enriched event - only include fields that are defined
+    const enrichedEvent: Record<string, unknown> = {
       event: event.event,
       sessionId: event.sessionId,
-
-      // Content context
-      postId: event.postId || undefined,
-      pageId: event.pageId || undefined,
-      agentId: event.agentId || undefined,
-      tenantId: event.tenantId || undefined,
 
       // Event data (all additional fields)
       eventData: {
@@ -184,30 +178,34 @@ export async function POST(req: NextRequest) {
         ...event.eventData,
       },
 
-      // User context
-      ipAddress: anonymizeIP(ip),
-      country: req.headers.get('cf-ipcountry') || undefined,
-      timezone: event.timezone || undefined,
-      language: event.language || req.headers.get('accept-language')?.split(',')[0] || undefined,
-      // region and city would come from a geo-IP service
-
       // Device context
       deviceType: event.deviceType || deviceType,
       browser: event.browser || browser,
       os: event.os || os,
-      screenSize: event.screenSize,
-      userAgent: userAgent || undefined,
-
-      // Traffic context
-      referrer: event.referrer,
-      utmSource: event.utmSource,
-      utmMedium: event.utmMedium,
-      utmCampaign: event.utmCampaign,
 
       // Timestamps
-      clientTimestamp: event.timestamp,
       serverTimestamp: new Date().toISOString(),
     }
+
+    // Only add optional fields if they have values
+    if (event.postId) enrichedEvent.postId = event.postId
+    if (event.pageId) enrichedEvent.pageId = event.pageId
+    if (event.agentId) enrichedEvent.agentId = event.agentId
+    if (event.tenantId) enrichedEvent.tenantId = event.tenantId
+
+    if (ip) enrichedEvent.ipAddress = anonymizeIP(ip)
+    if (req.headers.get('cf-ipcountry')) enrichedEvent.country = req.headers.get('cf-ipcountry')
+    if (event.timezone) enrichedEvent.timezone = event.timezone
+
+    if (event.screenSize) enrichedEvent.screenSize = event.screenSize
+    if (userAgent) enrichedEvent.userAgent = userAgent
+
+    if (event.referrer) enrichedEvent.referrer = event.referrer
+    if (event.utmSource) enrichedEvent.utmSource = event.utmSource
+    if (event.utmMedium) enrichedEvent.utmMedium = event.utmMedium
+    if (event.utmCampaign) enrichedEvent.utmCampaign = event.utmCampaign
+
+    if (event.timestamp) enrichedEvent.clientTimestamp = event.timestamp
 
     // Save to database
     await saveEvent(enrichedEvent)

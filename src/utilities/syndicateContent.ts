@@ -8,7 +8,21 @@ import type { Payload } from 'payload'
 import { generateCityContent } from './cityContent'
 
 // Helper function to convert string to Lexical rich text format
-function stringToLexical(text: string) {
+function stringToLexical(text: string): {
+  [k: string]: unknown
+  root: {
+    type: string
+    children: {
+      [k: string]: unknown
+      type: string
+      version: number
+    }[]
+    direction: 'ltr' | 'rtl' | null
+    format: '' | 'left' | 'start' | 'center' | 'right' | 'end' | 'justify'
+    indent: number
+    version: number
+  }
+} {
   return {
     root: {
       type: 'root',
@@ -25,7 +39,7 @@ function stringToLexical(text: string) {
           ],
         },
       ],
-      direction: 'ltr' as const,
+      direction: 'ltr',
       format: '',
       indent: 0,
       version: 1,
@@ -141,6 +155,11 @@ export async function syndicatePostToCities(
         })
 
         const tenantId = typeof agentDoc.tenant === 'object' ? agentDoc.tenant?.id : agentDoc.tenant
+
+        if (!tenantId) {
+          console.log(`  ⚠️  Agent has no tenant, skipping syndication...`)
+          continue
+        }
 
         // Update the post with syndication data
         console.log(`  💾 Updating post syndication...`)
