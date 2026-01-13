@@ -20,25 +20,23 @@ export default async function AgentPageLayout({ children }: { children: React.Re
   // Get tenant header and footer
   const { header: tenantHeader } = tenant?.id
     ? await getTenantNavigation(String(tenant.id))
-    : { header: null, footer: null }
+    : { header: null }
 
   // Get logo
   const logo = getTenantLogo(tenantHeader, tenant)
 
   return (
     <>
-      {/* Tenant Header */}
-      {tenantHeader && tenant ? (
+      {/* Tenant Header - Only show if exists */}
+      {tenantHeader && tenant && (
         <TenantHeaderClient tenantHeader={tenantHeader} tenant={tenant} logo={logo} />
-      ) : (
-        <Header tenant={tenant} />
       )}
 
       {/* Page Content */}
       {children}
 
-      {/* Tenant Footer */}
-      <Footer tenant={tenant} />
+      {/* Tenant Footer - Only show if tenant exists */}
+      {tenant && <Footer tenant={tenant} />}
     </>
   )
 }
