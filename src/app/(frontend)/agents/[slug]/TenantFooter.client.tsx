@@ -70,11 +70,23 @@ export const TenantFooterClient: React.FC<TenantFooterClientProps> = ({
       ...socialIconMap[platform],
     }))
 
+  // Calculate total sections for grid layout
+  const totalSections = 1 + columns.length + (activeSocialLinks.length > 0 ? 1 : 0) + ((contactInfo.phone || contactInfo.email || contactInfo.address) ? 1 : 0)
+  const gridCols = Math.min(totalSections, 4)
+
+  // Map to actual Tailwind classes
+  const gridColsClass = {
+    1: 'lg:grid-cols-1',
+    2: 'lg:grid-cols-2',
+    3: 'lg:grid-cols-3',
+    4: 'lg:grid-cols-4',
+  }[gridCols] || 'lg:grid-cols-4'
+
   return (
     <footer className="mt-auto bg-gray-900 text-white">
       <div className="container py-12">
         <div
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${Math.min(columns.length + 2, 4)} gap-8 mb-8`}
+          className={`grid grid-cols-1 md:grid-cols-2 ${gridColsClass} gap-8 mb-8`}
         >
           {/* Logo and Description */}
           <div>
@@ -161,17 +173,17 @@ export const TenantFooterClient: React.FC<TenantFooterClientProps> = ({
           {activeSocialLinks.length > 0 && (
             <div>
               <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 {activeSocialLinks.map(({ platform, url, icon: Icon, label }) => (
                   <a
                     key={platform}
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors"
+                    className="w-9 h-9 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors flex-shrink-0"
                     aria-label={label}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-4 h-4" />
                   </a>
                 ))}
               </div>
