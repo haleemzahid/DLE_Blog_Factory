@@ -1,6 +1,4 @@
-/* Tailwind directives for admin panel */
-@tailwind base;
-@tailwind components;
+/* Tailwind utilities only (no base reset that conflicts with PayloadCMS) */
 @tailwind utilities;
 
 /* Import custom admin panel styles */
