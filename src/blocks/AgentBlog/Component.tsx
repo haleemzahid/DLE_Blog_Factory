@@ -70,6 +70,9 @@ export const AgentBlogBlock: React.FC<Props> = async ({
       { syndicatedAgents: { contains: agentId } },
       { showOnAllAgents: { equals: true } },
     ]
+  } else {
+    // If no agent specified (placeholder page), only show network-wide posts
+    where.showOnAllAgents = { equals: true }
   }
 
   if (categories && categories.length > 0) {
