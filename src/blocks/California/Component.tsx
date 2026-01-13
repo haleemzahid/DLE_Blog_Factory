@@ -47,7 +47,7 @@ export const CaliforniaBlock: React.FC<CaliforniaBlockProps> = (props) => {
                 mrDesignations.map((designation, index) => (
                   <Link
                     key={`mr-${index}`}
-                    href={designation.link}
+                    href={designation.link || '#'}
                     className="flex items-center gap-2 text-gray-800 hover:text-gray-900 transition-colors py-1 text-sm"
                   >
                     <CircleIcon />
@@ -70,7 +70,7 @@ export const CaliforniaBlock: React.FC<CaliforniaBlockProps> = (props) => {
                 msDesignations.map((designation, index) => (
                   <Link
                     key={`ms-${index}`}
-                    href={designation.link}
+                    href={designation.link || '#'}
                     className="flex items-center gap-2 text-gray-800 hover:text-gray-900 transition-colors py-1 text-sm"
                   >
                     <CircleIcon />
