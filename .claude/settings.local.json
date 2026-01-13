@@ -26,7 +26,8 @@
       "Bash(pnpm run build:*)",
       "Bash(pnpm add:*)",
       "Bash(pnpm generate:importmap:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
