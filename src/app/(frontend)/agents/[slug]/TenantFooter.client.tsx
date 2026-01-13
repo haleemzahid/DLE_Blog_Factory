@@ -37,12 +37,12 @@ export const TenantFooterClient: React.FC<TenantFooterClientProps> = ({
   tenantFooter,
   tenant,
 }) => {
-  const navItems = tenantFooter.navItems || []
+  const columns = tenantFooter.columns || []
   const socialLinks = tenantFooter.socialLinks || {}
   const contactInfo = tenantFooter.contactInfo || {}
+  const legalLinks = tenantFooter.legalLinks || []
   const copyrightText = formatCopyrightText(tenantFooter.copyrightText, tenant)
-  const showContactInfo = tenantFooter.showContactInfo
-  const showSocialLinks = tenantFooter.showSocialLinks
+  const showDleBadge = tenantFooter.showDleBadge
 
   // Get tenant logo
   const logo =
@@ -73,7 +73,9 @@ export const TenantFooterClient: React.FC<TenantFooterClientProps> = ({
   return (
     <footer className="mt-auto bg-gray-900 text-white">
       <div className="container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${Math.min(columns.length + 2, 4)} gap-8 mb-8`}
+        >
           {/* Logo and Description */}
           <div>
             {logo ? (
@@ -85,37 +87,41 @@ export const TenantFooterClient: React.FC<TenantFooterClientProps> = ({
             ) : (
               <h3 className="text-xl font-bold mb-4">{tenant.name}</h3>
             )}
-            {tenantFooter.description && (
-              <p className="text-gray-400 text-sm">{tenantFooter.description}</p>
+            {showDleBadge && (
+              <p className="text-gray-400 text-sm">
+                Powered by <strong>Designated Local Expert</strong>
+              </p>
             )}
           </div>
 
-          {/* Navigation Links */}
-          {navItems.length > 0 && (
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2">
-                {navItems.map((item, index) => {
-                  const href = resolveNavLink(item)
-                  return (
-                    <li key={index}>
-                      <Link
-                        href={href}
-                        target={item.newTab ? '_blank' : undefined}
-                        rel={item.newTab ? 'noopener noreferrer' : undefined}
-                        className="text-gray-400 hover:text-white transition-colors text-sm"
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
+          {/* Dynamic Columns */}
+          {columns.map((column, index) => (
+            <div key={index}>
+              <h4 className="text-lg font-semibold mb-4">{column.title}</h4>
+              {column.links && column.links.length > 0 && (
+                <ul className="space-y-2">
+                  {column.links.map((link, linkIndex) => {
+                    const href = resolveNavLink(link)
+                    return (
+                      <li key={linkIndex}>
+                        <Link
+                          href={href}
+                          target={link.newTab ? '_blank' : undefined}
+                          rel={link.newTab ? 'noopener noreferrer' : undefined}
+                          className="text-gray-400 hover:text-white transition-colors text-sm"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
             </div>
-          )}
+          ))}
 
           {/* Contact Info */}
-          {showContactInfo && (contactInfo.phone || contactInfo.email || contactInfo.address) && (
+          {(contactInfo.phone || contactInfo.email || contactInfo.address) && (
             <div>
               <h4 className="text-lg font-semibold mb-4">Contact</h4>
               <ul className="space-y-3 text-sm">
@@ -152,7 +158,7 @@ export const TenantFooterClient: React.FC<TenantFooterClientProps> = ({
           )}
 
           {/* Social Links */}
-          {showSocialLinks && activeSocialLinks.length > 0 && (
+          {activeSocialLinks.length > 0 && (
             <div>
               <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
               <div className="flex gap-3">
@@ -173,9 +179,34 @@ export const TenantFooterClient: React.FC<TenantFooterClientProps> = ({
           )}
         </div>
 
-        {/* Copyright */}
-        <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-          <p>{copyrightText}</p>
+        {/* Bottom Section: Legal Links and Copyright */}
+        <div className="border-t border-gray-800 pt-8">
+          {/* Legal Links */}
+          {legalLinks.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-4 mb-4 text-sm">
+              {legalLinks.map((link, index) => {
+                const href = resolveNavLink(link)
+                return (
+                  <React.Fragment key={index}>
+                    <Link
+                      href={href}
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                    {index < legalLinks.length - 1 && (
+                      <span className="text-gray-600">|</span>
+                    )}
+                  </React.Fragment>
+                )
+              })}
+            </div>
+          )}
+
+          {/* Copyright */}
+          <div className="text-center text-sm text-gray-400">
+            <p>{copyrightText}</p>
+          </div>
         </div>
       </div>
     </footer>
