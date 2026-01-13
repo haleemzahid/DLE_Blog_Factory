@@ -96,8 +96,8 @@ export default buildConfig({
       idleTimeoutMillis: 30000,
       max: 10, // Limit pool size
     },
-    // Disable auto-push in production to prevent dev mode issues
-    push: process.env.NODE_ENV !== 'production',
+    // Temporarily disable auto-push to avoid schema conflicts
+    push: false,
     // Use migrations in production
     migrationDir: path.resolve(dirname, './migrations'),
     prodMigrations: migrations,

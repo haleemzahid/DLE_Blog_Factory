@@ -46,8 +46,11 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-    staticDir: path.resolve(dirname, '../../public/media'),
+    // Images are stored in Vercel Blob Storage in production (configured in payload.config.ts)
+    // staticDir is only used for local development when BLOB_READ_WRITE_TOKEN is not set
+    ...(process.env.BLOB_READ_WRITE_TOKEN
+      ? {} // Use Vercel Blob Storage when token is present
+      : { staticDir: path.resolve(dirname, '../../public/media') }), // Fallback to local storage in dev
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [

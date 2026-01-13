@@ -28,7 +28,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.blob.vercel-storage.com',
+        hostname: '**.blob.vercel-storage.com',
       },
     ],
     formats: ['image/webp'],
