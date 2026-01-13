@@ -23,7 +23,9 @@
       "Bash(pnpm payload migrate:create:*)",
       "Bash(pnpm payload migrate:*)",
       "Bash(psql:*)",
-      "Bash(pnpm run build:*)"
+      "Bash(pnpm run build:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm generate:importmap:*)"
     ]
   }
 }

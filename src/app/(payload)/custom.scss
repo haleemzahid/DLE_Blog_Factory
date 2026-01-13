@@ -1,2 +1,7 @@
+/* Tailwind directives for admin panel */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Import custom admin panel styles */
 @import '../../styles/admin.css';

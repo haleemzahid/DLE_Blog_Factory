@@ -995,7 +995,10 @@ export const California: Block = {
         description: 'List of Mr. California city designations',
         initCollapsed: true,
       },
-      defaultValue: mrCities.map((city) => ({ title: city, link: '#' })),
+      defaultValue: mrCities.map((city) => ({
+        title: city,
+        link: `/agents/${city.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`,
+      })),
       fields: [
         {
           name: 'title',
@@ -1024,7 +1027,10 @@ export const California: Block = {
         description: 'List of Ms. California city designations',
         initCollapsed: true,
       },
-      defaultValue: msCities.map((city) => ({ title: city, link: '#' })),
+      defaultValue: msCities.map((city) => ({
+        title: city,
+        link: `/agents/${city.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`,
+      })),
       fields: [
         {
           name: 'title',

@@ -12,6 +12,7 @@ import type { Agent } from '@/payload-types'
 import { generateMeta } from '@/utilities/generateMeta'
 import { AgentHero } from './AgentHero'
 import { AgentProfile } from './AgentProfile'
+import { PlaceholderAgentPage } from './PlaceholderAgentPage'
 import { HomeValueFormBlock } from '@/blocks/HomeValueForm/Component'
 import { TestimonialsBlockComponent } from '@/blocks/TestimonialsBlock/Component'
 import { ServicesGridBlock } from '@/blocks/ServicesGrid/Component'
@@ -53,7 +54,35 @@ export default async function AgentPage({ params: paramsPromise }: Args) {
   const url = '/agents/' + slug
   const agent = await queryAgentBySlug({ slug })
 
-  if (!agent) return <PayloadRedirects url={url} />
+  // If no agent found, check if it's a valid designation format (mr-city or ms-city)
+  if (!agent) {
+    const designationMatch = slug.match(/^(mr|ms|mrs)-(.+)$/)
+
+    if (designationMatch) {
+      const [, prefix, citySlug] = designationMatch
+
+      // Convert slug to display format
+      const cityName = citySlug
+        .split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+
+      const prefixDisplay = prefix.charAt(0).toUpperCase() + prefix.slice(1) + '.'
+      const designationName = `${prefixDisplay} ${cityName} ™`
+
+      // Default to California for now (could be enhanced to detect state from slug or database)
+      return (
+        <PlaceholderAgentPage
+          designationName={designationName}
+          city={cityName}
+          state="California"
+        />
+      )
+    }
+
+    // If not a valid designation format, show 404
+    return <PayloadRedirects url={url} />
+  }
 
   return (
     <article className="pb-16">
