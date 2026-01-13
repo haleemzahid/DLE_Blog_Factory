@@ -28,7 +28,7 @@ export const SolutionsSectionBlock: React.FC<SolutionsSectionBlockProps> = (prop
     <section className="py-10 md:py-14 bg-white relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute right-0 top-0 w-[300px] h-[300px] bg-cyan-100/30 rounded-full blur-3xl -z-10" />
-      <div className="absolute left-0 bottom-0 w-[200px] h-[200px] bg-blue-100/30 rounded-full blur-3xl -z-10" />
+      <div className="absolute left-0 bottom-0 w-[200px] h-[200px] bg-blue-100/30 rounded-full blur-3xl -z-10 " />
 
       <div className="container mx-auto px-4">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${isImageLeft ? '' : 'lg:flex-row-reverse'}`}>
