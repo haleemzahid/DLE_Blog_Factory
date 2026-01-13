@@ -25,7 +25,8 @@
       "Bash(psql:*)",
       "Bash(pnpm run build:*)",
       "Bash(pnpm add:*)",
-      "Bash(pnpm generate:importmap:*)"
+      "Bash(pnpm generate:importmap:*)",
+      "Bash(wc:*)"
     ]
   }
 }

@@ -1,10 +1,10 @@
 import React from 'react'
 import { headers } from 'next/headers'
 import { getTenantByDomain, getMainTenant } from '@/utilities/getTenant'
-import { getTenantNavigation, getTenantLogo } from '@/utilities/getTenantNavigation'
+import { getTenantNavigation, getTenantLogo, getTenantFooter } from '@/utilities/getTenantNavigation'
 import { TenantHeaderClient } from '@/Header/TenantHeader.client'
-import { Footer } from '@/Footer/Component'
-import { Header } from '@/Header/Component'
+import { TenantFooterClient } from './TenantFooter.client'
+import { HideParentNav } from './HideParentNav.client'
 
 export default async function AgentPageLayout({ children }: { children: React.ReactNode }) {
   // Get tenant based on current hostname
@@ -22,11 +22,17 @@ export default async function AgentPageLayout({ children }: { children: React.Re
     ? await getTenantNavigation(String(tenant.id))
     : { header: null }
 
+  // Get tenant footer separately
+  const tenantFooter = tenant?.id ? await getTenantFooter(String(tenant.id)) : null
+
   // Get logo
   const logo = getTenantLogo(tenantHeader, tenant)
 
   return (
-    <>
+    <div className="agent-page-wrapper">
+      {/* Hide the parent layout's header and footer */}
+      <HideParentNav />
+
       {/* Tenant Header - Only show if exists */}
       {tenantHeader && tenant && (
         <TenantHeaderClient tenantHeader={tenantHeader} tenant={tenant} logo={logo} />
@@ -35,8 +41,10 @@ export default async function AgentPageLayout({ children }: { children: React.Re
       {/* Page Content */}
       {children}
 
-      {/* Tenant Footer - Only show if tenant exists */}
-      {tenant && <Footer tenant={tenant} />}
-    </>
+      {/* Tenant Footer - Only show if exists */}
+      {tenantFooter && tenant && (
+        <TenantFooterClient tenantFooter={tenantFooter} tenant={tenant} />
+      )}
+    </div>
   )
 }

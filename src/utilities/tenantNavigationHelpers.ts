@@ -40,13 +40,20 @@ export function resolveNavLink(item: {
 }
 
 /**
- * Format copyright text with dynamic year
+ * Format copyright text with dynamic year and tenant name
  */
-export function formatCopyrightText(text: string | undefined): string {
+export function formatCopyrightText(
+  text: string | undefined,
+  tenant?: { name?: string | null } | null,
+): string {
+  const year = new Date().getFullYear()
+  const tenantName = tenant?.name || ''
+
   if (!text) {
-    return `© ${new Date().getFullYear()} All rights reserved.`
+    return `© ${year} ${tenantName}. All rights reserved.`
   }
 
   // Replace {year} placeholder with current year
-  return text.replace('{year}', new Date().getFullYear().toString())
+  // Replace {tenant} placeholder with tenant name
+  return text.replace('{year}', year.toString()).replace('{tenant}', tenantName)
 }
