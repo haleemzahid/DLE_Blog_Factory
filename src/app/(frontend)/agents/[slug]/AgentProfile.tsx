@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Agent } from '@/payload-types'
 import { Media } from '@/components/Media'
-import RichText from '@/components/RichText'
+import { SimpleRichText } from '@/components/RichText/SimpleRichText'
 
 type Props = {
   agent: Agent
@@ -23,7 +23,7 @@ export const AgentProfile: React.FC<Props> = ({ agent }) => {
 
             {agent.bio && (
               <div className="prose prose-lg max-w-none text-gray-600">
-                <RichText data={agent.bio} />
+                <SimpleRichText data={agent.bio} />
               </div>
             )}
 

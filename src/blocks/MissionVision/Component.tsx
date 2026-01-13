@@ -1,5 +1,5 @@
 import React from 'react'
-import RichText from '@/components/RichText'
+import { SimpleRichText } from '@/components/RichText/SimpleRichText'
 import { CMSLink } from '@/components/Link'
 
 import type { MissionVisionBlock as MissionVisionBlockProps } from '@/payload-types'
@@ -134,7 +134,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
                 </h3>
               </div>
               {mission?.content && (
-                <RichText
+                <SimpleRichText
                   className="prose prose-gray max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed"
                   data={mission.content}
                   enableGutter={false}
@@ -156,7 +156,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
                 </h3>
               </div>
               {vision?.content && (
-                <RichText
+                <SimpleRichText
                   className="prose prose-gray max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed"
                   data={vision.content}
                   enableGutter={false}
@@ -188,7 +188,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
               </h3>
             </div>
             {mission?.content && (
-              <RichText
+              <SimpleRichText
                 className="prose prose-lg max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed [&_p]:text-lg"
                 data={mission.content}
                 enableGutter={false}
@@ -213,7 +213,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
               </h3>
             </div>
             {vision?.content && (
-              <RichText
+              <SimpleRichText
                 className="prose prose-lg max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed [&_p]:text-lg"
                 data={vision.content}
                 enableGutter={false}
@@ -245,7 +245,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
                   {mission?.title}
                 </h3>
                 {mission?.content && (
-                  <RichText
+                  <SimpleRichText
                     className="prose max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed [&_p]:text-base md:[&_p]:text-lg"
                     data={mission.content}
                     enableGutter={false}
@@ -269,7 +269,7 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
                   {vision?.title}
                 </h3>
                 {vision?.content && (
-                  <RichText
+                  <SimpleRichText
                     className="prose max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed [&_p]:text-base md:[&_p]:text-lg"
                     data={vision.content}
                     enableGutter={false}

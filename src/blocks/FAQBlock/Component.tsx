@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import type { FAQBlock as FAQBlockType } from '@/payload-types'
-import RichText from '@/components/RichText'
+import { SimpleRichText } from '@/components/RichText/SimpleRichText'
 
 type FAQItem = {
   question: string
@@ -78,7 +78,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
               }`}
             >
               <div className="py-4 text-gray-600 text-sm leading-relaxed">
-                <RichText data={faq.answer} />
+                <SimpleRichText data={faq.answer} />
               </div>
             </div>
           </div>
@@ -93,7 +93,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
         <div key={`${faq.id}-${index}`} className="bg-white p-6 rounded-lg shadow-sm">
           <h3 className="font-semibold text-gray-900 mb-3">{faq.question}</h3>
           <div className="text-gray-600">
-            <RichText data={faq.answer} />
+            <SimpleRichText data={faq.answer} />
           </div>
         </div>
       ))}
@@ -116,7 +116,7 @@ export const FAQBlockComponent: React.FC<Props> = ({
               <h3 className="font-semibold text-gray-900">{faq.question}</h3>
               {openIndex === index && (
                 <div className="mt-2 text-gray-600">
-                  <RichText data={faq.answer} />
+                  <SimpleRichText data={faq.answer} />
                 </div>
               )}
             </div>

@@ -6,7 +6,7 @@ import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
-import RichText from '@/components/RichText'
+import { SimpleRichText } from '@/components/RichText/SimpleRichText'
 
 export const HighImpactHero: React.FC<Page['hero']> = ({
   links,
@@ -64,7 +64,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
             }}
           />
           {richText && (
-            <RichText
+            <SimpleRichText
               className={`hero-rich-text ${richTextStyles}`}
               data={richText}
               enableGutter={false}

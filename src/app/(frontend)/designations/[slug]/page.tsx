@@ -6,7 +6,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-import RichText from '@/components/RichText'
+import { SimpleRichText } from '@/components/RichText/SimpleRichText'
 
 type Args = {
   params: Promise<{
@@ -110,7 +110,7 @@ export default async function DesignationPage({ params }: Args) {
           <h1 className="text-4xl md:text-5xl font-bold mb-4">{designation.title}</h1>
           {designation.description && (
             <div className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              <RichText data={designation.description} enableGutter={false} />
+              <SimpleRichText data={designation.description} enableGutter={false} />
             </div>
           )}
 

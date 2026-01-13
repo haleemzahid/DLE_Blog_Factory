@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import type { AgentContactBlock as AgentContactBlockType, Agent } from '@/payload-types'
 import { Media } from '@/components/Media'
-import RichText from '@/components/RichText'
+import { SimpleRichText } from '@/components/RichText/SimpleRichText'
 
 type Props = AgentContactBlockType & {
   id?: string

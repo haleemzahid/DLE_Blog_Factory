@@ -1,7 +1,7 @@
 import React from 'react'
 import type { ServicesGridBlock as ServicesGridBlockType } from '@/payload-types'
 import { Media } from '@/components/Media'
-import RichText from '@/components/RichText'
+import { SimpleRichText } from '@/components/RichText/SimpleRichText'
 import Link from 'next/link'
 import { CMSLink } from '@/components/Link'
 
@@ -42,7 +42,8 @@ export const ServicesGridBlock: React.FC<Props> = ({
   const buttonClasses: Record<string, string> = {
     red: 'bg-red-600 hover:bg-black text-white',
     dark: 'bg-gray-900 hover:bg-gray-800 text-white',
-    outline: 'bg-transparent border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white',
+    outline:
+      'bg-transparent border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white',
   }
 
   return (
@@ -51,16 +52,8 @@ export const ServicesGridBlock: React.FC<Props> = ({
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           <div>
-            {title && (
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                {title}
-              </h2>
-            )}
-            {subtitle && (
-              <p className="text-gray-600 mt-1 max-w-2xl text-sm">
-                {subtitle}
-              </p>
-            )}
+            {title && <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{title}</h2>}
+            {subtitle && <p className="text-gray-600 mt-1 max-w-2xl text-sm">{subtitle}</p>}
           </div>
 
           {enableButton && headerLink && (
@@ -93,7 +86,7 @@ export const ServicesGridBlock: React.FC<Props> = ({
 
               {service.description && (
                 <div className="text-gray-600 text-sm leading-snug [&_p]:mb-1 [&_p]:leading-snug">
-                  <RichText data={service.description} />
+                  <SimpleRichText data={service.description} />
                 </div>
               )}
 

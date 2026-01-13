@@ -28,6 +28,8 @@ export const Agents: CollectionConfig<'agents'> = {
     city: true,
     state: true,
     profilePhoto: true,
+    heroImage: true,
+    logo: true,
   },
   admin: {
     defaultColumns: ['name', 'designation', 'city', 'state', 'updatedAt'],
