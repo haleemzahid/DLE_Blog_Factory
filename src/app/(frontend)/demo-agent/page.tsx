@@ -81,9 +81,7 @@ export default async function DemoAgentPage() {
 
             <div className="text-center md:text-left">
               {/* DRE License */}
-              {agent.dreLicense && (
-                <p className="text-white/80 text-sm mb-2">{agent.dreLicense}</p>
-              )}
+              {agent.dreLicense && <p className="text-white/80 text-sm mb-2">{agent.dreLicense}</p>}
 
               {/* Tagline */}
               {agent.tagline && (
@@ -127,10 +125,10 @@ export default async function DemoAgentPage() {
       </section>
 
       {/* Home Value Form */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+      <section className="py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">What&apos;s My Home Worth?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
+          <p className="text-xl mb-6 max-w-2xl mx-auto">
             Get instant access to all the homes that sold in your neighborhood from{' '}
             {agent.displayName}&apos;s Exclusive Real Estate Network.
           </p>
@@ -235,7 +233,7 @@ export default async function DemoAgentPage() {
 
       {/* Testimonials - Commented out until testimonials field is added to Agent type
       {agent.testimonials && agent.testimonials.length > 0 && (
-        <section className="py-16 bg-gray-50">
+        <section className="py-6 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <span className="text-red-600 font-semibold text-sm uppercase tracking-wide">
@@ -291,7 +289,7 @@ export default async function DemoAgentPage() {
 
       {/* Services - Commented out until proper rich text rendering is implemented
       {agent.services && agent.services.length > 0 && (
-        <section className="py-16 bg-white">
+        <section className="py-6 bg-white">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
               {agent.displayName} Services
@@ -316,7 +314,7 @@ export default async function DemoAgentPage() {
 
       {/* Gallery */}
       {agent.gallery && agent.gallery.length > 0 && (
-        <section className="py-16 bg-gray-50">
+        <section className="py-6 bg-gray-50">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
               {agent.displayName} Gallery
@@ -337,7 +335,7 @@ export default async function DemoAgentPage() {
 
       {/* FAQs - Commented out until proper rich text rendering is implemented
       {agent.faqs && agent.faqs.length > 0 && (
-        <section className="py-16 bg-white">
+        <section className="py-6 bg-white">
           <div className="container mx-auto px-4 max-w-3xl">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
               {agent.displayName} FAQs
@@ -361,7 +359,7 @@ export default async function DemoAgentPage() {
       */}
 
       {/* Contact Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-6 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
             Contact {agent.displayName}
@@ -516,12 +514,8 @@ export default async function DemoAgentPage() {
         <div className="container mx-auto px-4 text-center">
           <div className="mb-6">
             <h3 className="text-2xl font-bold mb-2">{agent.displayName}</h3>
-            <p className="text-gray-400">
-              {agent.name} - Your Designated Local Expert
-            </p>
-            {agent.dreLicense && (
-              <p className="text-gray-400 text-sm mt-2">{agent.dreLicense}</p>
-            )}
+            <p className="text-gray-400">{agent.name} - Your Designated Local Expert</p>
+            {agent.dreLicense && <p className="text-gray-400 text-sm mt-2">{agent.dreLicense}</p>}
           </div>
           <div className="border-t border-gray-800 pt-6">
             <p className="text-gray-400 text-sm">
