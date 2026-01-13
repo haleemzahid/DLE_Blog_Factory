@@ -41,7 +41,7 @@ export const TenantFooterClient: React.FC<TenantFooterClientProps> = ({
   const socialLinks = tenantFooter.socialLinks || {}
   const contactInfo = tenantFooter.contactInfo || {}
   const legalLinks = tenantFooter.legalLinks || []
-  const copyrightText = formatCopyrightText(tenantFooter.copyrightText, tenant)
+  const copyrightText = formatCopyrightText(tenantFooter.copyrightText ?? undefined, tenant)
   const showDleBadge = tenantFooter.showDleBadge
 
   // Get tenant logo
