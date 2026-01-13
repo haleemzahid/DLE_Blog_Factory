@@ -1,5 +1,5 @@
 /* Tailwind utilities only (no base reset that conflicts with PayloadCMS) */
 @tailwind utilities;
 
-/* Import custom admin panel styles */
-@import '../../styles/admin.css';
+/* Import custom admin panel styles - using standard CSS @import to avoid Sass deprecation */
+@import url('../../styles/admin.css');
