@@ -32,7 +32,8 @@
       "Bash(npx tsx:*)",
       "Bash(pnpm import:agents:*)",
       "Bash(pkill:*)",
-      "Bash(pnpm check:image-urls:*)"
+      "Bash(pnpm check:image-urls:*)",
+      "Bash(netstat:*)"
     ]
   }
 }
