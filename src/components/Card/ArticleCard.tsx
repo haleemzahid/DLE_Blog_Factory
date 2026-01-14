@@ -77,6 +77,14 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
     ? `/posts/${article.agentSlug}/${article.slug}`
     : `/posts/${article.slug}`
 
+  // DEBUG: Log URL construction
+  console.log('🎴 ArticleCard URL:', {
+    title: article.title,
+    slug: article.slug,
+    agentSlug: article.agentSlug,
+    finalUrl: postUrl,
+  })
+
   return (
     <Link href={postUrl} className={cardStyles.wrapper}>
       <article className={cardStyles.container}>

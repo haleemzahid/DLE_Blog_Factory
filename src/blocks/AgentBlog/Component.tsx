@@ -97,21 +97,22 @@ export const AgentBlogBlock: React.FC<Props> = async ({
     return null
   }
 
+  // Get current agent slug for URL construction
+  const currentAgentSlug = agent && typeof agent === 'object' ? agent.slug : null
+
+  // DEBUG: Log to see what we have
+  console.log('🔍 AgentBlogBlock Debug:')
+  console.log('  - Agent object:', agent)
+  console.log('  - Current agent slug:', currentAgentSlug)
+  console.log('  - Number of posts:', posts.length)
+
   // Serialize posts for client component
   const serializedPosts: SerializedAgentPost[] = posts.map((post) => {
-    // Get agent slug from authors if post is agent-specific
-    let agentSlug: string | null = null
-    const author = post.authors?.[0]
-    if (author && typeof author === 'object') {
-      const authorObj = author as any
-      if (authorObj.value && typeof authorObj.value === 'object') {
-        agentSlug = authorObj.value.slug || null
-      } else if (authorObj.slug) {
-        agentSlug = authorObj.slug
-      }
-    }
+    // IMPORTANT: When viewing from an agent page, ALWAYS use that agent's slug in the URL
+    // This ensures all blog posts on agent pages have agent-specific URLs
+    const agentSlug = currentAgentSlug
 
-    return {
+    const serialized = {
       id: post.id,
       title: post.title,
       slug: post.slug || '',
@@ -124,6 +125,12 @@ export const AgentBlogBlock: React.FC<Props> = async ({
       publishedAt: post.publishedAt || null,
       agentSlug, // Include agent slug for URL construction
     }
+
+    console.log(`  - Post "${post.title}":`)
+    console.log(`    slug: ${serialized.slug}`)
+    console.log(`    agentSlug: ${serialized.agentSlug}`)
+
+    return serialized
   })
 
   // For featured layout, separate the first post
@@ -143,12 +150,8 @@ export const AgentBlogBlock: React.FC<Props> = async ({
           <div className="mb-8">
             <Link
               href={
-                featuredPost.authors?.[0] && typeof featuredPost.authors[0] === 'object'
-                  ? `/posts/${
-                      (featuredPost.authors[0] as any).value?.slug ||
-                      (featuredPost.authors[0] as any).slug ||
-                      'unknown'
-                    }/${featuredPost.slug}`
+                currentAgentSlug
+                  ? `/posts/${currentAgentSlug}/${featuredPost.slug}`
                   : `/posts/${featuredPost.slug}`
               }
               className="block group"

@@ -22,7 +22,8 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
     "ci": "cross-env NODE_ENV=production payload migrate --yes && pnpm build",
     "clean:dev-migrations": "node scripts/clean-dev-migrations.js",
-    "import:agents": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/import-agents.ts"
+    "import:agents": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/import-agents.ts",
+    "check:image-urls": "cross-env NODE_OPTIONS=--no-deprecation NODE_ENV=development tsx scripts/check-image-urls.ts"
   },
   "dependencies": {
     "@ai-stack/payloadcms": "3.2.22-beta",

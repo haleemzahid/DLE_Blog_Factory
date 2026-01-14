@@ -64,6 +64,7 @@ export const AgentBlogPagination: React.FC<AgentBlogPaginationProps> = ({
               description: post.description,
               authorName: post.authorName || 'DLE Network',
               publishedAt: post.publishedAt,
+              agentSlug: post.agentSlug, // CRITICAL: Include agent slug for URL construction
             } as ArticleCardData}
             showDate={showDate}
             showAuthor={showAuthor}
