@@ -512,7 +512,13 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    slugField(),
+    slugField({
+      required: true,
+      fieldToUse: '', // Disable auto-generation from title
+      admin: {
+        position: 'sidebar',
+      },
+    }),
   ],
   hooks: {
     afterChange: [revalidatePost],
