@@ -70,16 +70,8 @@ export default async function AgentPage({ params: paramsPromise }: Args) {
       const prefixDisplay = prefix.charAt(0).toUpperCase() + prefix.slice(1) + '.'
       const designationName = `${prefixDisplay} ${cityName} ™`
 
-      // Fetch network logo for placeholder page
-      const payload = await getPayload({ config: configPromise })
-      const headerResult = await payload.findGlobal({
-        slug: 'header',
-        depth: 2,
-      })
-
-      const networkLogo = headerResult?.logo && typeof headerResult.logo === 'object'
-        ? headerResult.logo
-        : null
+      // Network logo would be fetched from tenant branding if needed
+      const networkLogo = null
 
       // Default to California for now (could be enhanced to detect state from slug or database)
       return (
