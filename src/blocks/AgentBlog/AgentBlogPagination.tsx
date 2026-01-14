@@ -15,6 +15,7 @@ export interface SerializedAgentPost {
   authorName: string | null
   publishedAt: string | null
   agentSlug?: string | null // Optional: agent slug for agent-specific URLs
+  agentLogo?: MediaType | null // Optional: agent logo to display on card
 }
 
 interface AgentBlogPaginationProps {
@@ -65,6 +66,7 @@ export const AgentBlogPagination: React.FC<AgentBlogPaginationProps> = ({
               authorName: post.authorName || 'DLE Network',
               publishedAt: post.publishedAt,
               agentSlug: post.agentSlug, // CRITICAL: Include agent slug for URL construction
+              agentLogo: post.agentLogo, // Include agent logo for display on card
             } as ArticleCardData}
             showDate={showDate}
             showAuthor={showAuthor}

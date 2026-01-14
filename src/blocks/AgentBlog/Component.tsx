@@ -38,6 +38,7 @@ const getPostDescription = (post: Post): string | null => {
 
 type Props = AgentBlogBlockType & {
   id?: string
+  overrideAgentSlug?: string | null // Optional: override slug for placeholder pages
 }
 
 export const AgentBlogBlock: React.FC<Props> = async ({
@@ -51,6 +52,7 @@ export const AgentBlogBlock: React.FC<Props> = async ({
   showDate = true,
   showAuthor = true,
   showExcerpt = true,
+  overrideAgentSlug,
 }) => {
   const payload = await getPayload({ config: configPromise })
 
@@ -97,13 +99,18 @@ export const AgentBlogBlock: React.FC<Props> = async ({
     return null
   }
 
-  // Get current agent slug for URL construction
-  const currentAgentSlug = agent && typeof agent === 'object' ? agent.slug : null
+  // Get current agent slug and logo for URL construction and display
+  // Use overrideAgentSlug if provided (for placeholder pages), otherwise extract from agent
+  const currentAgentSlug = overrideAgentSlug || (agent && typeof agent === 'object' ? agent.slug : null)
+  const currentAgentLogo = agent && typeof agent === 'object' && agent.logo && typeof agent.logo === 'object'
+    ? agent.logo
+    : null
 
   // DEBUG: Log to see what we have
   console.log('🔍 AgentBlogBlock Debug:')
   console.log('  - Agent object:', agent)
   console.log('  - Current agent slug:', currentAgentSlug)
+  console.log('  - Current agent logo:', currentAgentLogo)
   console.log('  - Number of posts:', posts.length)
 
   // Serialize posts for client component
@@ -124,6 +131,7 @@ export const AgentBlogBlock: React.FC<Props> = async ({
           : null,
       publishedAt: post.publishedAt || null,
       agentSlug, // Include agent slug for URL construction
+      agentLogo: currentAgentLogo, // Include agent logo for display on card
     }
 
     console.log(`  - Post "${post.title}":`)
@@ -210,6 +218,8 @@ export const AgentBlogBlock: React.FC<Props> = async ({
                       ? post.populatedAuthors[0]?.name || 'DLE Network'
                       : 'DLE Network',
                   publishedAt: post.publishedAt || null,
+                  agentSlug: currentAgentSlug, // Include agent slug for URL construction
+                  agentLogo: currentAgentLogo, // Include agent logo for display on card
                 } as ArticleCardData}
                 showDate={showDate ?? true}
                 showAuthor={showAuthor ?? true}

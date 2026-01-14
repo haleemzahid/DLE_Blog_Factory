@@ -47,6 +47,7 @@ export interface ArticleCardData {
   authorName: string
   publishedAt: string | null
   agentSlug?: string | null // Optional: agent slug for agent-specific URLs
+  agentLogo?: MediaType | null // Optional: agent logo to display on card
 }
 
 // =============================================================================
@@ -88,10 +89,17 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   return (
     <Link href={postUrl} className={cardStyles.wrapper}>
       <article className={cardStyles.container}>
-        {/* Image */}
+        {/* Image with Logo Overlay */}
         {article.heroImage && (
           <div className={cardStyles.imageWrapper}>
             <Media resource={article.heroImage} fill className={cardStyles.image} />
+
+            {/* Agent Logo Overlay - Top Left Corner */}
+            {article.agentLogo && (
+              <div className="absolute top-4 left-4 w-16 h-16 bg-white rounded-lg shadow-lg p-2 z-10">
+                <Media resource={article.agentLogo} className="w-full h-full object-contain" />
+              </div>
+            )}
           </div>
         )}
 

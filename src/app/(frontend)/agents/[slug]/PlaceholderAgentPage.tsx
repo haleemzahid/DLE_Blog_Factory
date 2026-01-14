@@ -2,14 +2,17 @@ import React from 'react'
 import Link from 'next/link'
 import { AgentBlogBlock } from '@/blocks/AgentBlog/Component'
 import { HomeValueFormBlock } from '@/blocks/HomeValueForm/Component'
+import type { Media } from '@/payload-types'
 
 type Props = {
   designationName: string
   city: string
   state: string
+  slug: string
+  networkLogo?: Media | null
 }
 
-export const PlaceholderAgentPage: React.FC<Props> = async ({ designationName, city, state }) => {
+export const PlaceholderAgentPage: React.FC<Props> = async ({ designationName, city, state, slug, networkLogo }) => {
   return (
     <article className="pb-0">
       {/* Hero Section with Image */}
@@ -133,7 +136,8 @@ export const PlaceholderAgentPage: React.FC<Props> = async ({ designationName, c
       {/* Blog Section - Network-wide posts only */}
       <AgentBlogBlock
         title={`${city} Real Estate Insights`}
-        agent={null}
+        agent={networkLogo ? { logo: networkLogo } as any : null}
+        overrideAgentSlug={slug}
         limit={9}
         layout="grid"
         enablePagination={true}

@@ -70,12 +70,25 @@ export default async function AgentPage({ params: paramsPromise }: Args) {
       const prefixDisplay = prefix.charAt(0).toUpperCase() + prefix.slice(1) + '.'
       const designationName = `${prefixDisplay} ${cityName} ™`
 
+      // Fetch network logo for placeholder page
+      const payload = await getPayload({ config: configPromise })
+      const headerResult = await payload.findGlobal({
+        slug: 'header',
+        depth: 2,
+      })
+
+      const networkLogo = headerResult?.logo && typeof headerResult.logo === 'object'
+        ? headerResult.logo
+        : null
+
       // Default to California for now (could be enhanced to detect state from slug or database)
       return (
         <PlaceholderAgentPage
           designationName={designationName}
           city={cityName}
           state="California"
+          slug={slug}
+          networkLogo={networkLogo}
         />
       )
     }
@@ -206,6 +219,7 @@ const queryAgentBySlug = cache(async ({ slug }: { slug: string }) => {
     limit: 1,
     overrideAccess: draft,
     pagination: false,
+    depth: 2, // Populate related fields like logo, profilePhoto, etc.
     where: {
       slug: {
         equals: slug,

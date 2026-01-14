@@ -2,12 +2,11 @@
 
 import React from 'react'
 
-// Import styles directly - this file will be processed by Next.js/Tailwind
-import '@/app/(frontend)/globals.css'
-
 /**
  * Analytics Dashboard View for Payload Admin
  * Uses an iframe to load the dashboard in the frontend context with full Tailwind support
+ * Note: No need to import globals.css here as it would conflict with Payload's admin styles
+ * The iframe loads /analytics-dashboard which has its own frontend layout with proper styles
  */
 export const AnalyticsDashboardView: React.FC = () => {
   return (
