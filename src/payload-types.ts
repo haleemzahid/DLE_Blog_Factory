@@ -2476,7 +2476,7 @@ export interface VideoLayoutBlock {
   blockType: 'videoLayout';
 }
 /**
- * Custom navigation header for each tenant site
+ * Custom navigation header for tenant sites and specific agents
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tenant-headers".
@@ -2487,6 +2487,10 @@ export interface TenantHeader {
    * The tenant this header belongs to
    */
   tenant: number | Tenant;
+  /**
+   * Optional: Assign to a specific agent. If set, this header will only show for this agent.
+   */
+  agent?: (number | null) | Agent;
   /**
    * Override tenant logo for header (falls back to tenant branding logo)
    */
@@ -2540,7 +2544,7 @@ export interface TenantHeader {
   createdAt: string;
 }
 /**
- * Custom footer for each tenant site
+ * Custom footer for tenant sites and specific agents
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tenant-footers".
@@ -2551,6 +2555,10 @@ export interface TenantFooter {
    * The tenant this footer belongs to
    */
   tenant: number | Tenant;
+  /**
+   * Optional: Assign to a specific agent. If set, this footer will only show for this agent.
+   */
+  agent?: (number | null) | Agent;
   columns?:
     | {
         /**
@@ -4885,6 +4893,7 @@ export interface TenantsSelect<T extends boolean = true> {
  */
 export interface TenantHeadersSelect<T extends boolean = true> {
   tenant?: T;
+  agent?: T;
   logo?: T;
   navItems?:
     | T
@@ -4919,6 +4928,7 @@ export interface TenantHeadersSelect<T extends boolean = true> {
  */
 export interface TenantFootersSelect<T extends boolean = true> {
   tenant?: T;
+  agent?: T;
   columns?:
     | T
     | {

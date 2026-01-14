@@ -5,7 +5,7 @@ export const TenantFooters: CollectionConfig = {
   admin: {
     group: 'Multi-Tenant',
     useAsTitle: 'tenant',
-    description: 'Custom footer for each tenant site',
+    description: 'Custom footer for tenant sites and specific agents',
   },
   access: {
     read: () => true,
@@ -19,10 +19,19 @@ export const TenantFooters: CollectionConfig = {
       type: 'relationship',
       relationTo: 'tenants',
       required: true,
-      unique: true,
       admin: {
         description: 'The tenant this footer belongs to',
       },
+    },
+    {
+      name: 'agent',
+      type: 'relationship',
+      relationTo: 'agents',
+      admin: {
+        description: 'Optional: Assign to a specific agent. If set, this footer will only show for this agent.',
+        position: 'sidebar',
+      },
+      index: true,
     },
     {
       name: 'columns',

@@ -5,8 +5,18 @@ import { getTenantNavigation, getTenantLogo, getTenantFooter } from '@/utilities
 import { TenantHeaderClient } from '@/Header/TenantHeader.client'
 import { TenantFooterClient } from './TenantFooter.client'
 import { HideParentNav } from './HideParentNav.client'
+import { Header } from '@/Header/Component'
+import { Footer } from '@/Footer/Component'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 
-export default async function AgentPageLayout({ children }: { children: React.ReactNode }) {
+export default async function AgentPageLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode
+  params: Promise<{ slug?: string }>
+}) {
   // Get tenant based on current hostname
   const headersList = await headers()
   const host = headersList.get('host') || headersList.get('x-tenant-host') || 'localhost:3000'
@@ -17,13 +27,29 @@ export default async function AgentPageLayout({ children }: { children: React.Re
     tenant = await getMainTenant()
   }
 
-  // Get tenant header and footer
+  // Get agent ID from slug to support agent-specific headers/footers
+  const { slug } = await params
+  let agentId: string | undefined
+  if (slug) {
+    const payload = await getPayload({ config: configPromise })
+    const agentResult = await payload.find({
+      collection: 'agents',
+      where: { slug: { equals: slug } },
+      limit: 1,
+      select: { id: true },
+    })
+    if (agentResult.docs[0]) {
+      agentId = String(agentResult.docs[0].id)
+    }
+  }
+
+  // Get tenant header and footer (with optional agent-specific override)
   const { header: tenantHeader } = tenant?.id
-    ? await getTenantNavigation(String(tenant.id))
+    ? await getTenantNavigation(String(tenant.id), agentId)
     : { header: null }
 
-  // Get tenant footer separately
-  const tenantFooter = tenant?.id ? await getTenantFooter(String(tenant.id)) : null
+  // Get tenant footer separately (with optional agent-specific override)
+  const tenantFooter = tenant?.id ? await getTenantFooter(String(tenant.id), agentId) : null
 
   // Get logo
   const logo = getTenantLogo(tenantHeader, tenant)
@@ -33,17 +59,21 @@ export default async function AgentPageLayout({ children }: { children: React.Re
       {/* Hide the parent layout's header and footer */}
       <HideParentNav />
 
-      {/* Tenant Header - Only show if exists */}
-      {tenantHeader && tenant && (
+      {/* Tenant Header - Falls back to global header if no custom header exists */}
+      {tenantHeader && tenant ? (
         <TenantHeaderClient tenantHeader={tenantHeader} tenant={tenant} logo={logo} />
+      ) : (
+        <Header tenant={tenant} />
       )}
 
       {/* Page Content */}
       {children}
 
-      {/* Tenant Footer - Only show if exists */}
-      {tenantFooter && tenant && (
+      {/* Tenant Footer - Falls back to global footer if no custom footer exists */}
+      {tenantFooter && tenant ? (
         <TenantFooterClient tenantFooter={tenantFooter} tenant={tenant} />
+      ) : (
+        <Footer tenant={tenant} />
       )}
     </div>
   )

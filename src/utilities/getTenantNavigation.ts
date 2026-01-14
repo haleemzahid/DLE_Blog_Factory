@@ -7,17 +7,38 @@ import type { TenantHeader, TenantFooter, Tenant } from '@/payload-types'
 export { resolveNavLink, formatCopyrightText } from './tenantNavigationHelpers'
 
 /**
- * Get the custom header for a tenant
- * Falls back to null if no custom header exists (use default header)
+ * Get the custom header for a tenant and/or agent
+ * Priority: Agent-specific header > Tenant header > null (use default)
+ *
+ * @param tenantId - The tenant ID to look up
+ * @param agentId - Optional agent ID for agent-specific headers
  */
 export const getTenantHeader = unstable_cache(
-  async (tenantId: string): Promise<TenantHeader | null> => {
+  async (tenantId: string, agentId?: string): Promise<TenantHeader | null> => {
     const payload = await getPayload({ config })
 
+    // First, check for agent-specific header if agentId is provided
+    if (agentId) {
+      const agentResult = await payload.find({
+        collection: 'tenant-headers',
+        where: {
+          agent: { equals: agentId },
+        },
+        limit: 1,
+        depth: 2,
+      })
+
+      if (agentResult.docs.length > 0) {
+        return agentResult.docs[0] as TenantHeader
+      }
+    }
+
+    // Fall back to tenant-level header
     const result = await payload.find({
       collection: 'tenant-headers',
       where: {
         tenant: { equals: tenantId },
+        agent: { exists: false }, // Only get tenant-level headers (not agent-specific)
       },
       limit: 1,
       depth: 2,
@@ -33,17 +54,38 @@ export const getTenantHeader = unstable_cache(
 )
 
 /**
- * Get the custom footer for a tenant
- * Falls back to null if no custom footer exists (use default footer)
+ * Get the custom footer for a tenant and/or agent
+ * Priority: Agent-specific footer > Tenant footer > null (use default)
+ *
+ * @param tenantId - The tenant ID to look up
+ * @param agentId - Optional agent ID for agent-specific footers
  */
 export const getTenantFooter = unstable_cache(
-  async (tenantId: string): Promise<TenantFooter | null> => {
+  async (tenantId: string, agentId?: string): Promise<TenantFooter | null> => {
     const payload = await getPayload({ config })
 
+    // First, check for agent-specific footer if agentId is provided
+    if (agentId) {
+      const agentResult = await payload.find({
+        collection: 'tenant-footers',
+        where: {
+          agent: { equals: agentId },
+        },
+        limit: 1,
+        depth: 2,
+      })
+
+      if (agentResult.docs.length > 0) {
+        return agentResult.docs[0] as TenantFooter
+      }
+    }
+
+    // Fall back to tenant-level footer
     const result = await payload.find({
       collection: 'tenant-footers',
       where: {
         tenant: { equals: tenantId },
+        agent: { exists: false }, // Only get tenant-level footers (not agent-specific)
       },
       limit: 1,
       depth: 2,
@@ -59,12 +101,15 @@ export const getTenantFooter = unstable_cache(
 )
 
 /**
- * Get both header and footer for a tenant in one call
+ * Get both header and footer for a tenant and/or agent in one call
+ *
+ * @param tenantId - The tenant ID to look up
+ * @param agentId - Optional agent ID for agent-specific navigation
  */
-export async function getTenantNavigation(tenantId: string) {
+export async function getTenantNavigation(tenantId: string, agentId?: string) {
   const [header, footer] = await Promise.all([
-    getTenantHeader(tenantId),
-    getTenantFooter(tenantId),
+    getTenantHeader(tenantId, agentId),
+    getTenantFooter(tenantId, agentId),
   ])
 
   return { header, footer }
