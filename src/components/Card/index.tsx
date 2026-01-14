@@ -8,7 +8,7 @@ import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 
-export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title' | 'heroImage'>
+export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title' | 'heroImage' | 'authors'>
 
 export const Card: React.FC<{
   alignItems?: 'center'
@@ -21,7 +21,7 @@ export const Card: React.FC<{
   const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, categories, meta, title, heroImage } = doc || {}
+  const { slug, categories, meta, title, heroImage, authors } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   // Use metaImage if available, otherwise fall back to heroImage
@@ -30,7 +30,21 @@ export const Card: React.FC<{
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
   const titleToUse = titleFromProps || title
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-  const href = `/${relationTo}/${slug}`
+
+  // Get agent slug from authors
+  let agentSlug: string | null = null
+  const author = authors?.[0]
+  if (author && typeof author === 'object') {
+    const authorObj = author as any
+    if (authorObj.value && typeof authorObj.value === 'object') {
+      agentSlug = authorObj.value.slug || null
+    } else if (authorObj.slug) {
+      agentSlug = authorObj.slug
+    }
+  }
+
+  // If post has a specific agent, use agent-specific URL, otherwise use general URL
+  const href = agentSlug ? `/${relationTo}/${agentSlug}/${slug}` : `/${relationTo}/${slug}`
 
   return (
     <article

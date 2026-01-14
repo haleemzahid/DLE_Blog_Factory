@@ -46,6 +46,7 @@ export interface ArticleCardData {
   description: string | null
   authorName: string
   publishedAt: string | null
+  agentSlug?: string | null // Optional: agent slug for agent-specific URLs
 }
 
 // =============================================================================
@@ -71,8 +72,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   showReadMore = true,
   accentColor = '#dc2626',
 }) => {
+  // Construct URL based on whether it's agent-specific or general
+  const postUrl = article.agentSlug
+    ? `/posts/${article.agentSlug}/${article.slug}`
+    : `/posts/${article.slug}`
+
   return (
-    <Link href={`/posts/${article.slug}`} className={cardStyles.wrapper}>
+    <Link href={postUrl} className={cardStyles.wrapper}>
       <article className={cardStyles.container}>
         {/* Image */}
         {article.heroImage && (

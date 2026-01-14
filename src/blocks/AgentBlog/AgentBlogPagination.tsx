@@ -14,6 +14,7 @@ export interface SerializedAgentPost {
   description: string | null
   authorName: string | null
   publishedAt: string | null
+  agentSlug?: string | null // Optional: agent slug for agent-specific URLs
 }
 
 interface AgentBlogPaginationProps {

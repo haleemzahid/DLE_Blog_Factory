@@ -98,18 +98,33 @@ export const AgentBlogBlock: React.FC<Props> = async ({
   }
 
   // Serialize posts for client component
-  const serializedPosts: SerializedAgentPost[] = posts.map((post) => ({
-    id: post.id,
-    title: post.title,
-    slug: post.slug || '',
-    heroImage: post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null,
-    description: getPostDescription(post),
-    authorName:
-      post.populatedAuthors && post.populatedAuthors.length > 0
-        ? post.populatedAuthors[0]?.name || null
-        : null,
-    publishedAt: post.publishedAt || null,
-  }))
+  const serializedPosts: SerializedAgentPost[] = posts.map((post) => {
+    // Get agent slug from authors if post is agent-specific
+    let agentSlug: string | null = null
+    const author = post.authors?.[0]
+    if (author && typeof author === 'object') {
+      const authorObj = author as any
+      if (authorObj.value && typeof authorObj.value === 'object') {
+        agentSlug = authorObj.value.slug || null
+      } else if (authorObj.slug) {
+        agentSlug = authorObj.slug
+      }
+    }
+
+    return {
+      id: post.id,
+      title: post.title,
+      slug: post.slug || '',
+      heroImage: post.heroImage && typeof post.heroImage === 'object' ? post.heroImage : null,
+      description: getPostDescription(post),
+      authorName:
+        post.populatedAuthors && post.populatedAuthors.length > 0
+          ? post.populatedAuthors[0]?.name || null
+          : null,
+      publishedAt: post.publishedAt || null,
+      agentSlug, // Include agent slug for URL construction
+    }
+  })
 
   // For featured layout, separate the first post
   const featuredPost = layout === 'featured' && posts.length > 0 ? posts[0] : null
@@ -126,7 +141,18 @@ export const AgentBlogBlock: React.FC<Props> = async ({
 
         {layout === 'featured' && featuredPost && (
           <div className="mb-8">
-            <Link href={`/posts/${featuredPost.slug}`} className="block group">
+            <Link
+              href={
+                featuredPost.authors?.[0] && typeof featuredPost.authors[0] === 'object'
+                  ? `/posts/${
+                      (featuredPost.authors[0] as any).value?.slug ||
+                      (featuredPost.authors[0] as any).slug ||
+                      'unknown'
+                    }/${featuredPost.slug}`
+                  : `/posts/${featuredPost.slug}`
+              }
+              className="block group"
+            >
               <article className={cardStyles.container}>
                 <div className="md:flex">
                   {featuredPost.heroImage && typeof featuredPost.heroImage === 'object' && (

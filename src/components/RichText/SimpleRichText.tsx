@@ -1,13 +1,17 @@
+'use client'
+
 import {
   DefaultNodeTypes,
   SerializedLinkNode,
   type DefaultTypedEditorState,
 } from '@payloadcms/richtext-lexical'
+
 import {
   JSXConvertersFunction,
   LinkJSXConverter,
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
+
 import { cn } from '@/utilities/ui'
 import React from 'react'
 
@@ -32,13 +36,14 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 /**
- * SimpleRichText - A lightweight RichText component without block support
- * Used within blocks to avoid circular dependencies
+ * SimpleRichText - A lightweight RichText component
  */
-export function SimpleRichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, ...rest } = props
+function SimpleRichText(props: Props) {
+  const { className, enableProse = true, enableGutter = true, data, ...rest } = props
+
   return (
     <ConvertRichText
+      data={data}
       converters={jsxConverters}
       className={cn(
         'payload-richtext',
@@ -53,3 +58,6 @@ export function SimpleRichText(props: Props) {
     />
   )
 }
+
+export default SimpleRichText
+export { SimpleRichText }
