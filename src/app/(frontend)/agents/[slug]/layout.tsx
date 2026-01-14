@@ -9,6 +9,7 @@ import { Header } from '@/Header/Component'
 import { Footer } from '@/Footer/Component'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+import type { Tenant } from '@/payload-types'
 
 export default async function AgentPageLayout({
   children,
@@ -27,32 +28,41 @@ export default async function AgentPageLayout({
     tenant = await getMainTenant()
   }
 
-  // Get agent ID from slug to support agent-specific headers/footers
+  // Get agent ID and tenant from slug to support agent-specific headers/footers
   const { slug } = await params
   let agentId: string | undefined
+  let agentTenant: Tenant | null = null
   if (slug) {
     const payload = await getPayload({ config: configPromise })
     const agentResult = await payload.find({
       collection: 'agents',
       where: { slug: { equals: slug } },
       limit: 1,
-      select: { id: true },
+      depth: 1,
     })
     if (agentResult.docs[0]) {
       agentId = String(agentResult.docs[0].id)
+      // If agent has a tenant, use that for headers/footers instead of domain tenant
+      if (agentResult.docs[0].tenant && typeof agentResult.docs[0].tenant === 'object') {
+        agentTenant = agentResult.docs[0].tenant
+      }
     }
   }
 
+  // Use agent's tenant if available, otherwise use domain tenant
+  const effectiveTenant = agentTenant || tenant
+  const effectiveTenantId = effectiveTenant?.id ? String(effectiveTenant.id) : null
+
   // Get tenant header and footer (with optional agent-specific override)
-  const { header: tenantHeader } = tenant?.id
-    ? await getTenantNavigation(String(tenant.id), agentId)
+  const { header: tenantHeader } = effectiveTenantId
+    ? await getTenantNavigation(effectiveTenantId, agentId)
     : { header: null }
 
   // Get tenant footer separately (with optional agent-specific override)
-  const tenantFooter = tenant?.id ? await getTenantFooter(String(tenant.id), agentId) : null
+  const tenantFooter = effectiveTenantId ? await getTenantFooter(effectiveTenantId, agentId) : null
 
-  // Get logo
-  const logo = getTenantLogo(tenantHeader, tenant)
+  // Get logo using the effective tenant (agent's tenant or domain tenant)
+  const logo = getTenantLogo(tenantHeader, effectiveTenant)
 
   return (
     <div className="agent-page-wrapper">
@@ -60,20 +70,20 @@ export default async function AgentPageLayout({
       <HideParentNav />
 
       {/* Tenant Header - Falls back to global header if no custom header exists */}
-      {tenantHeader && tenant ? (
-        <TenantHeaderClient tenantHeader={tenantHeader} tenant={tenant} logo={logo} />
+      {tenantHeader && effectiveTenant ? (
+        <TenantHeaderClient tenantHeader={tenantHeader} tenant={effectiveTenant} logo={logo} />
       ) : (
-        <Header tenant={tenant} />
+        <Header tenant={effectiveTenant} />
       )}
 
       {/* Page Content */}
       {children}
 
       {/* Tenant Footer - Falls back to global footer if no custom footer exists */}
-      {tenantFooter && tenant ? (
-        <TenantFooterClient tenantFooter={tenantFooter} tenant={tenant} />
+      {tenantFooter && effectiveTenant ? (
+        <TenantFooterClient tenantFooter={tenantFooter} tenant={effectiveTenant} />
       ) : (
-        <Footer tenant={tenant} />
+        <Footer tenant={effectiveTenant} />
       )}
     </div>
   )
