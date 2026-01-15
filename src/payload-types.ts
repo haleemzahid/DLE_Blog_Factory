@@ -462,9 +462,8 @@ export interface Post {
       }[]
     | null;
   /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   * URL-friendly version of the title (e.g., "my-post-title")
    */
-  generateSlug?: boolean | null;
   slug: string;
   updatedAt: string;
   createdAt: string;
@@ -4499,7 +4498,6 @@ export interface PostsSelect<T extends boolean = true> {
         id?: T;
         name?: T;
       };
-  generateSlug?: T;
   slug?: T;
   updatedAt?: T;
   createdAt?: T;

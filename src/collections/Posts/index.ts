@@ -529,12 +529,21 @@ export const Posts: CollectionConfig<'posts'> = {
       ],
     },
     {
-      ...slugField({
-        required: true,
-        fieldToUse: '', // Disable auto-generation from title
-      }),
+      name: 'slug',
+      type: 'text',
+      required: true,
+      index: true,
+      unique: true,
       admin: {
         position: 'sidebar',
+        description: 'URL-friendly version of the title (e.g., "my-post-title")',
+      },
+      validate: (value) => {
+        if (!value) return 'Slug is required'
+        if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
+          return 'Slug must be lowercase, alphanumeric, and use hyphens only'
+        }
+        return true
       },
     },
   ],
