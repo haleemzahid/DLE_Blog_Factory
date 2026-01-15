@@ -54,10 +54,26 @@ export const Posts: CollectionConfig<'posts'> = {
     useAsTitle: 'title',
     livePreview: {
       url: ({ data, req }) => {
+        // If post is assigned to an agent, use agent-specific URL
+        if (data?.postType === 'agent' && data?.agent) {
+          const agentSlug = typeof data.agent === 'object' ? data.agent.slug : null
+          if (agentSlug) {
+            return `${req.protocol}//${req.host}/posts/${agentSlug}/${data?.slug || ''}`
+          }
+        }
+        // Default to general URL
         return `${req.protocol}//${req.host}/posts/${data?.slug || ''}`
       },
     },
     preview: (data, { req }) => {
+      // If post is assigned to an agent, use agent-specific URL
+      if (data?.postType === 'agent' && data?.agent) {
+        const agentSlug = typeof data.agent === 'object' ? data.agent.slug : null
+        if (agentSlug) {
+          return `${req.protocol}//${req.host}/posts/${agentSlug}/${data?.slug || ''}`
+        }
+      }
+      // Default to general URL
       return `${req.protocol}//${req.host}/posts/${data?.slug || ''}`
     },
   },
