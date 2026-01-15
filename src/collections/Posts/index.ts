@@ -15,7 +15,6 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
@@ -26,7 +25,6 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { slugField } from 'payload'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -538,7 +536,7 @@ export const Posts: CollectionConfig<'posts'> = {
         position: 'sidebar',
         description: 'URL-friendly version of the title (e.g., "my-post-title")',
       },
-      validate: (value: string) => {
+      validate: (value: string | null | undefined) => {
         if (!value) return 'Slug is required'
         if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
           return 'Slug must be lowercase, alphanumeric, and use hyphens only'
