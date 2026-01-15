@@ -1,5 +1,5 @@
 import React from 'react'
-import { SimpleRichText } from '@/components/RichText/SimpleRichText'
+import { BasicRichText } from '@/components/RichText/BasicRichText'
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
 
@@ -58,7 +58,7 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = (props) => {
 
             {/* Rich Text Content */}
             {content && (
-              <SimpleRichText
+              <BasicRichText
                 className="prose prose-sm max-w-none mb-4 [&_p]:mb-1 [&_p]:text-gray-700 [&_p]:text-sm [&_p]:leading-snug [&_strong]:font-bold [&_ul]:ml-4 [&_ul]:mb-1 [&_ul]:mt-1 [&_ul]:list-none [&_li]:mb-0.5 [&_li]:text-sm [&_li]:relative [&_li]:pl-4 [&_li:before]:content-['•'] [&_li:before]:absolute [&_li:before]:left-0 [&_li:before]:text-red-600 [&_li:before]:font-bold [&_em]:italic"
                 data={content}
                 enableGutter={false}

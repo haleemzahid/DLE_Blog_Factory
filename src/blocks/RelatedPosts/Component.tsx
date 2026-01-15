@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
-import { SimpleRichText } from '@/components/RichText/SimpleRichText'
+import { BasicRichText } from '@/components/RichText/BasicRichText'
 
 import type { Post } from '@/payload-types'
 
@@ -18,7 +18,7 @@ export const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
 
   return (
     <div className={clsx('lg:container', className)}>
-      {introContent && <SimpleRichText data={introContent} enableGutter={false} />}
+      {introContent && <BasicRichText data={introContent} enableGutter={false} />}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-stretch">
         {docs?.map((doc, index) => {

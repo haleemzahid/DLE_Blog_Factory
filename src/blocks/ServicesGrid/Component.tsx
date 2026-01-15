@@ -1,7 +1,7 @@
 import React from 'react'
 import type { ServicesGridBlock as ServicesGridBlockType } from '@/payload-types'
 import { Media } from '@/components/Media'
-import { SimpleRichText } from '@/components/RichText/SimpleRichText'
+import { BasicRichText } from '@/components/RichText/BasicRichText'
 import Link from 'next/link'
 import { CMSLink } from '@/components/Link'
 
@@ -86,7 +86,7 @@ export const ServicesGridBlock: React.FC<Props> = ({
 
               {service.description && (
                 <div className="text-gray-600 text-sm leading-snug [&_p]:mb-1 [&_p]:leading-snug">
-                  <SimpleRichText data={service.description} />
+                  <BasicRichText data={service.description} />
                 </div>
               )}
 

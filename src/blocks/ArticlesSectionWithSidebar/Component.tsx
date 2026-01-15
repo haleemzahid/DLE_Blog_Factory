@@ -3,7 +3,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import Link from 'next/link'
 import { Media } from '@/components/Media'
-import { SimpleRichText } from '@/components/RichText/SimpleRichText'
+import { BasicRichText } from '@/components/RichText/BasicRichText'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import type { Post, Category, User, Media as MediaType, Agent } from '@/payload-types'
 import { ArticlesWithSidebarPagination, SerializedArticle } from './ArticlesWithSidebarPagination'
@@ -445,7 +445,7 @@ export const ArticlesSectionWithSidebarBlock: React.FC<
                 )}
                 {aboutContent && (
                   <div className="prose prose-gray max-w-none text-gray-600">
-                    <SimpleRichText data={aboutContent} enableGutter={false} />
+                    <BasicRichText data={aboutContent} enableGutter={false} />
                   </div>
                 )}
               </div>

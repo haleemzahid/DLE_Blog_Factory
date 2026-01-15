@@ -2,7 +2,7 @@ import React from 'react'
 
 import type { CallToActionBlock as CTABlockProps } from '@/payload-types'
 
-import { SimpleRichText } from '@/components/RichText/SimpleRichText'
+import { BasicRichText } from '@/components/RichText/BasicRichText'
 import { CMSLink } from '@/components/Link'
 
 // Check if richText has actual content
@@ -38,7 +38,7 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({ links, richText }) 
     <div className="container">
       <div className="bg-card rounded border-border border p-4 flex flex-col gap-8 md:flex-row md:justify-between md:items-center">
         <div className="max-w-[48rem] flex items-center">
-          {richText && <SimpleRichText className="mb-0" data={richText} enableGutter={false} />}
+          {richText && <BasicRichText className="mb-0" data={richText} enableGutter={false} />}
         </div>
         <div className="flex flex-col gap-8">
           {(links || []).map(({ link }, i) => {

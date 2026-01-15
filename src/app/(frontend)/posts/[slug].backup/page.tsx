@@ -81,7 +81,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          <SimpleRichText
+          <BasicRichText
             className="max-w-[48rem] mx-auto"
             data={post.content}
             enableGutter={false}

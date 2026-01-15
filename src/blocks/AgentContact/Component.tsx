@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import type { AgentContactBlock as AgentContactBlockType, Agent } from '@/payload-types'
 import { Media } from '@/components/Media'
-import { SimpleRichText } from '@/components/RichText/SimpleRichText'
+import { BasicRichText } from '@/components/RichText/BasicRichText'
 
 type Props = AgentContactBlockType & {
   id?: string
@@ -200,7 +200,8 @@ export const AgentContactBlock: React.FC<Props> = ({
               <div className="flex gap-3">
                 {Object.entries(socialLinks).map(([platform, url]) => {
                   if (!url || platform === 'id') return null
-                  const platformName = platform.charAt(0).toUpperCase() + platform.slice(1).replace(/([A-Z])/g, ' $1')
+                  const platformName =
+                    platform.charAt(0).toUpperCase() + platform.slice(1).replace(/([A-Z])/g, ' $1')
                   return (
                     <a
                       key={platform}

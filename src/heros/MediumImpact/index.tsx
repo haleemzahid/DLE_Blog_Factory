@@ -4,13 +4,13 @@ import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
-import { SimpleRichText } from '@/components/RichText/SimpleRichText'
+import { BasicRichText } from '@/components/RichText/BasicRichText'
 
 export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
   return (
     <div className="">
       <div className="container mb-8">
-        {richText && <SimpleRichText className="mb-6" data={richText} enableGutter={false} />}
+        {richText && <BasicRichText className="mb-6" data={richText} enableGutter={false} />}
 
         {Array.isArray(links) && links.length > 0 && (
           <ul className="flex gap-4">
@@ -35,7 +35,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richTex
             />
             {media?.caption && (
               <div className="mt-3">
-                <SimpleRichText data={media.caption} enableGutter={false} />
+                <BasicRichText data={media.caption} enableGutter={false} />
               </div>
             )}
           </div>

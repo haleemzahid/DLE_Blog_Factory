@@ -14,9 +14,6 @@ import {
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { BannerBlock } from '@/blocks/Banner/Component'
-import { CodeBlock } from '@/blocks/Code/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -27,15 +24,10 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
+// Basic converters without block support to avoid circular dependencies
 const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
-  blocks: {
-    ...defaultConverters?.blocks,
-    banner: ({ node }: any) => <BannerBlock {...node.fields} />,
-    code: ({ node }: any) => <CodeBlock {...node.fields} />,
-    mediaBlock: ({ node }: any) => <MediaBlock {...node.fields} />,
-  },
 })
 
 type Props = {
@@ -45,9 +37,10 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 /**
- * SimpleRichText - A lightweight RichText component
+ * BasicRichText - A RichText component without block support
+ * Used inside blocks to avoid circular dependencies
  */
-function SimpleRichText(props: Props) {
+function BasicRichText(props: Props) {
   const { className, enableProse = true, enableGutter = true, data, ...rest } = props
 
   return (
@@ -68,5 +61,5 @@ function SimpleRichText(props: Props) {
   )
 }
 
-export default SimpleRichText
-export { SimpleRichText }
+export default BasicRichText
+export { BasicRichText }

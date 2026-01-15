@@ -6,7 +6,7 @@ import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
-import { SimpleRichText } from '@/components/RichText/SimpleRichText'
+import { BasicRichText } from '@/components/RichText/BasicRichText'
 
 export const HighImpactHero: React.FC<Page['hero']> = ({
   links,
@@ -38,10 +38,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
   `
 
   return (
-    <div
-      className="relative flex items-center justify-center text-white"
-      data-theme="dark"
-    >
+    <div className="relative flex items-center justify-center text-white" data-theme="dark">
       {/* Background Image */}
       <div className="absolute inset-0 min-h-[80vh] select-none">
         {media && typeof media === 'object' && (
@@ -64,7 +61,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
             }}
           />
           {richText && (
-            <SimpleRichText
+            <BasicRichText
               className={`hero-rich-text ${richTextStyles}`}
               data={richText}
               enableGutter={false}
