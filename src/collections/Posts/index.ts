@@ -527,11 +527,12 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    slugField({
+    {
+      ...slugField(),
       admin: {
         position: 'sidebar',
       },
-    }),
+    },
   ],
   hooks: {
     afterChange: [revalidatePost],
