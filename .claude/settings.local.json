@@ -34,7 +34,8 @@
       "Bash(pkill:*)",
       "Bash(pnpm check:image-urls:*)",
       "Bash(netstat:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(powershell -Command:*)"
     ]
   }
 }

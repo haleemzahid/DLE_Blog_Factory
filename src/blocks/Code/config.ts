@@ -3,6 +3,11 @@ import type { Block } from 'payload'
 export const Code: Block = {
   slug: 'code',
   interfaceName: 'CodeBlock',
+  admin: {
+    components: {
+      Block: '@/blocks/Code/Component#CodeBlock',
+    },
+  },
   fields: [
     {
       name: 'language',

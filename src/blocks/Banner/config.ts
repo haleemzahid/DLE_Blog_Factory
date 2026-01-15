@@ -9,6 +9,11 @@ import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
 
 export const Banner: Block = {
   slug: 'banner',
+  admin: {
+    components: {
+      Block: '@/blocks/Banner/Component#BannerBlock',
+    },
+  },
   fields: [
     {
       name: 'style',

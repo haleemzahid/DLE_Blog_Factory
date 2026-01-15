@@ -27,6 +27,12 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
+  blocks: {
+    ...defaultConverters?.blocks,
+    banner: () => null,
+    code: () => null,
+    mediaBlock: () => null,
+  },
 })
 
 type Props = {
