@@ -56,7 +56,7 @@ export const Posts: CollectionConfig<'posts'> = {
       url: ({ data, req }) => {
         // If post is assigned to an agent, use agent-specific URL
         if (data?.postType === 'agent' && data?.agent) {
-          const agentSlug = typeof data.agent === 'object' ? data.agent.slug : null
+          const agentSlug = typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
           if (agentSlug) {
             return `${req.protocol}//${req.host}/posts/${agentSlug}/${data?.slug || ''}`
           }
@@ -68,7 +68,7 @@ export const Posts: CollectionConfig<'posts'> = {
     preview: (data, { req }) => {
       // If post is assigned to an agent, use agent-specific URL
       if (data?.postType === 'agent' && data?.agent) {
-        const agentSlug = typeof data.agent === 'object' ? data.agent.slug : null
+        const agentSlug = typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
         if (agentSlug) {
           return `${req.protocol}//${req.host}/posts/${agentSlug}/${data?.slug || ''}`
         }
