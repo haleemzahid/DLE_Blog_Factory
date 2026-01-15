@@ -538,7 +538,7 @@ export const Posts: CollectionConfig<'posts'> = {
         position: 'sidebar',
         description: 'URL-friendly version of the title (e.g., "my-post-title")',
       },
-      validate: (value) => {
+      validate: (value: string) => {
         if (!value) return 'Slug is required'
         if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
           return 'Slug must be lowercase, alphanumeric, and use hyphens only'
