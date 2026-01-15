@@ -6,7 +6,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import SimpleRichText from '@/components/RichText/SimpleRichText'
+import { BasicRichText } from '@/components/RichText/BasicRichText'
 
 import type { Post } from '@/payload-types'
 
