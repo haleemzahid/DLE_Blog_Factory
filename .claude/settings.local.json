@@ -35,7 +35,8 @@
       "Bash(pnpm check:image-urls:*)",
       "Bash(netstat:*)",
       "Bash(cat:*)",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(if exist \"d:\\\\DLE_Blog_Factory\\\\.next\" rmdir /s /q \"d:\\\\DLE_Blog_Factory\\\\.next\")"
     ]
   }
 }

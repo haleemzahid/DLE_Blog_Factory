@@ -27,16 +27,19 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
-const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConverters }) => ({
-  ...defaultConverters,
-  ...LinkJSXConverter({ internalDocToHref }),
-  blocks: {
-    ...defaultConverters?.blocks,
-    banner: ({ node }: any) => <BannerBlock {...node.fields} />,
-    code: ({ node }: any) => <CodeBlock {...node.fields} />,
-    mediaBlock: ({ node }: any) => <MediaBlock {...node.fields} />,
-  },
-})
+const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConverters }) => {
+  const linkConverter = LinkJSXConverter({ internalDocToHref })
+
+  return {
+    ...defaultConverters,
+    link: linkConverter.link,
+    blocks: {
+      banner: ({ node }: any) => <BannerBlock {...node.fields} />,
+      code: ({ node }: any) => <CodeBlock {...node.fields} />,
+      mediaBlock: ({ node }: any) => <MediaBlock {...node.fields} />,
+    },
+  }
+}
 
 type Props = {
   data: DefaultTypedEditorState
