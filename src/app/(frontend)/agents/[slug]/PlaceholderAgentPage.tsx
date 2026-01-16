@@ -35,6 +35,17 @@ export const PlaceholderAgentPage: React.FC<Props> = async ({ designationName, c
         </div>
       </section>
 
+      {/* Home Value Form */}
+      <HomeValueFormBlock
+        title="What's My Home Worth?"
+        description={`Get instant access to all the homes that sold in your neighborhood from ${designationName}'s Exclusive Real Estate Network.`}
+        inputPlaceholder="Enter Your Home Address"
+        buttonText="CONTINUE"
+        widgetUrl={undefined}
+        style="centered"
+        blockType="homeValueForm"
+      />
+
       {/* About Section */}
       <section className="py-6 bg-white">
         <div className="container mx-auto px-4">
@@ -121,17 +132,6 @@ export const PlaceholderAgentPage: React.FC<Props> = async ({ designationName, c
           </div>
         </div>
       </section>
-
-      {/* Home Value Form */}
-      <HomeValueFormBlock
-        title="What's My Home Worth?"
-        description={`Get instant access to all the homes that sold in your neighborhood from ${designationName}'s Exclusive Real Estate Network.`}
-        inputPlaceholder="Enter Your Home Address"
-        buttonText="CONTINUE"
-        widgetUrl={undefined}
-        style="centered"
-        blockType="homeValueForm"
-      />
 
       {/* Blog Section - Network-wide posts only */}
       <AgentBlogBlock
