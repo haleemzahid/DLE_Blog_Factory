@@ -36,7 +36,18 @@
       "Bash(netstat:*)",
       "Bash(cat:*)",
       "Bash(powershell -Command:*)",
-      "Bash(if exist \"d:\\\\DLE_Blog_Factory\\\\.next\" rmdir /s /q \"d:\\\\DLE_Blog_Factory\\\\.next\")"
+      "Bash(if exist \"d:\\\\DLE_Blog_Factory\\\\.next\" rmdir /s /q \"d:\\\\DLE_Blog_Factory\\\\.next\")",
+      "Bash(node -p \"require\\(''node:fs''\\).readFileSync\\(''.env'', ''utf8''\\).split\\(''\\\\n''\\).filter\\(l => l.includes\\(''DATABASE''\\)\\).join\\(''\\\\n''\\)\")",
+      "Bash(node check-posts.mjs:*)",
+      "Bash(node delete-posts.mjs:*)",
+      "Bash(node verify-clean.mjs:*)",
+      "Bash(tsx scripts/delete-all-posts.ts:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(node --loader ts-node/esm:*)",
+      "Bash(node scripts/delete-all-posts.mjs:*)",
+      "Bash(cross-env NODE_OPTIONS=--no-deprecation tsx scripts/delete-all-posts.ts:*)",
+      "Bash(pnpm exec cross-env:*)",
+      "Bash(node scripts/delete-posts-now.mjs:*)"
     ]
   }
 }

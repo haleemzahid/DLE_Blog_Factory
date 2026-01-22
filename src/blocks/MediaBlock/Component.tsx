@@ -1,3 +1,5 @@
+'use client'
+
 import type { StaticImageData } from 'next/image'
 
 import { cn } from '@/utilities/ui'
@@ -19,6 +21,8 @@ type Props = MediaBlockProps & {
 }
 
 export const MediaBlock: React.FC<Props> = (props) => {
+  console.log('🖼️ MediaBlock rendering with props:', props)
+
   const {
     captionClassName,
     className,
@@ -65,3 +69,5 @@ export const MediaBlock: React.FC<Props> = (props) => {
     </div>
   )
 }
+
+console.log('✅ MediaBlock component defined:', MediaBlock)
