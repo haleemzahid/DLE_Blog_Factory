@@ -15,18 +15,54 @@ import {
 import { cn } from '@/utilities/ui'
 import React from 'react'
 
-// Import block components
-import { BannerBlock } from '@/blocks/Banner/Component'
-import { CodeBlock } from '@/blocks/Code/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
+// Error Boundary to catch rendering errors
+class RichTextErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props)
+    this.state = { hasError: false }
+  }
 
-// Debug: Check if components are loaded
-console.log('=== SimpleRichText Module Loading ===')
-console.log('BannerBlock:', BannerBlock, typeof BannerBlock)
-console.log('CodeBlock:', CodeBlock, typeof CodeBlock)
-console.log('MediaBlock:', MediaBlock, typeof MediaBlock)
-console.log('ConvertRichText:', ConvertRichText, typeof ConvertRichText)
-console.log('=====================================')
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error }
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('RichText Error Boundary caught:', error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="border border-red-500 bg-red-50 p-6 rounded my-4">
+          <h3 className="text-red-800 font-bold mb-2">Content Rendering Error</h3>
+          <p className="text-red-700 mb-2">
+            There was an error rendering this content. Please try refreshing the page.
+          </p>
+          {this.state.error && (
+            <details className="text-sm text-red-600">
+              <summary>Error details</summary>
+              <pre className="mt-2 p-2 bg-red-100 rounded overflow-auto">
+                {this.state.error.message}
+              </pre>
+            </details>
+          )}
+        </div>
+      )
+    }
+
+    return this.props.children
+  }
+}
+
+// Store block components as they load
+const blockComponents: {
+  BannerBlock?: any
+  CodeBlock?: any
+  MediaBlock?: any
+} = {}
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -37,76 +73,146 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
-const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConverters }) => {
-  console.log('=== jsxConverters called ===')
-  console.log('defaultConverters keys:', Object.keys(defaultConverters))
-  console.log('defaultConverters:', defaultConverters)
-  console.log('defaultConverters.blocks:', defaultConverters.blocks)
+// Fallback component for when block components fail to load
+const BlockLoadError: React.FC<{ blockType: string }> = ({ blockType }) => {
+  return React.createElement(
+    'div',
+    { className: 'border border-red-500 bg-red-50 p-4 rounded my-4' },
+    React.createElement('strong', null, 'Error: '),
+    `${blockType} component failed to load. Please refresh the page.`,
+  )
+}
 
-  const linkConverter = LinkJSXConverter({ internalDocToHref })
-  console.log('linkConverter:', linkConverter)
-  console.log('linkConverter keys:', Object.keys(linkConverter))
-
-  // Ensure blocks object exists, even if defaultConverters.blocks is undefined
-  const baseBlocks = (defaultConverters.blocks && typeof defaultConverters.blocks === 'object')
-    ? defaultConverters.blocks
-    : {}
-
-  const converters = {
-    ...defaultConverters,
-    ...linkConverter,
-    blocks: {
-      ...baseBlocks,
-      banner: ({ node }: any) => {
-        console.log('🎨 Rendering banner block:', node)
-        if (!node?.fields) {
-          console.warn('Banner block has no fields')
-          return <div>Banner block error: no fields</div>
-        }
-        console.log('Banner block fields:', node.fields)
-        console.log('BannerBlock component:', BannerBlock)
-        if (!BannerBlock) {
-          console.error('BannerBlock component is undefined!')
-          return <div>BannerBlock component not loaded</div>
-        }
-        return <BannerBlock {...node.fields} />
-      },
-      code: ({ node }: any) => {
-        console.log('💻 Rendering code block:', node)
-        if (!node?.fields) {
-          console.warn('Code block has no fields')
-          return <div>Code block error: no fields</div>
-        }
-        console.log('Code block fields:', node.fields)
-        console.log('CodeBlock component:', CodeBlock)
-        if (!CodeBlock) {
-          console.error('CodeBlock component is undefined!')
-          return <div>CodeBlock component not loaded</div>
-        }
-        return <CodeBlock {...node.fields} blockType="code" />
-      },
-      mediaBlock: ({ node }: any) => {
-        console.log('🖼️ Rendering mediaBlock:', node)
-        if (!node?.fields) {
-          console.warn('MediaBlock has no fields')
-          return <div>MediaBlock error: no fields</div>
-        }
-        console.log('MediaBlock fields:', node.fields)
-        console.log('MediaBlock component:', MediaBlock)
-        if (!MediaBlock) {
-          console.error('MediaBlock component is undefined!')
-          return <div>MediaBlock component not loaded</div>
-        }
-        return <MediaBlock {...node.fields} />
-      },
-    },
+// Safety wrapper to ensure we never return undefined
+const safeRender = (element: React.ReactElement | null, fallbackType: string): React.ReactElement => {
+  if (!element || element === null || element === undefined) {
+    console.error(`safeRender: element is ${element} for ${fallbackType}`)
+    return React.createElement(BlockLoadError, { blockType: fallbackType })
   }
+  return element
+}
 
-  console.log('Final converters keys:', Object.keys(converters))
-  console.log('Final converters.blocks:', converters.blocks)
-  console.log('========================')
 
-  return converters
+// Create converters function that will be called inside the component
+const createJsxConverters = (loadedBlockComponents: typeof blockComponents): JSXConvertersFunction<DefaultNodeTypes> => {
+  return ({ defaultConverters }) => {
+    console.log('=== jsxConverters called ===')
+    console.log('defaultConverters keys:', Object.keys(defaultConverters))
+    console.log('loadedBlockComponents:', loadedBlockComponents)
+
+    const linkConverter = LinkJSXConverter({ internalDocToHref })
+    console.log('linkConverter result:', linkConverter)
+
+    // Ensure blocks object exists
+    const baseBlocks = (defaultConverters.blocks && typeof defaultConverters.blocks === 'object')
+      ? defaultConverters.blocks
+      : {}
+
+    // Filter out undefined values from linkConverter to prevent overwriting valid converters
+    const filteredLinkConverter = Object.fromEntries(
+      Object.entries(linkConverter).filter(([_, value]) => value !== undefined)
+    )
+    console.log('filteredLinkConverter:', filteredLinkConverter)
+
+    const converters = {
+      ...defaultConverters,
+      ...filteredLinkConverter,
+      blocks: {
+        ...baseBlocks,
+        banner: ({ node }: any) => {
+          console.log('🎨 Rendering banner block:', node)
+          if (!node?.fields) {
+            console.warn('Banner block has no fields')
+            return React.createElement(BlockLoadError, { blockType: 'Banner (no fields)' })
+          }
+          console.log('Banner block fields:', node.fields)
+          console.log('BannerBlock component:', loadedBlockComponents.BannerBlock)
+
+          if (!loadedBlockComponents.BannerBlock || typeof loadedBlockComponents.BannerBlock !== 'function') {
+            console.error('BannerBlock component is undefined or not a function!', typeof loadedBlockComponents.BannerBlock)
+            return React.createElement(BlockLoadError, { blockType: 'BannerBlock' })
+          }
+
+          try {
+            const element = React.createElement(loadedBlockComponents.BannerBlock, node.fields)
+            return safeRender(element, 'BannerBlock')
+          } catch (error) {
+            console.error('Error rendering BannerBlock:', error)
+            return React.createElement(BlockLoadError, { blockType: 'BannerBlock' })
+          }
+        },
+        code: ({ node }: any) => {
+          console.log('💻 Rendering code block:', node)
+          if (!node?.fields) {
+            console.warn('Code block has no fields')
+            return React.createElement(BlockLoadError, { blockType: 'Code (no fields)' })
+          }
+          console.log('Code block fields:', node.fields)
+          console.log('CodeBlock component:', loadedBlockComponents.CodeBlock)
+
+          if (!loadedBlockComponents.CodeBlock || typeof loadedBlockComponents.CodeBlock !== 'function') {
+            console.error('CodeBlock component is undefined or not a function!', typeof loadedBlockComponents.CodeBlock)
+            return React.createElement(BlockLoadError, { blockType: 'CodeBlock' })
+          }
+
+          try {
+            const element = React.createElement(loadedBlockComponents.CodeBlock, { ...node.fields, blockType: 'code' })
+            return safeRender(element, 'CodeBlock')
+          } catch (error) {
+            console.error('Error rendering CodeBlock:', error)
+            return React.createElement(BlockLoadError, { blockType: 'CodeBlock' })
+          }
+        },
+        mediaBlock: ({ node }: any) => {
+          console.log('🖼️ Rendering mediaBlock:', node)
+          if (!node?.fields) {
+            console.warn('MediaBlock has no fields')
+            return React.createElement(BlockLoadError, { blockType: 'MediaBlock (no fields)' })
+          }
+          console.log('MediaBlock fields:', node.fields)
+          console.log('MediaBlock component:', loadedBlockComponents.MediaBlock)
+
+          if (!loadedBlockComponents.MediaBlock || typeof loadedBlockComponents.MediaBlock !== 'function') {
+            console.error('MediaBlock component is undefined or not a function!', typeof loadedBlockComponents.MediaBlock)
+            return React.createElement(BlockLoadError, { blockType: 'MediaBlock' })
+          }
+
+          try {
+            const element = React.createElement(loadedBlockComponents.MediaBlock, node.fields)
+            return safeRender(element, 'MediaBlock')
+          } catch (error) {
+            console.error('Error rendering MediaBlock:', error)
+            return React.createElement(BlockLoadError, { blockType: 'MediaBlock' })
+          }
+        },
+      },
+    }
+
+    console.log('Final converters keys:', Object.keys(converters))
+    console.log('Final converters.blocks:', converters.blocks)
+
+    // Check for undefined converters BEFORE returning
+    const undefinedConverters: string[] = []
+    Object.entries(converters).forEach(([key, value]) => {
+      if (value === undefined) {
+        console.error(`❌ CRITICAL: converters.${key} is undefined!`)
+        undefinedConverters.push(key)
+      }
+    })
+
+    if (undefinedConverters.length > 0) {
+      console.error(`🚨 FOUND ${undefinedConverters.length} UNDEFINED CONVERTERS:`, undefinedConverters)
+      // Remove undefined converters to prevent the error
+      undefinedConverters.forEach(key => {
+        delete converters[key]
+      })
+      console.log('✅ Removed undefined converters, new keys:', Object.keys(converters))
+    }
+
+    console.log('========================')
+
+    return converters
+  }
 }
 
 type Props = {
@@ -120,6 +226,57 @@ type Props = {
  */
 function SimpleRichText(props: Props) {
   const { className, enableProse = true, enableGutter = true, data, ...rest } = props
+  const [isClient, setIsClient] = React.useState(false)
+  const [loadedComponents, setLoadedComponents] = React.useState<typeof blockComponents | null>(null)
+  const [converters, setConverters] = React.useState<JSXConvertersFunction<DefaultNodeTypes> | null>(null)
+
+  // Load block components on the client side
+  React.useEffect(() => {
+    setIsClient(true)
+
+    if (typeof window !== 'undefined') {
+      console.log('=== Loading Block Components ===')
+
+      Promise.all([
+        import('@/blocks/Banner/Component').then((mod) => {
+          console.log('✅ BannerBlock loaded:', mod.BannerBlock)
+          return { BannerBlock: mod.BannerBlock }
+        }),
+        import('@/blocks/Code/Component').then((mod) => {
+          console.log('✅ CodeBlock loaded:', mod.CodeBlock)
+          return { CodeBlock: mod.CodeBlock }
+        }),
+        import('@/blocks/MediaBlock/Component').then((mod) => {
+          console.log('✅ MediaBlock loaded:', mod.MediaBlock)
+          return { MediaBlock: mod.MediaBlock }
+        }),
+      ])
+        .then((results) => {
+          // Merge all loaded components
+          const components = {
+            BannerBlock: results[0].BannerBlock,
+            CodeBlock: results[1].CodeBlock,
+            MediaBlock: results[2].MediaBlock,
+          }
+          console.log('✅ All blocks loaded:', components)
+
+          // Store in module-level object for backwards compatibility
+          blockComponents.BannerBlock = components.BannerBlock
+          blockComponents.CodeBlock = components.CodeBlock
+          blockComponents.MediaBlock = components.MediaBlock
+
+          // Create converters with the loaded components
+          const jsxConverters = createJsxConverters(components)
+          console.log('✅ Converters created')
+
+          setLoadedComponents(components)
+          setConverters(() => jsxConverters)
+        })
+        .catch((error) => {
+          console.error('❌ Failed to load blocks:', error)
+        })
+    }
+  }, [])
 
   if (!data) {
     console.error('SimpleRichText: No data provided')
@@ -127,31 +284,62 @@ function SimpleRichText(props: Props) {
   }
 
   console.log('SimpleRichText rendering with data:', data)
+  console.log('Is client:', isClient)
+  console.log('Converters ready:', !!converters)
+  console.log('Components loaded:', loadedComponents)
 
   // Log all children types
   if (data?.root?.children) {
-    console.log('Content children types:', data.root.children.map((child: any) => ({
+    const children = data.root.children.map((child: any) => ({
       type: child.type,
       hasFields: !!child.fields,
       blockType: child.fields?.blockType,
-    })))
+      fields: child.fields,
+    }))
+    console.log('Content children types:', children)
+    console.log('Full children array:', data.root.children)
   }
 
+  // During SSR or before blocks load, show placeholder
+  if (!isClient || !converters || !loadedComponents) {
+    console.log('Rendering placeholder - isClient:', isClient, 'converters:', !!converters, 'loadedComponents:', !!loadedComponents)
+    return (
+      <div
+        className={cn(
+          'payload-richtext',
+          {
+            container: enableGutter,
+            'max-w-none': !enableGutter,
+            'mx-auto prose md:prose-md dark:prose-invert': enableProse,
+          },
+          className,
+        )}
+        suppressHydrationWarning
+      >
+        <div className="animate-pulse bg-gray-100 h-32 rounded" />
+      </div>
+    )
+  }
+
+  console.log('Rendering full content with blocks')
+
   return (
-    <ConvertRichText
-      data={data}
-      converters={jsxConverters}
-      className={cn(
-        'payload-richtext',
-        {
-          container: enableGutter,
-          'max-w-none': !enableGutter,
-          'mx-auto prose md:prose-md dark:prose-invert': enableProse,
-        },
-        className,
-      )}
-      {...rest}
-    />
+    <RichTextErrorBoundary>
+      <ConvertRichText
+        data={data}
+        converters={converters}
+        className={cn(
+          'payload-richtext',
+          {
+            container: enableGutter,
+            'max-w-none': !enableGutter,
+            'mx-auto prose md:prose-md dark:prose-invert': enableProse,
+          },
+          className,
+        )}
+        {...rest}
+      />
+    </RichTextErrorBoundary>
   )
 }
 

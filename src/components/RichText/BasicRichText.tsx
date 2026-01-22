@@ -43,6 +43,11 @@ type Props = {
 function BasicRichText(props: Props) {
   const { className, enableProse = true, enableGutter = true, data, ...rest } = props
 
+  if (!data) {
+    console.warn('BasicRichText: No data provided')
+    return null
+  }
+
   return (
     <ConvertRichText
       data={data}
