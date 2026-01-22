@@ -14,9 +14,6 @@ import {
 
 import { cn } from '@/utilities/ui'
 import React from 'react'
-import { BannerBlock } from '@/blocks/Banner/Component'
-import { CodeBlock } from '@/blocks/Code/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -33,11 +30,6 @@ const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConvert
   return {
     ...defaultConverters,
     link: linkConverter.link,
-    blocks: {
-      banner: ({ node }: any) => <BannerBlock {...node.fields} />,
-      code: ({ node }: any) => <CodeBlock {...node.fields} />,
-      mediaBlock: ({ node }: any) => <MediaBlock {...node.fields} />,
-    },
   }
 }
 

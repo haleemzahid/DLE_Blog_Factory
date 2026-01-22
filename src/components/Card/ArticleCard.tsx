@@ -93,11 +93,15 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
     <Link href={postUrl} className={cardStyles.wrapper}>
       <article className={cardStyles.container}>
         {/* Image */}
-        {article.heroImage && (
-          <div className={cardStyles.imageWrapper}>
+        <div className={cardStyles.imageWrapper}>
+          {article.heroImage ? (
             <Media resource={article.heroImage} fill className={cardStyles.image} />
-          </div>
-        )}
+          ) : (
+            <div className="w-full h-full border-4 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+              <span className="text-gray-400 dark:text-gray-500 text-sm font-medium">No Image</span>
+            </div>
+          )}
+        </div>
 
         {/* Global Header Logo - Overlapping image and content */}
         <div className="relative -mt-9 ml-6 mb-2 w-[70px] h-[70px] z-10">

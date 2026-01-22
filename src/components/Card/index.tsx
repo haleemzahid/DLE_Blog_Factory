@@ -54,10 +54,13 @@ export const Card: React.FC<{
       )}
       ref={card.ref}
     >
-      <div className="relative w-full ">
-        {!imageToDisplay && <div className="">No image</div>}
-        {imageToDisplay && typeof imageToDisplay !== 'string' && (
+      <div className="relative w-full aspect-[16/10]">
+        {imageToDisplay && typeof imageToDisplay !== 'string' ? (
           <Media resource={imageToDisplay} size="33vw" />
+        ) : (
+          <div className="w-full h-full border-4 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+            <span className="text-gray-400 dark:text-gray-500 text-sm font-medium">No Image</span>
+          </div>
         )}
       </div>
       <div className="p-4">

@@ -260,7 +260,7 @@ export const Posts: CollectionConfig<'posts'> = {
       admin: {
         position: 'sidebar',
         description: 'Select multiple agents to syndicate/copy this post to their pages',
-        condition: (data) => data.postType === 'syndicated',
+        condition: (data) => data.postType === 'syndicated' && !data.showOnAllAgents,
       },
       hasMany: true,
       relationTo: 'agents',
