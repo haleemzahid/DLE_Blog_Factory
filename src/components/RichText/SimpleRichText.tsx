@@ -8,7 +8,6 @@ import {
 
 import {
   JSXConvertersFunction,
-  LinkJSXConverter,
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 
@@ -64,14 +63,6 @@ const blockComponents: {
   MediaBlock?: any
 } = {}
 
-const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
-  const { value, relationTo } = linkNode.fields.doc!
-  if (typeof value !== 'object') {
-    throw new Error('Expected value to be an object')
-  }
-  const slug = value.slug
-  return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
-}
 
 // Fallback component for when block components fail to load
 const BlockLoadError: React.FC<{ blockType: string }> = ({ blockType }) => {
@@ -93,31 +84,47 @@ const safeRender = (element: React.ReactElement | null, fallbackType: string): R
 }
 
 
+// Recursively remove undefined and null values from an object
+const cleanObject = (obj: any): any => {
+  if (obj === undefined || obj === null) return undefined
+  if (typeof obj !== 'object' || React.isValidElement(obj) || Array.isArray(obj)) return obj
+  if (typeof obj === 'function') return obj
+
+  const cleaned: any = {}
+  for (const [key, value] of Object.entries(obj)) {
+    if (value === undefined || value === null) {
+      console.warn(`Removing ${key} with value: ${value}`)
+      continue
+    }
+    if (typeof value === 'object' && !React.isValidElement(value) && !Array.isArray(value) && typeof value !== 'function') {
+      const cleanedValue = cleanObject(value)
+      // Keep the object even if it's empty after cleaning
+      if (cleanedValue !== undefined) {
+        cleaned[key] = cleanedValue
+      }
+    } else {
+      cleaned[key] = value
+    }
+  }
+  return cleaned
+}
+
 // Create converters function that will be called inside the component
 const createJsxConverters = (loadedBlockComponents: typeof blockComponents): JSXConvertersFunction<DefaultNodeTypes> => {
   return ({ defaultConverters }) => {
     console.log('=== jsxConverters called ===')
-    console.log('defaultConverters keys:', Object.keys(defaultConverters))
-    console.log('loadedBlockComponents:', loadedBlockComponents)
+    console.log('defaultConverters:', defaultConverters)
 
-    const linkConverter = LinkJSXConverter({ internalDocToHref })
-    console.log('linkConverter result:', linkConverter)
+    // DON'T clean or modify defaultConverters - use them as-is
+    const converters: any = { ...defaultConverters }
 
     // Ensure blocks object exists
     const baseBlocks = (defaultConverters.blocks && typeof defaultConverters.blocks === 'object')
-      ? defaultConverters.blocks
+      ? { ...defaultConverters.blocks }
       : {}
 
-    // Filter out undefined values from linkConverter to prevent overwriting valid converters
-    const filteredLinkConverter = Object.fromEntries(
-      Object.entries(linkConverter).filter(([_, value]) => value !== undefined)
-    )
-    console.log('filteredLinkConverter:', filteredLinkConverter)
-
-    const converters = {
-      ...defaultConverters,
-      ...filteredLinkConverter,
-      blocks: {
+    // Now add our custom blocks
+    converters.blocks = {
         ...baseBlocks,
         banner: ({ node }: any) => {
           console.log('🎨 Rendering banner block:', node)
@@ -185,28 +192,58 @@ const createJsxConverters = (loadedBlockComponents: typeof blockComponents): JSX
             return React.createElement(BlockLoadError, { blockType: 'MediaBlock' })
           }
         },
-      },
-    }
+      }
 
     console.log('Final converters keys:', Object.keys(converters))
     console.log('Final converters.blocks:', converters.blocks)
+    console.log('Full converters object:', converters)
 
-    // Check for undefined converters BEFORE returning
+    // Deep check for undefined or invalid converters at all levels
     const undefinedConverters: string[] = []
-    Object.entries(converters).forEach(([key, value]) => {
-      if (value === undefined) {
-        console.error(`❌ CRITICAL: converters.${key} is undefined!`)
-        undefinedConverters.push(key)
+    const checkValue = (val: any, path: string) => {
+      if (val === undefined || val === null) {
+        console.error(`❌ CRITICAL: ${path} is ${val}!`)
+        undefinedConverters.push(path)
+        return false
       }
+      // Check if it's a function or valid React element
+      if (typeof val === 'function' || React.isValidElement(val) || typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean') {
+        return true
+      }
+      // For objects, check recursively (but not too deep to avoid issues)
+      if (typeof val === 'object' && !Array.isArray(val)) {
+        for (const [nestedKey, nestedValue] of Object.entries(val)) {
+          checkValue(nestedValue, `${path}.${nestedKey}`)
+        }
+      }
+      return true
+    }
+
+    Object.entries(converters).forEach(([key, value]) => {
+      checkValue(value, `converters.${key}`)
     })
 
     if (undefinedConverters.length > 0) {
-      console.error(`🚨 FOUND ${undefinedConverters.length} UNDEFINED CONVERTERS:`, undefinedConverters)
+      console.error(`🚨 FOUND ${undefinedConverters.length} UNDEFINED/NULL CONVERTERS:`, undefinedConverters)
       // Remove undefined converters to prevent the error
-      undefinedConverters.forEach(key => {
-        delete converters[key]
+      undefinedConverters.forEach(path => {
+        const parts = path.replace('converters.', '').split('.')
+        if (parts.length === 1) {
+          delete converters[parts[0]]
+        } else if (parts.length === 2) {
+          if (converters[parts[0]] && typeof converters[parts[0]] === 'object') {
+            delete (converters[parts[0]] as any)[parts[1]]
+          }
+        } else if (parts.length === 3) {
+          if (converters[parts[0]] && typeof converters[parts[0]] === 'object') {
+            const parent = converters[parts[0]] as any
+            if (parent[parts[1]] && typeof parent[parts[1]] === 'object') {
+              delete parent[parts[1]][parts[2]]
+            }
+          }
+        }
       })
-      console.log('✅ Removed undefined converters, new keys:', Object.keys(converters))
+      console.log('✅ Removed undefined/null converters, new keys:', Object.keys(converters))
     }
 
     console.log('========================')

@@ -24,11 +24,70 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
+// Recursively filter out undefined values from objects
+const filterUndefined = (obj: any): any => {
+  if (obj === null || obj === undefined) return undefined
+  if (typeof obj === 'function') return obj // Keep functions as-is
+  if (typeof obj !== 'object') return obj
+  if (React.isValidElement(obj)) return obj // Keep React elements as-is
+  if (Array.isArray(obj)) return obj // Keep arrays as-is
+
+  const filtered: any = {}
+  for (const [key, value] of Object.entries(obj)) {
+    if (value === undefined) {
+      console.log(`Filtering out undefined key: ${key}`)
+      continue
+    }
+    if (typeof value === 'function') {
+      filtered[key] = value
+    } else if (typeof value === 'object' && value !== null && !React.isValidElement(value) && !Array.isArray(value)) {
+      // Recursively filter nested objects
+      const filteredValue = filterUndefined(value)
+      // Only add if not undefined
+      if (filteredValue !== undefined) {
+        filtered[key] = filteredValue
+      }
+    } else {
+      filtered[key] = value
+    }
+  }
+  return filtered
+}
+
 // Basic converters without block support to avoid circular dependencies
-const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConverters }) => ({
-  ...defaultConverters,
-  ...LinkJSXConverter({ internalDocToHref }),
-})
+const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConverters }) => {
+  console.log('BasicRichText jsxConverters called')
+  console.log('defaultConverters:', defaultConverters)
+
+  // First, filter defaultConverters to remove any undefined values
+  const filteredDefaults = filterUndefined(defaultConverters)
+  console.log('Filtered defaultConverters:', filteredDefaults)
+
+  const linkConverter = LinkJSXConverter({ internalDocToHref })
+  console.log('linkConverter:', linkConverter)
+
+  // Filter linkConverter to remove undefined values
+  const filteredLinkConverter = filterUndefined(linkConverter)
+  console.log('Filtered linkConverter:', filteredLinkConverter)
+
+  // Manually merge to ensure we don't override with undefined
+  const converters = { ...filteredDefaults }
+
+  // Only add properties from linkConverter if they're not undefined
+  for (const [key, value] of Object.entries(filteredLinkConverter)) {
+    if (value !== undefined) {
+      converters[key] = value
+    }
+  }
+
+  console.log('Final converters:', converters)
+
+  // One more safety check
+  const finalFiltered = filterUndefined(converters)
+  console.log('After final filter:', finalFiltered)
+
+  return finalFiltered
+}
 
 type Props = {
   data: DefaultTypedEditorState
