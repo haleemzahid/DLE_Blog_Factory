@@ -48,7 +48,8 @@
       "Bash(cross-env NODE_OPTIONS=--no-deprecation tsx scripts/delete-all-posts.ts:*)",
       "Bash(pnpm exec cross-env:*)",
       "Bash(node scripts/delete-posts-now.mjs:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(vercel logs:*)"
     ]
   }
 }
