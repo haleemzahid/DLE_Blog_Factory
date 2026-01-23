@@ -127,6 +127,12 @@ const createJsxConverters = (loadedBlockComponents: typeof blockComponents): JSX
       return defaultConverters
     }
 
+    // Validate that defaultConverters is not null/undefined
+    if (!defaultConverters || typeof defaultConverters !== 'object') {
+      console.error('⚠️ defaultConverters is invalid:', defaultConverters)
+      return {}
+    }
+
     // DON'T clean or modify defaultConverters - use them as-is
     const converters: any = { ...defaultConverters }
 
@@ -212,7 +218,10 @@ const createJsxConverters = (loadedBlockComponents: typeof blockComponents): JSX
 
     // Deep check for undefined or invalid converters at all levels
     const undefinedConverters: string[] = []
-    const checkValue = (val: any, path: string) => {
+    const checkValue = (val: any, path: string, depth = 0) => {
+      // Prevent infinite recursion
+      if (depth > 3) return true
+
       if (val === undefined || val === null) {
         console.error(`❌ CRITICAL: ${path} is ${val}!`)
         undefinedConverters.push(path)
@@ -225,7 +234,7 @@ const createJsxConverters = (loadedBlockComponents: typeof blockComponents): JSX
       // For objects, check recursively (but not too deep to avoid issues)
       if (typeof val === 'object' && !Array.isArray(val)) {
         for (const [nestedKey, nestedValue] of Object.entries(val)) {
-          checkValue(nestedValue, `${path}.${nestedKey}`)
+          checkValue(nestedValue, `${path}.${nestedKey}`, depth + 1)
         }
       }
       return true
@@ -241,15 +250,18 @@ const createJsxConverters = (loadedBlockComponents: typeof blockComponents): JSX
       undefinedConverters.forEach(path => {
         const parts = path.replace('converters.', '').split('.')
         if (parts.length === 1) {
+          console.log(`Deleting converters.${parts[0]}`)
           delete converters[parts[0]]
         } else if (parts.length === 2) {
           if (converters[parts[0]] && typeof converters[parts[0]] === 'object') {
+            console.log(`Deleting converters.${parts[0]}.${parts[1]}`)
             delete (converters[parts[0]] as any)[parts[1]]
           }
         } else if (parts.length === 3) {
           if (converters[parts[0]] && typeof converters[parts[0]] === 'object') {
             const parent = converters[parts[0]] as any
             if (parent[parts[1]] && typeof parent[parts[1]] === 'object') {
+              console.log(`Deleting converters.${parts[0]}.${parts[1]}.${parts[2]}`)
               delete parent[parts[1]][parts[2]]
             }
           }
@@ -259,6 +271,9 @@ const createJsxConverters = (loadedBlockComponents: typeof blockComponents): JSX
     }
 
     console.log('========================')
+    console.log('🎯 Final validated converters:', converters)
+    console.log('🎯 Converters type:', typeof converters)
+    console.log('🎯 Is converters an object?', converters && typeof converters === 'object')
 
     return converters
   }
@@ -398,6 +413,32 @@ function SimpleRichText(props: Props) {
   }
 
   console.log('Rendering full content with blocks')
+  console.log('🔍 About to render ConvertRichText with converters:', converters)
+  console.log('🔍 Converters is function?', typeof converters === 'function')
+  console.log('🔍 Converters is null?', converters === null)
+  console.log('🔍 Converters is undefined?', converters === undefined)
+
+  // Final safety check before rendering
+  if (!converters) {
+    console.error('❌ CRITICAL: Converters is null/undefined, rendering placeholder instead')
+    return (
+      <div
+        className={cn(
+          'payload-richtext',
+          {
+            container: enableGutter,
+            'max-w-none': !enableGutter,
+            'mx-auto prose md:prose-md dark:prose-invert': enableProse,
+          },
+          className,
+        )}
+      >
+        <div className="border border-yellow-500 bg-yellow-50 p-4 rounded">
+          <strong>Warning:</strong> Content converters not ready. Please refresh the page.
+        </div>
+      </div>
+    )
+  }
 
   return (
     <RichTextErrorBoundary>
