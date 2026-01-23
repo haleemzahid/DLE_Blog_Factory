@@ -118,16 +118,23 @@ const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConvert
     ? { ...defaultConverters.blocks }
     : {}
 
+  // Filter baseBlocks to remove undefined values
+  const filteredBaseBlocks = filterUndefined(baseBlocks)
+  console.log('Filtered baseBlocks:', filteredBaseBlocks)
+
   converters.blocks = {
-    ...baseBlocks,
+    ...filteredBaseBlocks,
     banner: ({ node }: any) => {
+      console.log('🎨 banner converter called with node:', node)
       if (!node?.fields) {
         console.warn('Banner block has no fields')
         return React.createElement(BlockLoadError, { blockType: 'Banner' })
       }
 
       try {
+        console.log('Creating BannerBlock element with fields:', node.fields)
         const element = React.createElement(BannerBlock, node.fields)
+        console.log('BannerBlock element created:', element)
         if (!element) {
           console.error('BannerBlock createElement returned undefined')
           return React.createElement(BlockLoadError, { blockType: 'BannerBlock' })
@@ -195,11 +202,47 @@ const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConvert
   validateConverters(converters)
   console.log('✅ Converters validated:', converters)
 
-  // Final filter to ensure no undefined values slip through
-  const finalConverters = filterUndefined(converters)
-  console.log('✅ Final filtered converters:', finalConverters)
+  // Wrap ALL converters to catch undefined returns at runtime
+  const wrappedConverters: any = {}
+  for (const [key, value] of Object.entries(converters)) {
+    if (typeof value === 'function') {
+      wrappedConverters[key] = (props: any) => {
+        const result = value(props)
+        if (result === undefined || result === null) {
+          console.error(`❌ Converter "${key}" returned ${result}:`, props)
+          return React.createElement('div', {
+            className: 'border border-red-500 bg-red-50 p-2 rounded my-2'
+          }, `Error: ${key} converter returned undefined`)
+        }
+        return result
+      }
+    } else if (typeof value === 'object' && value !== null) {
+      // Handle nested objects like 'blocks'
+      wrappedConverters[key] = {}
+      for (const [nestedKey, nestedValue] of Object.entries(value)) {
+        if (typeof nestedValue === 'function') {
+          wrappedConverters[key][nestedKey] = (props: any) => {
+            const result = (nestedValue as Function)(props)
+            if (result === undefined || result === null) {
+              console.error(`❌ Converter "${key}.${nestedKey}" returned ${result}:`, props)
+              return React.createElement('div', {
+                className: 'border border-red-500 bg-red-50 p-2 rounded my-2'
+              }, `Error: ${key}.${nestedKey} converter returned undefined`)
+            }
+            return result
+          }
+        } else {
+          wrappedConverters[key][nestedKey] = nestedValue
+        }
+      }
+    } else {
+      wrappedConverters[key] = value
+    }
+  }
 
-  return finalConverters
+  console.log('✅ Wrapped converters created')
+
+  return wrappedConverters
 }
 
 type Props = {
