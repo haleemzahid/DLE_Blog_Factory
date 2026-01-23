@@ -1,6 +1,6 @@
 'use client'
 
-import { SimpleRichText } from '@/components/RichText/SimpleRichText.v2'
+import { FreshRichText } from '@/components/RichText/FreshRichText'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React from 'react'
 
@@ -19,7 +19,7 @@ export function ClientOnlyRichText({ content }: Props) {
   }, [content])
 
   return (
-    <SimpleRichText
+    <FreshRichText
       key={contentKey}
       className="max-w-[48rem] mx-auto"
       data={content}

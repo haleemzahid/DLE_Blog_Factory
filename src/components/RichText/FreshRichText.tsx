@@ -25,9 +25,9 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 /**
- * SimpleRichText - Ensures no stale state by recreating converters on each render
+ * FreshRichText - Ensures no stale state by recreating converters on each render
  */
-export function SimpleRichText(props: Props) {
+export function FreshRichText(props: Props) {
   const { className, enableProse = true, enableGutter = true, data, ...rest } = props
   const [isMounted, setIsMounted] = React.useState(false)
 
@@ -35,7 +35,7 @@ export function SimpleRichText(props: Props) {
     setIsMounted(true)
   }, [])
 
-  // Create converters fresh to avoid stale closures
+  // Create converters fresh on every render to avoid stale closures
   const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = React.useMemo(
     () => ({ defaultConverters }) => {
       if (!defaultConverters || typeof defaultConverters !== 'object') {
@@ -73,7 +73,7 @@ export function SimpleRichText(props: Props) {
 
       return converters
     },
-    [],
+    [], // Empty deps - create fresh function reference on mount only
   )
 
   if (!isMounted) {
@@ -116,5 +116,3 @@ export function SimpleRichText(props: Props) {
     />
   )
 }
-
-export default SimpleRichText
