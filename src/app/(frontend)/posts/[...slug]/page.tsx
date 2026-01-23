@@ -7,6 +7,7 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { SimpleRichText } from '@/components/RichText/SimpleRichText'
+import { sanitizeRichTextData } from '@/utilities/sanitizeRichTextData'
 
 import type { Post } from '@/payload-types'
 
@@ -116,13 +117,38 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          {post.content ? (
-            <SimpleRichText
-              className="max-w-[48rem] mx-auto"
-              data={post.content}
-              enableGutter={false}
-            />
-          ) : (
+          {(() => {
+            // Debug logging for post content
+            console.log('📝 Post content exists:', !!post.content)
+            console.log('📝 Post content type:', typeof post.content)
+            if (post.content) {
+              console.log('📝 Post content root:', post.content.root)
+              console.log('📝 Post content children count:', post.content.root?.children?.length)
+              console.log('📝 Post content raw:', JSON.stringify(post.content))
+            }
+            return null
+          })()}
+          {post.content ? (() => {
+            // Sanitize the content before rendering
+            const sanitizedContent = sanitizeRichTextData(post.content)
+            if (!sanitizedContent) {
+              console.error('❌ Failed to sanitize content')
+              return (
+                <div className="max-w-[48rem] mx-auto">
+                  <div className="border border-red-500 bg-red-50 p-4 rounded">
+                    <p><strong>Error:</strong> Content data is corrupted. Please re-save this post.</p>
+                  </div>
+                </div>
+              )
+            }
+            return (
+              <SimpleRichText
+                className="max-w-[48rem] mx-auto"
+                data={sanitizedContent}
+                enableGutter={false}
+              />
+            )
+          })() : (
             <div className="max-w-[48rem] mx-auto">
               <p>No content available</p>
             </div>

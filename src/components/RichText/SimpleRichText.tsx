@@ -250,6 +250,30 @@ function SimpleRichText(props: Props) {
     return null
   }
 
+  // DEBUG: Log the entire data structure to see what we're working with
+  console.log('📊 Full data object:', JSON.stringify(data, null, 2))
+  console.log('📊 Data root:', data?.root)
+  console.log('📊 Data root children:', data?.root?.children)
+
+  // Validate data structure
+  if (!data.root || !data.root.children) {
+    console.error('❌ Invalid data structure - missing root or children')
+    return (
+      <div className={cn('payload-richtext', className)}>
+        <div className="border border-yellow-500 bg-yellow-50 p-4 rounded">
+          <strong>Warning:</strong> Content data is malformed. Please re-save this post.
+        </div>
+      </div>
+    )
+  }
+
+  // Check for any undefined children
+  const hasUndefinedChildren = data.root.children.some((child: any) => child === undefined || child === null)
+  if (hasUndefinedChildren) {
+    console.error('❌ Data contains undefined/null children')
+    console.log('Children:', data.root.children)
+  }
+
   // Wrap in try-catch as final safety net
   try {
     return (
