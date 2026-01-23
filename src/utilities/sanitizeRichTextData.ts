@@ -16,20 +16,49 @@ export function sanitizeRichTextData(data: any): DefaultTypedEditorState | null 
     return null
   }
 
+  console.log('🧹 Starting sanitization of data with', data.root.children.length, 'children')
+
   // Deep clone to avoid mutating original
-  const sanitized = JSON.parse(JSON.stringify(data))
+  let sanitized: any
+  try {
+    sanitized = JSON.parse(JSON.stringify(data))
+  } catch (error) {
+    console.error('❌ Failed to clone data:', error)
+    return null
+  }
 
   // Filter out any undefined or null children
   if (Array.isArray(sanitized.root.children)) {
+    const originalCount = sanitized.root.children.length
     sanitized.root.children = sanitized.root.children.filter(
-      (child: any) => child !== null && child !== undefined && typeof child === 'object'
+      (child: any, index: number) => {
+        if (child === null || child === undefined) {
+          console.warn(`🧹 Removed null/undefined child at index ${index}`)
+          return false
+        }
+        if (typeof child !== 'object') {
+          console.warn(`🧹 Removed non-object child at index ${index}:`, typeof child)
+          return false
+        }
+        return true
+      }
     )
 
+    if (originalCount !== sanitized.root.children.length) {
+      console.log(`🧹 Filtered ${originalCount - sanitized.root.children.length} invalid children`)
+    }
+
     // Recursively clean each child
-    sanitized.root.children = sanitized.root.children.map((child: any) => {
-      return cleanObject(child)
-    })
+    sanitized.root.children = sanitized.root.children.map((child: any, index: number) => {
+      const cleaned = cleanObject(child)
+      if (!cleaned || Object.keys(cleaned).length === 0) {
+        console.warn(`🧹 Child at index ${index} became empty after cleaning`)
+      }
+      return cleaned
+    }).filter((child: any) => child && typeof child === 'object' && Object.keys(child).length > 0)
   }
+
+  console.log('🧹 Sanitization complete:', sanitized.root.children.length, 'children remain')
 
   return sanitized
 }

@@ -6,8 +6,6 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import { SimpleRichText } from '@/components/RichText/SimpleRichText'
-import { sanitizeRichTextData } from '@/utilities/sanitizeRichTextData'
 
 import type { Post } from '@/payload-types'
 
@@ -16,6 +14,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { AnalyticsTracker } from '@/components/Analytics'
+import { ClientOnlyRichText } from './ClientOnlyRichText'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -128,27 +127,9 @@ export default async function Post({ params: paramsPromise }: Args) {
             }
             return null
           })()}
-          {post.content ? (() => {
-            // Sanitize the content before rendering
-            const sanitizedContent = sanitizeRichTextData(post.content)
-            if (!sanitizedContent) {
-              console.error('❌ Failed to sanitize content')
-              return (
-                <div className="max-w-[48rem] mx-auto">
-                  <div className="border border-red-500 bg-red-50 p-4 rounded">
-                    <p><strong>Error:</strong> Content data is corrupted. Please re-save this post.</p>
-                  </div>
-                </div>
-              )
-            }
-            return (
-              <SimpleRichText
-                className="max-w-[48rem] mx-auto"
-                data={sanitizedContent}
-                enableGutter={false}
-              />
-            )
-          })() : (
+          {post.content ? (
+            <ClientOnlyRichText content={post.content} />
+          ) : (
             <div className="max-w-[48rem] mx-auto">
               <p>No content available</p>
             </div>
