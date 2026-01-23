@@ -116,17 +116,6 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          {(() => {
-            // Debug logging for post content
-            console.log('📝 Post content exists:', !!post.content)
-            console.log('📝 Post content type:', typeof post.content)
-            if (post.content) {
-              console.log('📝 Post content root:', post.content.root)
-              console.log('📝 Post content children count:', post.content.root?.children?.length)
-              console.log('📝 Post content raw:', JSON.stringify(post.content))
-            }
-            return null
-          })()}
           {post.content ? (
             <ClientOnlyRichText content={post.content} />
           ) : (
