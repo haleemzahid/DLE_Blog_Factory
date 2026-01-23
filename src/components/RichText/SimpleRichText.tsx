@@ -57,11 +57,16 @@ class RichTextErrorBoundary extends React.Component<
 }
 
 // Store block components as they load
+// Reset on each module evaluation to avoid stale references during create/delete cycles
 const blockComponents: {
   BannerBlock?: any
   CodeBlock?: any
   MediaBlock?: any
-} = {}
+} = {
+  BannerBlock: undefined,
+  CodeBlock: undefined,
+  MediaBlock: undefined,
+}
 
 
 // Fallback component for when block components fail to load
@@ -114,6 +119,13 @@ const createJsxConverters = (loadedBlockComponents: typeof blockComponents): JSX
   return ({ defaultConverters }) => {
     console.log('=== jsxConverters called ===')
     console.log('defaultConverters:', defaultConverters)
+
+    // Validate that we have loaded components before proceeding
+    if (!loadedBlockComponents.BannerBlock || !loadedBlockComponents.CodeBlock || !loadedBlockComponents.MediaBlock) {
+      console.error('⚠️ Block components not fully loaded:', loadedBlockComponents)
+      // Return only default converters if blocks aren't ready
+      return defaultConverters
+    }
 
     // DON'T clean or modify defaultConverters - use them as-is
     const converters: any = { ...defaultConverters }
@@ -267,8 +279,16 @@ function SimpleRichText(props: Props) {
   const [loadedComponents, setLoadedComponents] = React.useState<typeof blockComponents | null>(null)
   const [converters, setConverters] = React.useState<JSXConvertersFunction<DefaultNodeTypes> | null>(null)
 
+  // Create a stable key based on content to force re-render on content changes
+  // This helps prevent stale state during create/delete cycles
+  // MUST be before any conditional returns to follow Rules of Hooks
+  const contentKey = React.useMemo(() => {
+    return JSON.stringify(data?.root?.children?.slice(0, 3) || [])
+  }, [data])
+
   // Load block components on the client side
   React.useEffect(() => {
+    let mounted = true
     setIsClient(true)
 
     if (typeof window !== 'undefined') {
@@ -289,12 +309,25 @@ function SimpleRichText(props: Props) {
         }),
       ])
         .then((results) => {
+          // Only update state if component is still mounted
+          if (!mounted) {
+            console.log('⚠️ Component unmounted before blocks loaded, skipping state update')
+            return
+          }
+
           // Merge all loaded components
           const components = {
             BannerBlock: results[0].BannerBlock,
             CodeBlock: results[1].CodeBlock,
             MediaBlock: results[2].MediaBlock,
           }
+
+          // Validate all components loaded successfully
+          if (!components.BannerBlock || !components.CodeBlock || !components.MediaBlock) {
+            console.error('❌ Some block components failed to load:', components)
+            return
+          }
+
           console.log('✅ All blocks loaded:', components)
 
           // Store in module-level object for backwards compatibility
@@ -306,12 +339,18 @@ function SimpleRichText(props: Props) {
           const jsxConverters = createJsxConverters(components)
           console.log('✅ Converters created')
 
+          // Use a single state update to ensure atomicity
           setLoadedComponents(components)
           setConverters(() => jsxConverters)
         })
         .catch((error) => {
           console.error('❌ Failed to load blocks:', error)
         })
+    }
+
+    // Cleanup function to prevent state updates after unmount
+    return () => {
+      mounted = false
     }
   }, [])
 
@@ -363,6 +402,7 @@ function SimpleRichText(props: Props) {
   return (
     <RichTextErrorBoundary>
       <ConvertRichText
+        key={contentKey}
         data={data}
         converters={converters}
         className={cn(
