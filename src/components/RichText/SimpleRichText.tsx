@@ -222,7 +222,8 @@ const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConvert
       for (const [nestedKey, nestedValue] of Object.entries(value)) {
         if (typeof nestedValue === 'function') {
           wrappedConverters[key][nestedKey] = (props: any) => {
-            const result = (nestedValue as Function)(props)
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+            const result = (nestedValue as any)(props)
             if (result === undefined || result === null) {
               console.error(`❌ Converter "${key}.${nestedKey}" returned ${result}:`, props)
               return React.createElement('div', {
