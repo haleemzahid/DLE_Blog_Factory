@@ -2,7 +2,9 @@
 
 import React from 'react'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+import type { Agent, CityDatum } from '@/payload-types'
 import { cn } from '@/utilities/ui'
+import { replaceTokens } from '@/utilities/replaceTokens'
 import styles from './index.module.css'
 
 type BlogContentRendererProps = {
@@ -10,6 +12,9 @@ type BlogContentRendererProps = {
   enableGutter?: boolean
   enableProse?: boolean
   className?: string
+  agent?: Agent | null
+  cityData?: CityDatum | null
+  enableTokenReplacement?: boolean
 }
 
 /**
@@ -24,7 +29,16 @@ export function BlogContentRenderer({
   enableGutter = true,
   enableProse = true,
   className,
+  agent,
+  cityData,
+  enableTokenReplacement = false,
 }: BlogContentRendererProps) {
+  // Memoize token context to avoid recalculating on each text node
+  const tokenContext = React.useMemo(() => {
+    if (!enableTokenReplacement || (!agent && !cityData)) return null
+    return { agent, cityData }
+  }, [enableTokenReplacement, agent, cityData])
+
   if (!content) {
     return null
   }
@@ -37,7 +51,11 @@ export function BlogContentRenderer({
 
     // TEXT - apply ALL formatting (support combined formats)
     if (type === 'text') {
-      const text = node.text || ''
+      // Apply token replacement if enabled and context is available
+      let text = node.text || ''
+      if (tokenContext) {
+        text = replaceTokens(text, tokenContext)
+      }
 
       if (node.format) {
         let formattedText: React.ReactNode = text

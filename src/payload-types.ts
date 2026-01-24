@@ -455,6 +455,127 @@ export interface Post {
   templateCategory?:
     | ('market-report' | 'neighborhood-guide' | 'home-valuation' | 'buyer-guide' | 'seller-guide' | 'investment-guide')
     | null;
+  /**
+   * Render this post using a content template with dynamic sections
+   */
+  useTemplate?: boolean | null;
+  /**
+   * Select the template to use for rendering
+   */
+  contentTemplate?: (number | null) | ContentTemplate;
+  /**
+   * Topic/subject for the template (e.g., "Luxury Homes in {{CITY_NAME}}")
+   */
+  templateTopic?: string | null;
+  /**
+   * City data to use for token replacement
+   */
+  targetCityData?: (number | null) | CityDatum;
+  /**
+   * Override specific sections of the template with custom content
+   */
+  sectionOverrides?:
+    | {
+        sectionId:
+          | 'intro'
+          | 'market_stats'
+          | 'neighborhoods'
+          | 'schools'
+          | 'local_facts'
+          | 'employers'
+          | 'places_of_worship'
+          | 'cultural_centers'
+          | 'cultural_events'
+          | 'diversity_overview'
+          | 'community_amenities'
+          | 'languages_spoken'
+          | 'agent_expertise'
+          | 'agent_reviews'
+          | 'agent_languages'
+          | 'areas_served'
+          | 'agent_cta'
+          | 'faq';
+        overrideType: 'replace' | 'prepend' | 'append' | 'hide';
+        customContent?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Customize template sections for each tenant (makes content unique per site)
+   */
+  tenantContentOverrides?:
+    | {
+        tenant: number | Tenant;
+        /**
+         * Use this agent for token replacement (overrides tenant linked agent)
+         */
+        agent?: (number | null) | Agent;
+        /**
+         * Use this city data for token replacement
+         */
+        cityData?: (number | null) | CityDatum;
+        /**
+         * Override specific sections for this tenant
+         */
+        sectionOverrides?:
+          | {
+              sectionId:
+                | 'intro'
+                | 'market_stats'
+                | 'neighborhoods'
+                | 'schools'
+                | 'local_facts'
+                | 'employers'
+                | 'places_of_worship'
+                | 'cultural_centers'
+                | 'cultural_events'
+                | 'diversity_overview'
+                | 'community_amenities'
+                | 'languages_spoken'
+                | 'agent_expertise'
+                | 'agent_reviews'
+                | 'agent_languages'
+                | 'areas_served'
+                | 'agent_cta'
+                | 'faq';
+              overrideType: 'replace' | 'prepend' | 'append' | 'hide';
+              /**
+               * Supports tokens like {{AGENT_NAME}}, {{CITY_NAME}}
+               */
+              customContent?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Define custom tokens for this tenant
+         */
+        customTokens?:
+          | {
+              /**
+               * e.g., CUSTOM_CTA, LOCAL_PROMO
+               */
+              tokenName: string;
+              tokenValue: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -993,6 +1114,25 @@ export interface Agent {
    * Order within directory listings (lower = first)
    */
   directoryOrder?: number | null;
+  /**
+   * Import existing schema data from external sources
+   */
+  jsonLdImport?: {
+    importMethod?: ('url' | 'raw') | null;
+    /**
+     * Google Business Profile, Zillow, or any page with JSON-LD
+     */
+    importUrl?: string | null;
+    /**
+     * Paste the JSON-LD schema markup here
+     */
+    rawJsonLd?: string | null;
+    lastImported?: string | null;
+    /**
+     * URL or source of last import
+     */
+    importSource?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1244,6 +1384,458 @@ export interface Tenant {
      */
     facebookPixelId?: string | null;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Reusable content blueprints that posts can reference for template-based rendering
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contentTemplates".
+ */
+export interface ContentTemplate {
+  id: number;
+  /**
+   * Internal name for this template (e.g., "Home Buying Guide Template")
+   */
+  name: string;
+  /**
+   * Unique identifier (e.g., "home-buying-guide")
+   */
+  slug: string;
+  /**
+   * What is this template for?
+   */
+  description?: string | null;
+  category:
+    | 'buyer-guides'
+    | 'seller-guides'
+    | 'market-reports'
+    | 'neighborhood'
+    | 'lifestyle'
+    | 'legal-finance'
+    | 'school-guide'
+    | 'investment-guide'
+    | 'moving-guide'
+    | 'luxury-homes'
+    | 'city-comparison';
+  /**
+   * Define SEO meta templates with tokens
+   */
+  seoTemplates?: {
+    /**
+     * Use {{TOPIC}}, {{CITY_NAME}}, {{AGENT_DESIGNATION}}
+     */
+    titleTemplate?: string | null;
+    /**
+     * Meta description with tokens
+     */
+    descriptionTemplate?: string | null;
+  };
+  /**
+   * Define the content sections for this template. These determine the structure and rendering of posts using this template.
+   */
+  sections: {
+    /**
+     * Unique ID for this section (e.g., "intro", "market_stats")
+     */
+    sectionId: string;
+    /**
+     * Display name for editors
+     */
+    sectionName: string;
+    /**
+     * Static = fixed content, Token = content with {{TOKENS}}, Dynamic = auto-generated
+     */
+    sectionType: 'static' | 'token' | 'dynamic';
+    /**
+     * Default content (can be overridden by post)
+     */
+    defaultContent?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Content with {{TOKENS}} to be replaced (e.g., {{CITY_NAME}}, {{MEDIAN_PRICE}})
+     */
+    tokenTemplate?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Select which generator to use for dynamic content
+     */
+    generator?:
+      | (
+          | 'market_stats'
+          | 'neighborhoods'
+          | 'schools'
+          | 'agent_cta'
+          | 'local_facts'
+          | 'employers'
+          | 'price_comparison'
+          | 'faq'
+          | 'places_of_worship'
+          | 'cultural_centers'
+          | 'cultural_events'
+          | 'diversity_overview'
+          | 'community_amenities'
+          | 'languages_spoken'
+          | 'agent_expertise'
+          | 'agent_reviews'
+          | 'agent_languages'
+          | 'areas_served'
+        )
+      | null;
+    /**
+     * JS expression to show/hide section (e.g., "cityData.neighborhoods.length > 0", "agent")
+     */
+    condition?: string | null;
+    /**
+     * Can posts override this section?
+     */
+    allowPostOverride?: boolean | null;
+    /**
+     * Can tenants override this section?
+     */
+    allowTenantOverride?: boolean | null;
+    id?: string | null;
+  }[];
+  /**
+   * Optional: Reference to a base post for legacy template approach
+   */
+  basePost?: (number | null) | Post;
+  /**
+   * Which CityData fields are required for this template?
+   */
+  requiredCityData?:
+    | (
+        | 'cityName'
+        | 'population'
+        | 'medianHomePrice'
+        | 'medianRent'
+        | 'priceChange12Month'
+        | 'avgDaysOnMarket'
+        | 'salesCount30Days'
+        | 'inventoryLevel'
+        | 'marketTrend'
+        | 'neighborhoods'
+        | 'topSchools'
+        | 'uniqueFacts'
+        | 'keyEmployers'
+        | 'nearbyCity'
+        | 'region'
+        | 'placesOfWorship'
+        | 'culturalCenters'
+        | 'culturalEvents'
+        | 'demographics'
+        | 'communityAmenities'
+        | 'languagesSpoken'
+      )[]
+    | null;
+  /**
+   * Instructions for how to customize this template for each city
+   */
+  customizationInstructions?: string | null;
+  /**
+   * Optional: AI prompt for generating unique city-specific content. Use placeholders like {cityName}, {medianHomePrice}, etc.
+   */
+  aiPrompt?: string | null;
+  /**
+   * Target percentage of unique content vs. template (minimum 30% recommended for SEO)
+   */
+  contentUniquenessTarget?: number | null;
+  /**
+   * Higher priority templates are generated first (1-100)
+   */
+  priority?: number | null;
+  /**
+   * Only active templates will be used for content generation
+   */
+  isActive?: boolean | null;
+  /**
+   * Which city tiers should use this template
+   */
+  targetCityTier?: ('all' | 'tier1' | 'tier2' | 'tier3' | 'tier1-2') | null;
+  /**
+   * Approximate reading time for generated content
+   */
+  estimatedReadTime?: number | null;
+  /**
+   * Number of posts currently using this template
+   */
+  usageCount?: number | null;
+  /**
+   * Number of times this template has been used to generate content
+   */
+  generatedCount?: number | null;
+  /**
+   * When this template was last used
+   */
+  lastGenerated?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Store market data and information for each city to use in AI-generated content
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cityData".
+ */
+export interface CityDatum {
+  id: number;
+  /**
+   * e.g., Claremont, Los Angeles, San Francisco
+   */
+  cityName: string;
+  state: number | State;
+  /**
+   * Geographic region within California
+   */
+  region?: ('northern' | 'central' | 'southern') | null;
+  /**
+   * Current population estimate
+   */
+  population?: number | null;
+  /**
+   * Current median home price in dollars
+   */
+  medianHomePrice?: number | null;
+  /**
+   * Median monthly rent in dollars
+   */
+  medianRent?: number | null;
+  /**
+   * Year-over-year price change percentage (e.g., 4.2 for 4.2% increase)
+   */
+  priceChange12Month?: number | null;
+  /**
+   * Number of homes sold in the last 30 days
+   */
+  salesCount30Days?: number | null;
+  /**
+   * Average number of days homes stay on the market
+   */
+  avgDaysOnMarket?: number | null;
+  inventoryLevel?: ('very-low' | 'low' | 'balanced' | 'high' | 'very-high') | null;
+  marketTrend?: ('hot-seller' | 'moderate-seller' | 'balanced' | 'moderate-buyer' | 'hot-buyer') | null;
+  /**
+   * Popular neighborhoods within the city
+   */
+  neighborhoods?:
+    | {
+        name: string;
+        /**
+         * Average home price in this neighborhood
+         */
+        avgPrice?: number | null;
+        /**
+         * Brief description of the neighborhood (e.g., "Family-friendly, near schools")
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Highly-rated schools in the area
+   */
+  topSchools?:
+    | {
+        name: string;
+        /**
+         * School rating (e.g., 9 out of 10)
+         */
+        rating?: number | null;
+        type?: ('elementary' | 'middle' | 'high' | 'k12') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Interesting facts about the city to personalize content
+   */
+  uniqueFacts?:
+    | {
+        /**
+         * e.g., "Known as the City of Trees and PhDs due to Claremont Colleges"
+         */
+        fact: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Closest major city for comparison (e.g., "Los Angeles" for Claremont)
+   */
+  nearbyCity?: string | null;
+  /**
+   * Major employers driving the local economy
+   */
+  keyEmployers?:
+    | {
+        name?: string | null;
+        industry?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Religious institutions in the area (churches, temples, mosques, synagogues)
+   */
+  placesOfWorship?:
+    | {
+        /**
+         * e.g., St. Ambrose Catholic Church
+         */
+        name: string;
+        religion?:
+          | (
+              | 'catholic'
+              | 'protestant'
+              | 'orthodox'
+              | 'jewish'
+              | 'muslim'
+              | 'hindu'
+              | 'buddhist'
+              | 'sikh'
+              | 'lds'
+              | 'non-denominational'
+              | 'other'
+            )
+          | null;
+        address?: string | null;
+        website?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Cultural centers, community organizations, ethnic associations
+   */
+  culturalCenters?:
+    | {
+        /**
+         * e.g., Korean American Cultural Center
+         */
+        name: string;
+        type?:
+          | (
+              | 'cultural-center'
+              | 'community-center'
+              | 'ethnic-association'
+              | 'senior-center'
+              | 'youth-center'
+              | 'arts-center'
+            )
+          | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Popular ethnic restaurants and food markets
+   */
+  ethnicCuisine?:
+    | {
+        /**
+         * e.g., Vietnamese, Mexican, Indian, Korean
+         */
+        cuisineType: string;
+        /**
+         * List popular spots for this cuisine
+         */
+        popularSpots?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Annual cultural events, festivals, parades
+   */
+  culturalEvents?:
+    | {
+        /**
+         * e.g., Lunar New Year Festival, Diwali Celebration
+         */
+        name: string;
+        /**
+         * e.g., February (varies), October
+         */
+        timing?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Languages commonly spoken in the community
+   */
+  languagesSpoken?:
+    | {
+        language: string;
+        /**
+         * e.g., 32 for 32%
+         */
+        percentageOfPopulation?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Community demographic breakdown
+   */
+  demographics?: {
+    /**
+     * Score 0-100 (higher = more diverse)
+     */
+    diversityIndex?: number | null;
+    medianAge?: number | null;
+    familyHouseholds?: number | null;
+    ethnicBreakdown?:
+      | {
+          /**
+           * e.g., White, Hispanic/Latino, Asian
+           */
+          ethnicity: string;
+          percentage?: number | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Parks, recreation, libraries, etc.
+   */
+  communityAmenities?:
+    | {
+        name: string;
+        type?: ('park' | 'recreation' | 'library' | 'museum' | 'sports' | 'nature' | 'golf' | 'aquatic') | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * When this city data was last updated
+   */
+  lastUpdated?: string | null;
+  /**
+   * Where this data came from
+   */
+  dataSource?: ('manual' | 'zillow' | 'realtor' | 'census' | 'multiple') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2779,340 +3371,6 @@ export interface TenantFooter {
     };
     [k: string]: unknown;
   } | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Store market data and information for each city to use in AI-generated content
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cityData".
- */
-export interface CityDatum {
-  id: number;
-  /**
-   * e.g., Claremont, Los Angeles, San Francisco
-   */
-  cityName: string;
-  state: number | State;
-  /**
-   * Geographic region within California
-   */
-  region?: ('northern' | 'central' | 'southern') | null;
-  /**
-   * Current population estimate
-   */
-  population?: number | null;
-  /**
-   * Current median home price in dollars
-   */
-  medianHomePrice?: number | null;
-  /**
-   * Median monthly rent in dollars
-   */
-  medianRent?: number | null;
-  /**
-   * Year-over-year price change percentage (e.g., 4.2 for 4.2% increase)
-   */
-  priceChange12Month?: number | null;
-  /**
-   * Number of homes sold in the last 30 days
-   */
-  salesCount30Days?: number | null;
-  /**
-   * Average number of days homes stay on the market
-   */
-  avgDaysOnMarket?: number | null;
-  inventoryLevel?: ('very-low' | 'low' | 'balanced' | 'high' | 'very-high') | null;
-  marketTrend?: ('hot-seller' | 'moderate-seller' | 'balanced' | 'moderate-buyer' | 'hot-buyer') | null;
-  /**
-   * Popular neighborhoods within the city
-   */
-  neighborhoods?:
-    | {
-        name: string;
-        /**
-         * Average home price in this neighborhood
-         */
-        avgPrice?: number | null;
-        /**
-         * Brief description of the neighborhood (e.g., "Family-friendly, near schools")
-         */
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Highly-rated schools in the area
-   */
-  topSchools?:
-    | {
-        name: string;
-        /**
-         * School rating (e.g., 9 out of 10)
-         */
-        rating?: number | null;
-        type?: ('elementary' | 'middle' | 'high' | 'k12') | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Interesting facts about the city to personalize content
-   */
-  uniqueFacts?:
-    | {
-        /**
-         * e.g., "Known as the City of Trees and PhDs due to Claremont Colleges"
-         */
-        fact: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Closest major city for comparison (e.g., "Los Angeles" for Claremont)
-   */
-  nearbyCity?: string | null;
-  /**
-   * Major employers driving the local economy
-   */
-  keyEmployers?:
-    | {
-        name?: string | null;
-        industry?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Religious institutions in the area (churches, temples, mosques, synagogues)
-   */
-  placesOfWorship?:
-    | {
-        /**
-         * e.g., St. Ambrose Catholic Church
-         */
-        name: string;
-        religion?:
-          | (
-              | 'catholic'
-              | 'protestant'
-              | 'orthodox'
-              | 'jewish'
-              | 'muslim'
-              | 'hindu'
-              | 'buddhist'
-              | 'sikh'
-              | 'lds'
-              | 'non-denominational'
-              | 'other'
-            )
-          | null;
-        address?: string | null;
-        website?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Cultural centers, community organizations, ethnic associations
-   */
-  culturalCenters?:
-    | {
-        /**
-         * e.g., Korean American Cultural Center
-         */
-        name: string;
-        type?:
-          | (
-              | 'cultural-center'
-              | 'community-center'
-              | 'ethnic-association'
-              | 'senior-center'
-              | 'youth-center'
-              | 'arts-center'
-            )
-          | null;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Popular ethnic restaurants and food markets
-   */
-  ethnicCuisine?:
-    | {
-        /**
-         * e.g., Vietnamese, Mexican, Indian, Korean
-         */
-        cuisineType: string;
-        /**
-         * List popular spots for this cuisine
-         */
-        popularSpots?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Annual cultural events, festivals, parades
-   */
-  culturalEvents?:
-    | {
-        /**
-         * e.g., Lunar New Year Festival, Diwali Celebration
-         */
-        name: string;
-        /**
-         * e.g., February (varies), October
-         */
-        timing?: string | null;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Languages commonly spoken in the community
-   */
-  languagesSpoken?:
-    | {
-        language: string;
-        /**
-         * e.g., 32 for 32%
-         */
-        percentageOfPopulation?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Community demographic breakdown
-   */
-  demographics?: {
-    /**
-     * Score 0-100 (higher = more diverse)
-     */
-    diversityIndex?: number | null;
-    medianAge?: number | null;
-    familyHouseholds?: number | null;
-    ethnicBreakdown?:
-      | {
-          /**
-           * e.g., White, Hispanic/Latino, Asian
-           */
-          ethnicity: string;
-          percentage?: number | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  /**
-   * Parks, recreation, libraries, etc.
-   */
-  communityAmenities?:
-    | {
-        name: string;
-        type?: ('park' | 'recreation' | 'library' | 'museum' | 'sports' | 'nature' | 'golf' | 'aquatic') | null;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * When this city data was last updated
-   */
-  lastUpdated?: string | null;
-  /**
-   * Where this data came from
-   */
-  dataSource?: ('manual' | 'zillow' | 'realtor' | 'census' | 'multiple') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Manage templates for AI-generated city-specific content
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contentTemplates".
- */
-export interface ContentTemplate {
-  id: number;
-  /**
-   * e.g., "Housing Market Forecast Template"
-   */
-  name: string;
-  category:
-    | 'market-report'
-    | 'neighborhood-guide'
-    | 'home-valuation'
-    | 'buyer-guide'
-    | 'seller-guide'
-    | 'investment-guide'
-    | 'school-guide'
-    | 'moving-guide'
-    | 'luxury-homes'
-    | 'city-comparison';
-  /**
-   * The template post that will be used to generate city-specific versions
-   */
-  basePost: number | Post;
-  /**
-   * Which city data fields are needed for this template
-   */
-  requiredCityData?:
-    | {
-        dataField:
-          | 'cityName'
-          | 'population'
-          | 'medianHomePrice'
-          | 'medianRent'
-          | 'priceChange12Month'
-          | 'salesCount30Days'
-          | 'avgDaysOnMarket'
-          | 'inventoryLevel'
-          | 'marketTrend'
-          | 'neighborhoods'
-          | 'topSchools'
-          | 'uniqueFacts'
-          | 'nearbyCity'
-          | 'region';
-        /**
-         * Is this data field mandatory for content generation?
-         */
-        isRequired?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Instructions for how to customize this template for each city
-   */
-  customizationInstructions?: string | null;
-  /**
-   * The prompt to send to the AI for generating unique city-specific content. Use placeholders like {cityName}, {medianHomePrice}, etc.
-   */
-  aiPrompt: string;
-  /**
-   * Target percentage of unique content vs. template (minimum 30% recommended for SEO)
-   */
-  contentUniquenessTarget?: number | null;
-  /**
-   * Higher priority templates are generated first (1-100)
-   */
-  priority?: number | null;
-  /**
-   * Only active templates will be used for content generation
-   */
-  isActive?: boolean | null;
-  /**
-   * Which city tiers should use this template
-   */
-  targetCityTier?: ('all' | 'tier1' | 'tier2' | 'tier3' | 'tier1-2') | null;
-  /**
-   * Approximate reading time for generated content
-   */
-  estimatedReadTime?: number | null;
-  /**
-   * Number of times this template has been used to generate content
-   */
-  generatedCount?: number | null;
-  /**
-   * When this template was last used
-   */
-  lastGenerated?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -4761,6 +5019,41 @@ export interface PostsSelect<T extends boolean = true> {
         useMarketStats?: T;
       };
   templateCategory?: T;
+  useTemplate?: T;
+  contentTemplate?: T;
+  templateTopic?: T;
+  targetCityData?: T;
+  sectionOverrides?:
+    | T
+    | {
+        sectionId?: T;
+        overrideType?: T;
+        customContent?: T;
+        id?: T;
+      };
+  tenantContentOverrides?:
+    | T
+    | {
+        tenant?: T;
+        agent?: T;
+        cityData?: T;
+        sectionOverrides?:
+          | T
+          | {
+              sectionId?: T;
+              overrideType?: T;
+              customContent?: T;
+              id?: T;
+            };
+        customTokens?:
+          | T
+          | {
+              tokenName?: T;
+              tokenValue?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   populatedAuthors?:
     | T
     | {
@@ -5111,6 +5404,15 @@ export interface AgentsSelect<T extends boolean = true> {
   territoryExclusive?: T;
   showInDirectory?: T;
   directoryOrder?: T;
+  jsonLdImport?:
+    | T
+    | {
+        importMethod?: T;
+        importUrl?: T;
+        rawJsonLd?: T;
+        lastImported?: T;
+        importSource?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -5455,15 +5757,31 @@ export interface CityDataSelect<T extends boolean = true> {
  */
 export interface ContentTemplatesSelect<T extends boolean = true> {
   name?: T;
+  slug?: T;
+  description?: T;
   category?: T;
-  basePost?: T;
-  requiredCityData?:
+  seoTemplates?:
     | T
     | {
-        dataField?: T;
-        isRequired?: T;
+        titleTemplate?: T;
+        descriptionTemplate?: T;
+      };
+  sections?:
+    | T
+    | {
+        sectionId?: T;
+        sectionName?: T;
+        sectionType?: T;
+        defaultContent?: T;
+        tokenTemplate?: T;
+        generator?: T;
+        condition?: T;
+        allowPostOverride?: T;
+        allowTenantOverride?: T;
         id?: T;
       };
+  basePost?: T;
+  requiredCityData?: T;
   customizationInstructions?: T;
   aiPrompt?: T;
   contentUniquenessTarget?: T;
@@ -5471,6 +5789,7 @@ export interface ContentTemplatesSelect<T extends boolean = true> {
   isActive?: T;
   targetCityTier?: T;
   estimatedReadTime?: T;
+  usageCount?: T;
   generatedCount?: T;
   lastGenerated?: T;
   updatedAt?: T;

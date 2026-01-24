@@ -503,6 +503,229 @@ export const Posts: CollectionConfig<'posts'> = {
         { label: 'Investment Guide', value: 'investment-guide' },
       ],
     },
+    // Template Rendering Configuration (for posts that USE templates)
+    {
+      name: 'useTemplate',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Use Content Template',
+      admin: {
+        position: 'sidebar',
+        description: 'Render this post using a content template with dynamic sections',
+      },
+    },
+    {
+      name: 'contentTemplate',
+      type: 'relationship',
+      relationTo: 'contentTemplates',
+      label: 'Content Template',
+      admin: {
+        position: 'sidebar',
+        description: 'Select the template to use for rendering',
+        condition: (data) => data.useTemplate === true,
+      },
+    },
+    {
+      name: 'templateTopic',
+      type: 'text',
+      label: 'Template Topic',
+      admin: {
+        description: 'Topic/subject for the template (e.g., "Luxury Homes in {{CITY_NAME}}")',
+        condition: (data) => data.useTemplate === true,
+      },
+    },
+    {
+      name: 'targetCityData',
+      type: 'relationship',
+      relationTo: 'cityData',
+      label: 'Target City',
+      admin: {
+        position: 'sidebar',
+        description: 'City data to use for token replacement',
+        condition: (data) => data.useTemplate === true,
+      },
+    },
+    // Section-level content overrides for template posts
+    {
+      name: 'sectionOverrides',
+      type: 'array',
+      label: 'Section Overrides',
+      admin: {
+        description: 'Override specific sections of the template with custom content',
+        condition: (data) => data.useTemplate === true,
+      },
+      fields: [
+        {
+          name: 'sectionId',
+          type: 'select',
+          required: true,
+          label: 'Section',
+          options: [
+            { label: 'Introduction', value: 'intro' },
+            { label: 'Market Statistics', value: 'market_stats' },
+            { label: 'Neighborhoods', value: 'neighborhoods' },
+            { label: 'Schools', value: 'schools' },
+            { label: 'Local Facts', value: 'local_facts' },
+            { label: 'Key Employers', value: 'employers' },
+            { label: 'Places of Worship', value: 'places_of_worship' },
+            { label: 'Cultural Centers', value: 'cultural_centers' },
+            { label: 'Cultural Events', value: 'cultural_events' },
+            { label: 'Demographics', value: 'diversity_overview' },
+            { label: 'Community Amenities', value: 'community_amenities' },
+            { label: 'Languages', value: 'languages_spoken' },
+            { label: 'Agent Expertise', value: 'agent_expertise' },
+            { label: 'Agent Reviews', value: 'agent_reviews' },
+            { label: 'Agent Languages', value: 'agent_languages' },
+            { label: 'Areas Served', value: 'areas_served' },
+            { label: 'Contact CTA', value: 'agent_cta' },
+            { label: 'FAQ', value: 'faq' },
+          ],
+        },
+        {
+          name: 'overrideType',
+          type: 'select',
+          required: true,
+          label: 'Override Type',
+          defaultValue: 'replace',
+          options: [
+            { label: 'Replace Section', value: 'replace' },
+            { label: 'Prepend Content', value: 'prepend' },
+            { label: 'Append Content', value: 'append' },
+            { label: 'Hide Section', value: 'hide' },
+          ],
+        },
+        {
+          name: 'customContent',
+          type: 'richText',
+          label: 'Custom Content',
+          admin: {
+            condition: (_, siblingData) =>
+              siblingData?.overrideType !== 'hide',
+          },
+        },
+      ],
+    },
+    // Per-tenant content customization for syndicated template posts
+    {
+      name: 'tenantContentOverrides',
+      type: 'array',
+      label: 'Tenant Content Overrides',
+      admin: {
+        description: 'Customize template sections for each tenant (makes content unique per site)',
+        condition: (data) => data.postType === 'syndicated' && data.useTemplate === true,
+      },
+      fields: [
+        {
+          name: 'tenant',
+          type: 'relationship',
+          relationTo: 'tenants',
+          required: true,
+          label: 'Tenant',
+        },
+        {
+          name: 'agent',
+          type: 'relationship',
+          relationTo: 'agents',
+          label: 'Agent Override',
+          admin: {
+            description: 'Use this agent for token replacement (overrides tenant linked agent)',
+          },
+        },
+        {
+          name: 'cityData',
+          type: 'relationship',
+          relationTo: 'cityData',
+          label: 'City Data Override',
+          admin: {
+            description: 'Use this city data for token replacement',
+          },
+        },
+        {
+          name: 'sectionOverrides',
+          type: 'array',
+          label: 'Section Overrides',
+          admin: {
+            description: 'Override specific sections for this tenant',
+          },
+          fields: [
+            {
+              name: 'sectionId',
+              type: 'select',
+              required: true,
+              label: 'Section',
+              options: [
+                { label: 'Introduction', value: 'intro' },
+                { label: 'Market Statistics', value: 'market_stats' },
+                { label: 'Neighborhoods', value: 'neighborhoods' },
+                { label: 'Schools', value: 'schools' },
+                { label: 'Local Facts', value: 'local_facts' },
+                { label: 'Key Employers', value: 'employers' },
+                { label: 'Places of Worship', value: 'places_of_worship' },
+                { label: 'Cultural Centers', value: 'cultural_centers' },
+                { label: 'Cultural Events', value: 'cultural_events' },
+                { label: 'Demographics', value: 'diversity_overview' },
+                { label: 'Community Amenities', value: 'community_amenities' },
+                { label: 'Languages', value: 'languages_spoken' },
+                { label: 'Agent Expertise', value: 'agent_expertise' },
+                { label: 'Agent Reviews', value: 'agent_reviews' },
+                { label: 'Agent Languages', value: 'agent_languages' },
+                { label: 'Areas Served', value: 'areas_served' },
+                { label: 'Contact CTA', value: 'agent_cta' },
+                { label: 'FAQ', value: 'faq' },
+              ],
+            },
+            {
+              name: 'overrideType',
+              type: 'select',
+              required: true,
+              label: 'Override Type',
+              defaultValue: 'replace',
+              options: [
+                { label: 'Replace Section', value: 'replace' },
+                { label: 'Prepend Content', value: 'prepend' },
+                { label: 'Append Content', value: 'append' },
+                { label: 'Hide Section', value: 'hide' },
+              ],
+            },
+            {
+              name: 'customContent',
+              type: 'textarea',
+              label: 'Custom Content',
+              admin: {
+                description: 'Supports tokens like {{AGENT_NAME}}, {{CITY_NAME}}',
+                condition: (_, siblingData) =>
+                  siblingData?.overrideType !== 'hide',
+              },
+            },
+          ],
+        },
+        {
+          name: 'customTokens',
+          type: 'array',
+          label: 'Custom Tokens',
+          admin: {
+            description: 'Define custom tokens for this tenant',
+          },
+          fields: [
+            {
+              name: 'tokenName',
+              type: 'text',
+              required: true,
+              label: 'Token Name',
+              admin: {
+                description: 'e.g., CUSTOM_CTA, LOCAL_PROMO',
+              },
+            },
+            {
+              name: 'tokenValue',
+              type: 'textarea',
+              required: true,
+              label: 'Token Value',
+            },
+          ],
+        },
+      ],
+    },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
     // GraphQL will also not return mutated user data that differs from the underlying schema

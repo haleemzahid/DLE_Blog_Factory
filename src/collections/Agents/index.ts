@@ -921,5 +921,61 @@ export const Agents: CollectionConfig<'agents'> = {
         description: 'Order within directory listings (lower = first)',
       },
     },
+    // JSON-LD Import Fields
+    {
+      name: 'jsonLdImport',
+      type: 'group',
+      label: 'Import JSON-LD',
+      admin: {
+        position: 'sidebar',
+        description: 'Import existing schema data from external sources',
+      },
+      fields: [
+        {
+          name: 'importMethod',
+          type: 'select',
+          label: 'Import Method',
+          options: [
+            { label: 'Paste URL', value: 'url' },
+            { label: 'Paste JSON-LD', value: 'raw' },
+          ],
+        },
+        {
+          name: 'importUrl',
+          type: 'text',
+          label: 'URL to Import From',
+          admin: {
+            condition: (data) => data?.jsonLdImport?.importMethod === 'url',
+            description: 'Google Business Profile, Zillow, or any page with JSON-LD',
+          },
+        },
+        {
+          name: 'rawJsonLd',
+          type: 'textarea',
+          label: 'Paste JSON-LD',
+          admin: {
+            condition: (data) => data?.jsonLdImport?.importMethod === 'raw',
+            description: 'Paste the JSON-LD schema markup here',
+          },
+        },
+        {
+          name: 'lastImported',
+          type: 'date',
+          label: 'Last Imported',
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
+          name: 'importSource',
+          type: 'text',
+          label: 'Import Source',
+          admin: {
+            readOnly: true,
+            description: 'URL or source of last import',
+          },
+        },
+      ],
+    },
   ],
 }
