@@ -6,10 +6,7 @@ import configPromise from '@payload-config'
  * GET /api/analytics/agents/:agentId
  * Get analytics data for a specific agent
  */
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ agentId: string }> },
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ agentId: string }> }) {
   try {
     const { agentId } = await params
     const { searchParams } = new URL(req.url)
@@ -69,10 +66,7 @@ export async function GET(
     const postAnalytics = await payload.find({
       collection: 'post-analytics',
       where: {
-        and: [
-          { post: { in: postIds } },
-          { date: { greater_than_equal: dateFrom.toISOString() } },
-        ],
+        and: [{ post: { in: postIds } }, { date: { greater_than_equal: dateFrom.toISOString() } }],
       },
       sort: '-pageviews',
       limit: 1000,
@@ -120,9 +114,8 @@ export async function GET(
           slug: post?.slug,
           pageviews: stats.pageviews,
           leads: stats.leads,
-          conversionRate: stats.pageviews > 0
-            ? ((stats.leads / stats.pageviews) * 100).toFixed(2)
-            : '0.00',
+          conversionRate:
+            stats.pageviews > 0 ? ((stats.leads / stats.pageviews) * 100).toFixed(2) : '0.00',
         }
       })
       .sort((a, b) => b.pageviews - a.pageviews)
@@ -138,18 +131,16 @@ export async function GET(
       summary: {
         ...agentSummary,
         totalPosts: agentPosts.totalDocs,
-        conversionRate: agentSummary.totalPageviews > 0
-          ? ((agentSummary.totalLeads / agentSummary.totalPageviews) * 100).toFixed(2)
-          : '0.00',
+        conversionRate:
+          agentSummary.totalPageviews > 0
+            ? ((agentSummary.totalLeads / agentSummary.totalPageviews) * 100).toFixed(2)
+            : '0.00',
       },
       topPosts,
       dailyData: agentAnalytics.docs,
     })
   } catch (error) {
     console.error('Error fetching agent analytics:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch analytics' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 })
   }
 }

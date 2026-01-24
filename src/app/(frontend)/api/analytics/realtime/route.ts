@@ -50,7 +50,8 @@ export async function GET(req: NextRequest) {
     // Traffic sources breakdown
     const trafficSources: Record<string, number> = {}
     pageViews.forEach((pv) => {
-      const source = (pv.eventData as Record<string, unknown>)?.trafficSource as string || 'direct'
+      const source =
+        ((pv.eventData as Record<string, unknown>)?.trafficSource as string) || 'direct'
       trafficSources[source] = (trafficSources[source] || 0) + 1
     })
 
@@ -64,8 +65,10 @@ export async function GET(req: NextRequest) {
     // Top pages in this window
     const pageCounts = new Map<string, number>()
     pageViews.forEach((pv) => {
-      const pageSlug = (pv.eventData as Record<string, unknown>)?.postSlug as string ||
-        (pv.eventData as Record<string, unknown>)?.pageSlug as string || 'unknown'
+      const pageSlug =
+        ((pv.eventData as Record<string, unknown>)?.postSlug as string) ||
+        ((pv.eventData as Record<string, unknown>)?.pageSlug as string) ||
+        'unknown'
       pageCounts.set(pageSlug, (pageCounts.get(pageSlug) || 0) + 1)
     })
 
@@ -142,9 +145,6 @@ export async function GET(req: NextRequest) {
     })
   } catch (error) {
     console.error('Error fetching realtime analytics:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch realtime analytics' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to fetch realtime analytics' }, { status: 500 })
   }
 }

@@ -80,7 +80,9 @@ export async function GET(req: NextRequest) {
           collection: 'posts',
           where: {
             _status: { equals: 'published' },
-            createdAt: { greater_than_equal: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() },
+            createdAt: {
+              greater_than_equal: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+            },
           },
           limit: 0,
           depth: 0,
@@ -109,17 +111,15 @@ export async function GET(req: NextRequest) {
       summary: {
         ...summary,
         avgPageviewsPerDay: Math.round(summary.totalPageviews / networkAnalytics.docs.length) || 0,
-        conversionRate: summary.totalPageviews > 0
-          ? ((summary.totalLeads / summary.totalPageviews) * 100).toFixed(2)
-          : '0.00',
+        conversionRate:
+          summary.totalPageviews > 0
+            ? ((summary.totalLeads / summary.totalPageviews) * 100).toFixed(2)
+            : '0.00',
       },
       dailyData: networkAnalytics.docs,
     })
   } catch (error) {
     console.error('Error fetching network analytics:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch analytics' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 })
   }
 }

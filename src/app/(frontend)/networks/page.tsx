@@ -215,8 +215,8 @@ export default async function NetworksPage() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Don&apos;t See Your State?</h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            We&apos;re expanding rapidly. Apply today to become the first Designated Local Expert in your
-            city!
+            We&apos;re expanding rapidly. Apply today to become the first Designated Local Expert in
+            your city!
           </p>
           <Link
             href="/apply"
