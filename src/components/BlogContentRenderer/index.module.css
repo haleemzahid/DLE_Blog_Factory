@@ -8,6 +8,24 @@
 .blogContentWrapper u {
   text-decoration: underline !important;
   text-decoration-skip-ink: none;
+  text-underline-offset: 2px;
+  display: inline;
+}
+
+/* Remove before and after pseudo-elements from underlined text */
+.blogContentWrapper u::before,
+.blogContentWrapper u::after,
+.prose u::before,
+.prose u::after,
+.prose-lg u::before,
+.prose-lg u::after,
+:where(.prose u)::before,
+:where(.prose u)::after,
+:where(.prose-lg u)::before,
+:where(.prose-lg u)::after {
+  content: none !important;
+  display: none !important;
+  visibility: hidden !important;
 }
 
 /* Ensure strikethrough displays correctly */

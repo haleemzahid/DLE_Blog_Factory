@@ -459,3 +459,53 @@ html {
     @apply text-2xl;
   }
 }
+
+/* ============================================
+   FIX PROSE UNDERLINE STYLES
+   ============================================ */
+
+/* Ensure underline tags show underline decoration */
+.prose u,
+.prose-lg u,
+:where(.prose) u,
+:where(.prose-lg) u {
+  text-decoration: underline !important;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 2px;
+}
+
+/* Remove ::before and ::after from underlined text in prose */
+.prose u::before,
+.prose u::after,
+.prose-lg u::before,
+.prose-lg u::after,
+:where(.prose) u::before,
+:where(.prose) u::after,
+:where(.prose-lg) u::before,
+:where(.prose-lg) u::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Add underline to inline code tags */
+.prose code,
+.prose-lg code,
+:where(.prose) code,
+:where(.prose-lg) code {
+  text-decoration: underline !important;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 3px;
+}
+
+/* Remove ::before and ::after from code tags (removes decorative quotes) */
+.prose code::before,
+.prose code::after,
+.prose-lg code::before,
+.prose-lg code::after,
+:where(.prose) code::before,
+:where(.prose) code::after,
+:where(.prose-lg) code::before,
+:where(.prose-lg) code::after {
+  content: none !important;
+  display: none !important;
+}
