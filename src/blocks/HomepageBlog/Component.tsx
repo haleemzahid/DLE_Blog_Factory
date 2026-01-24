@@ -128,7 +128,7 @@ export const HomepageBlogBlock: React.FC<HomepageBlogBlockProps> = async (props)
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
-          {title && <span className="inline-block px-6 text-md text-red-500  mb-2">{title}</span>}
+          {title && <span className="inline-block px-6 text-lg text-red-500  mb-2">{title}</span>}
           {subtitle && (
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
               {subtitle}

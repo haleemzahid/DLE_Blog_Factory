@@ -1,6 +1,7 @@
 import React from 'react'
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
+import { ArrowRight } from 'lucide-react'
 
 import type { SolutionsSectionBlock as SolutionsSectionBlockProps } from '@/payload-types'
 

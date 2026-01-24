@@ -1,6 +1,7 @@
 import React from 'react'
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
+import { ArrowRight } from 'lucide-react'
 
 import type { ServicesSectionBlock as ServicesSectionBlockProps } from '@/payload-types'
 
@@ -46,7 +47,7 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
           <div>
             {eyebrow && (
               <span
-                className="text-sm font-semibold tracking-wide uppercase block mb-2"
+                className="text-lg tracking-wide uppercase block mb-2"
                 style={{ color: eyebrowColor || '#dc2626' }}
               >
                 {eyebrow}
@@ -63,7 +64,9 @@ export const ServicesSectionBlock: React.FC<ServicesSectionBlockProps> = (props)
               <CMSLink
                 {...headerLink}
                 className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-medium text-sm transition-colors ${buttonClasses[buttonStyle || 'red']}`}
-              />
+              >
+                <ArrowRight className="w-4 h-4" />
+              </CMSLink>
             </div>
           )}
         </div>
