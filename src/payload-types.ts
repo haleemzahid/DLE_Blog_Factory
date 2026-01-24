@@ -517,7 +517,7 @@ export interface Post {
   /**
    * Customize template sections for each tenant (makes content unique per site)
    */
-  tenantContentOverrides?:
+  tenantOverrides?:
     | {
         tenant: number | Tenant;
         /**
@@ -531,9 +531,9 @@ export interface Post {
         /**
          * Override specific sections for this tenant
          */
-        sectionOverrides?:
+        sections?:
           | {
-              sectionId:
+              secId:
                 | 'intro'
                 | 'market_stats'
                 | 'neighborhoods'
@@ -552,24 +552,24 @@ export interface Post {
                 | 'areas_served'
                 | 'agent_cta'
                 | 'faq';
-              overrideType: 'replace' | 'prepend' | 'append' | 'hide';
+              type: 'replace' | 'prepend' | 'append' | 'hide';
               /**
                * Supports tokens like {{AGENT_NAME}}, {{CITY_NAME}}
                */
-              customContent?: string | null;
+              content?: string | null;
               id?: string | null;
             }[]
           | null;
         /**
          * Define custom tokens for this tenant
          */
-        customTokens?:
+        tokens?:
           | {
               /**
                * e.g., CUSTOM_CTA, LOCAL_PROMO
                */
-              tokenName: string;
-              tokenValue: string;
+              name: string;
+              value: string;
               id?: string | null;
             }[]
           | null;
@@ -5031,25 +5031,25 @@ export interface PostsSelect<T extends boolean = true> {
         customContent?: T;
         id?: T;
       };
-  tenantContentOverrides?:
+  tenantOverrides?:
     | T
     | {
         tenant?: T;
         agent?: T;
         cityData?: T;
-        sectionOverrides?:
+        sections?:
           | T
           | {
-              sectionId?: T;
-              overrideType?: T;
-              customContent?: T;
+              secId?: T;
+              type?: T;
+              content?: T;
               id?: T;
             };
-        customTokens?:
+        tokens?:
           | T
           | {
-              tokenName?: T;
-              tokenValue?: T;
+              name?: T;
+              value?: T;
               id?: T;
             };
         id?: T;

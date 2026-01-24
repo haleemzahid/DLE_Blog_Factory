@@ -607,9 +607,10 @@ export const Posts: CollectionConfig<'posts'> = {
     },
     // Per-tenant content customization for syndicated template posts
     {
-      name: 'tenantContentOverrides',
+      name: 'tenantOverrides',
       type: 'array',
       label: 'Tenant Content Overrides',
+      dbName: 'tenant_ovr',
       admin: {
         description: 'Customize template sections for each tenant (makes content unique per site)',
         condition: (data) => data.postType === 'syndicated' && data.useTemplate === true,
@@ -641,15 +642,16 @@ export const Posts: CollectionConfig<'posts'> = {
           },
         },
         {
-          name: 'sectionOverrides',
+          name: 'sections',
           type: 'array',
           label: 'Section Overrides',
+          dbName: 'sec_ovr',
           admin: {
             description: 'Override specific sections for this tenant',
           },
           fields: [
             {
-              name: 'sectionId',
+              name: 'secId',
               type: 'select',
               required: true,
               label: 'Section',
@@ -675,7 +677,7 @@ export const Posts: CollectionConfig<'posts'> = {
               ],
             },
             {
-              name: 'overrideType',
+              name: 'type',
               type: 'select',
               required: true,
               label: 'Override Type',
@@ -688,27 +690,28 @@ export const Posts: CollectionConfig<'posts'> = {
               ],
             },
             {
-              name: 'customContent',
+              name: 'content',
               type: 'textarea',
               label: 'Custom Content',
               admin: {
                 description: 'Supports tokens like {{AGENT_NAME}}, {{CITY_NAME}}',
                 condition: (_, siblingData) =>
-                  siblingData?.overrideType !== 'hide',
+                  siblingData?.type !== 'hide',
               },
             },
           ],
         },
         {
-          name: 'customTokens',
+          name: 'tokens',
           type: 'array',
           label: 'Custom Tokens',
+          dbName: 'tokens',
           admin: {
             description: 'Define custom tokens for this tenant',
           },
           fields: [
             {
-              name: 'tokenName',
+              name: 'name',
               type: 'text',
               required: true,
               label: 'Token Name',
@@ -717,7 +720,7 @@ export const Posts: CollectionConfig<'posts'> = {
               },
             },
             {
-              name: 'tokenValue',
+              name: 'value',
               type: 'textarea',
               required: true,
               label: 'Token Value',
