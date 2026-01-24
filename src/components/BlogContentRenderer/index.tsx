@@ -3,6 +3,7 @@
 import React from 'react'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { cn } from '@/utilities/ui'
+import styles from './index.module.css'
 
 type BlogContentRendererProps = {
   content: DefaultTypedEditorState
@@ -34,15 +35,22 @@ export function BlogContentRenderer({
 
     const { type, children = [] } = node
 
-    // TEXT - just return the text
+    // TEXT - apply ALL formatting (support combined formats)
     if (type === 'text') {
       let text = node.text || ''
 
-      // Apply formatting with simple HTML tags
       if (node.format) {
-        if (node.format & 1) return <strong key={index}>{text}</strong>
-        if (node.format & 2) return <em key={index}>{text}</em>
-        if (node.format & 8) return <code key={index}>{text}</code>
+        let formattedText: React.ReactNode = text
+
+        // Apply formats in order (innermost to outermost)
+        // This allows combined formats like bold+underline
+        if (node.format & 8) formattedText = <code>{formattedText}</code> // Code
+        if (node.format & 16) formattedText = <s>{formattedText}</s> // Strikethrough
+        if (node.format & 4) formattedText = <u>{formattedText}</u> // Underline
+        if (node.format & 2) formattedText = <em>{formattedText}</em> // Italic
+        if (node.format & 1) formattedText = <strong>{formattedText}</strong> // Bold
+
+        return <span key={index}>{formattedText}</span>
       }
 
       return text
@@ -55,17 +63,33 @@ export function BlogContentRenderer({
 
     // HEADING
     if (type === 'heading') {
-      const Tag = `h${node.tag || '2'}` as keyof JSX.IntrinsicElements
-      const headingClasses = {
-        h1: 'text-4xl font-bold my-6',
-        h2: 'text-3xl font-bold my-5',
-        h3: 'text-2xl font-bold my-4',
-        h4: 'text-xl font-bold my-4',
-        h5: 'text-lg font-bold my-3',
-        h6: 'text-base font-bold my-3',
+      const tag = node.tag || 'h2'
+      const headingClasses: Record<string, string> = {
+        h1: '!text-4xl !font-bold !my-6',
+        h2: '!text-3xl !font-bold !my-5',
+        h3: '!text-2xl !font-bold !my-4',
+        h4: '!text-xl !font-bold !my-4',
+        h5: '!text-lg !font-bold !my-3',
+        h6: '!text-base !font-bold !my-3',
       }
-      const className = headingClasses[Tag as keyof typeof headingClasses] || headingClasses.h2
-      return <Tag key={index} className={className}>{children.map((c: any, i: number) => renderNode(c, i))}</Tag>
+      const className = headingClasses[tag] || headingClasses.h2
+
+      switch (tag) {
+        case 'h1':
+          return <h1 key={index} className={className}>{children.map((c: any, i: number) => renderNode(c, i))}</h1>
+        case 'h2':
+          return <h2 key={index} className={className}>{children.map((c: any, i: number) => renderNode(c, i))}</h2>
+        case 'h3':
+          return <h3 key={index} className={className}>{children.map((c: any, i: number) => renderNode(c, i))}</h3>
+        case 'h4':
+          return <h4 key={index} className={className}>{children.map((c: any, i: number) => renderNode(c, i))}</h4>
+        case 'h5':
+          return <h5 key={index} className={className}>{children.map((c: any, i: number) => renderNode(c, i))}</h5>
+        case 'h6':
+          return <h6 key={index} className={className}>{children.map((c: any, i: number) => renderNode(c, i))}</h6>
+        default:
+          return <h2 key={index} className={className}>{children.map((c: any, i: number) => renderNode(c, i))}</h2>
+      }
     }
 
     // LIST
@@ -171,7 +195,12 @@ export function BlogContentRenderer({
         className,
       )}
     >
-      <div className={cn({ 'prose prose-lg dark:prose-invert max-w-none': enableProse })}>
+      <div
+        className={cn(
+          styles.blogContentWrapper,
+          { 'prose prose-lg dark:prose-invert max-w-none': enableProse }
+        )}
+      >
         {rootChildren.map((node: any, index: number) => renderNode(node, index))}
       </div>
     </div>

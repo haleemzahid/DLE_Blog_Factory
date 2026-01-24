@@ -1,0 +1,16 @@
+/* BlogContentRenderer styles */
+.blogContentWrapper {
+  /* Ensure underline text decoration displays properly */
+  text-decoration-skip-ink: none;
+}
+
+/* Ensure underline tags display correctly even with prose styles */
+.blogContentWrapper u {
+  text-decoration: underline !important;
+  text-decoration-skip-ink: none;
+}
+
+/* Ensure strikethrough displays correctly */
+.blogContentWrapper s {
+  text-decoration: line-through !important;
+}
