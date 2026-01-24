@@ -56,7 +56,16 @@ export function BlogContentRenderer({
     // HEADING
     if (type === 'heading') {
       const Tag = `h${node.tag || '2'}` as keyof JSX.IntrinsicElements
-      return <Tag key={index}>{children.map((c: any, i: number) => renderNode(c, i))}</Tag>
+      const headingClasses = {
+        h1: 'text-4xl font-bold my-6',
+        h2: 'text-3xl font-bold my-5',
+        h3: 'text-2xl font-bold my-4',
+        h4: 'text-xl font-bold my-4',
+        h5: 'text-lg font-bold my-3',
+        h6: 'text-base font-bold my-3',
+      }
+      const className = headingClasses[Tag as keyof typeof headingClasses] || headingClasses.h2
+      return <Tag key={index} className={className}>{children.map((c: any, i: number) => renderNode(c, i))}</Tag>
     }
 
     // LIST
