@@ -36,13 +36,8 @@ export function PostContentDisplay({
   enableProse = true,
   className,
 }: PostContentDisplayProps) {
-  // Safety check
-  if (!content) {
-    console.warn('PostContentDisplay: No content provided')
-    return null
-  }
-
   // Simple converter function - uses same pattern as RichText/index.tsx
+  // IMPORTANT: Must be defined before any early returns (React Hooks rules)
   const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = React.useMemo(
     () =>
       ({ defaultConverters }) => ({
@@ -65,6 +60,12 @@ export function PostContentDisplay({
       }),
     [],
   )
+
+  // Safety check - must come after all hooks
+  if (!content) {
+    console.warn('PostContentDisplay: No content provided')
+    return null
+  }
 
   return (
     <div
