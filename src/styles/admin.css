@@ -27,3 +27,37 @@
   margin-bottom: 0.5em !important;
   line-height: 1.5 !important;
 }
+
+/* Move field error messages below the field */
+/* Force all field containers to use flexbox column layout */
+.field-type,
+[class*="field-type"],
+.field {
+  display: flex !important;
+  flex-direction: column !important;
+  position: relative !important;
+}
+
+/* Force all error messages to appear at the end in flex order */
+.field-type [class*="error"],
+[class*="field-type"] [class*="error"],
+.field [class*="error"],
+div[style*="color: rgb(255, 90, 90)"],
+div[style*="color: rgb(255,90,90)"],
+div[style*="color:#ff5a5a"],
+div[class*="error"] {
+  order: 999 !important;
+  position: static !important;
+  display: block !important;
+  margin-top: 0.5rem !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+  float: none !important;
+  clear: both !important;
+  transform: none !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+}
