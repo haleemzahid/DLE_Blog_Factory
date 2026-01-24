@@ -5,6 +5,7 @@
  */
 
 import type { Payload } from 'payload'
+import type { Agent } from '@/payload-types'
 import { generateCityContent } from './cityContent'
 
 // Helper function to convert string to Lexical rich text format
@@ -62,7 +63,7 @@ export interface SyndicationResult {
   citiesSucceeded: number
   citiesFailed: number
   errors: Array<{
-    cityId: string
+    cityId: number
     cityName: string
     error: string
   }>
@@ -145,7 +146,7 @@ export async function syndicatePostToCities(
 
         // Generate unique content
         console.log(`  🤖 Generating AI content...`)
-        const uniqueContent = await generateCityContent(payload, options.templatePostId, city.id)
+        const uniqueContent = await generateCityContent(payload, options.templatePostId, String(city.id))
 
         // Get agent's tenant
         const agentDoc = await payload.findByID({
@@ -253,9 +254,9 @@ export async function syndicatePostToCities(
 }
 
 interface CityData {
-  id: string
+  id: number
   cityName: string
-  state: string | { id: string }
+  state: number | { id: number }
 }
 
 /**
@@ -276,7 +277,7 @@ async function getCitiesToProcess(payload: Payload, options: SyndicationOptions)
   }
 
   // Otherwise, query based on filters
-  const query: Record<string, unknown> = {}
+  const query: any = {}
 
   if (options.region && options.region !== 'all') {
     query.region = { equals: options.region }
@@ -292,18 +293,18 @@ async function getCitiesToProcess(payload: Payload, options: SyndicationOptions)
 }
 
 interface AgentData {
-  id: string
+  id: number
   city: string
-  state?: string
-  tenant?: string | { id: string }
+  state?: number
+  tenant?: number | { id: number }
 }
 
 /**
  * Find agent by city name and state
  */
-async function findAgentByCity(payload: Payload, cityName: string, stateId?: string): Promise<AgentData | null> {
+async function findAgentByCity(payload: Payload, cityName: string, stateId?: number): Promise<Agent | null> {
   // Find agent matching city name in the 'city' field
-  const whereClause: Record<string, unknown> = {
+  const whereClause: any = {
     city: {
       equals: cityName,
     },
