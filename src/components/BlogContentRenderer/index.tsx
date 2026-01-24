@@ -37,7 +37,7 @@ export function BlogContentRenderer({
 
     // TEXT - apply ALL formatting (support combined formats)
     if (type === 'text') {
-      let text = node.text || ''
+      const text = node.text || ''
 
       if (node.format) {
         let formattedText: React.ReactNode = text
