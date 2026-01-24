@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { AgentJsonLd } from '@/components/AgentJsonLd'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
@@ -91,6 +92,9 @@ export default async function AgentPage({ params: paramsPromise }: Args) {
 
   return (
     <article className="pb-16">
+      {/* JSON-LD Structured Data */}
+      <AgentJsonLd agent={agent} />
+
       <PayloadRedirects disableNotFound url={url} />
 
       {/* Hero Section */}

@@ -807,6 +807,144 @@ export interface Agent {
      */
     image?: (number | null) | Media;
     description?: string | null;
+    /**
+     * Keyword targeting for search optimization
+     */
+    keywords?: {
+      /**
+       * Main keywords (3-5 recommended)
+       */
+      primary?:
+        | {
+            keyword: string;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * Related terms that support primary keywords
+       */
+      secondary?:
+        | {
+            keyword?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * City, neighborhood, county terms
+       */
+      geographic?:
+        | {
+            keyword?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * Services offered (home valuation, buyer representation)
+       */
+      services?:
+        | {
+            keyword?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
+    /**
+     * Structured data for search engines and AI systems
+     */
+    jsonLd?: {
+      enabled?: boolean | null;
+      schemaTypes?: ('RealEstateAgent' | 'LocalBusiness' | 'Person' | 'Organization')[] | null;
+      geoCoordinates?: {
+        /**
+         * e.g., 34.0967
+         */
+        latitude?: number | null;
+        /**
+         * e.g., -117.7198
+         */
+        longitude?: number | null;
+      };
+      /**
+       * e.g., "$$$" or "$500K-$2M"
+       */
+      priceRange?: string | null;
+      /**
+       * Cities and neighborhoods the agent serves
+       */
+      areaServed?:
+        | {
+            name: string;
+            type?: ('City' | 'AdministrativeArea' | 'Neighborhood' | 'State') | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * Topics the agent specializes in
+       */
+      knowsAbout?:
+        | {
+            topic?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * Links to authoritative profiles (LinkedIn, Zillow, Realtor.com)
+       */
+      sameAs?:
+        | {
+            url?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      aggregateRating?: {
+        /**
+         * e.g., 4.9
+         */
+        ratingValue?: number | null;
+        /**
+         * Total number of reviews
+         */
+        reviewCount?: number | null;
+        bestRating?: number | null;
+      };
+    };
+  };
+  /**
+   * Agent's ability to serve diverse communities
+   */
+  culturalExpertise?: {
+    languagesSpoken?:
+      | {
+          language: string;
+          proficiency?: ('native' | 'fluent' | 'conversational' | 'basic') | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Communities the agent specializes in serving
+     */
+    culturalSpecializations?:
+      | {
+          /**
+           * e.g., Korean-American, Hispanic, Indian
+           */
+          community?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Organizations, events, or causes the agent supports
+     */
+    communityInvolvement?:
+      | {
+          organization?: string | null;
+          /**
+           * e.g., Board Member, Volunteer, Sponsor
+           */
+          role?: string | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   publishedAt?: string | null;
   _status?: ('draft' | 'published') | null;
@@ -2741,6 +2879,136 @@ export interface CityDatum {
     | {
         name?: string | null;
         industry?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Religious institutions in the area (churches, temples, mosques, synagogues)
+   */
+  placesOfWorship?:
+    | {
+        /**
+         * e.g., St. Ambrose Catholic Church
+         */
+        name: string;
+        religion?:
+          | (
+              | 'catholic'
+              | 'protestant'
+              | 'orthodox'
+              | 'jewish'
+              | 'muslim'
+              | 'hindu'
+              | 'buddhist'
+              | 'sikh'
+              | 'lds'
+              | 'non-denominational'
+              | 'other'
+            )
+          | null;
+        address?: string | null;
+        website?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Cultural centers, community organizations, ethnic associations
+   */
+  culturalCenters?:
+    | {
+        /**
+         * e.g., Korean American Cultural Center
+         */
+        name: string;
+        type?:
+          | (
+              | 'cultural-center'
+              | 'community-center'
+              | 'ethnic-association'
+              | 'senior-center'
+              | 'youth-center'
+              | 'arts-center'
+            )
+          | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Popular ethnic restaurants and food markets
+   */
+  ethnicCuisine?:
+    | {
+        /**
+         * e.g., Vietnamese, Mexican, Indian, Korean
+         */
+        cuisineType: string;
+        /**
+         * List popular spots for this cuisine
+         */
+        popularSpots?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Annual cultural events, festivals, parades
+   */
+  culturalEvents?:
+    | {
+        /**
+         * e.g., Lunar New Year Festival, Diwali Celebration
+         */
+        name: string;
+        /**
+         * e.g., February (varies), October
+         */
+        timing?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Languages commonly spoken in the community
+   */
+  languagesSpoken?:
+    | {
+        language: string;
+        /**
+         * e.g., 32 for 32%
+         */
+        percentageOfPopulation?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Community demographic breakdown
+   */
+  demographics?: {
+    /**
+     * Score 0-100 (higher = more diverse)
+     */
+    diversityIndex?: number | null;
+    medianAge?: number | null;
+    familyHouseholds?: number | null;
+    ethnicBreakdown?:
+      | {
+          /**
+           * e.g., White, Hispanic/Latino, Asian
+           */
+          ethnicity: string;
+          percentage?: number | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Parks, recreation, libraries, etc.
+   */
+  communityAmenities?:
+    | {
+        name: string;
+        type?: ('park' | 'recreation' | 'library' | 'museum' | 'sports' | 'nature' | 'golf' | 'aquatic') | null;
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -4737,6 +5005,97 @@ export interface AgentsSelect<T extends boolean = true> {
         title?: T;
         image?: T;
         description?: T;
+        keywords?:
+          | T
+          | {
+              primary?:
+                | T
+                | {
+                    keyword?: T;
+                    id?: T;
+                  };
+              secondary?:
+                | T
+                | {
+                    keyword?: T;
+                    id?: T;
+                  };
+              geographic?:
+                | T
+                | {
+                    keyword?: T;
+                    id?: T;
+                  };
+              services?:
+                | T
+                | {
+                    keyword?: T;
+                    id?: T;
+                  };
+            };
+        jsonLd?:
+          | T
+          | {
+              enabled?: T;
+              schemaTypes?: T;
+              geoCoordinates?:
+                | T
+                | {
+                    latitude?: T;
+                    longitude?: T;
+                  };
+              priceRange?: T;
+              areaServed?:
+                | T
+                | {
+                    name?: T;
+                    type?: T;
+                    id?: T;
+                  };
+              knowsAbout?:
+                | T
+                | {
+                    topic?: T;
+                    id?: T;
+                  };
+              sameAs?:
+                | T
+                | {
+                    url?: T;
+                    id?: T;
+                  };
+              aggregateRating?:
+                | T
+                | {
+                    ratingValue?: T;
+                    reviewCount?: T;
+                    bestRating?: T;
+                  };
+            };
+      };
+  culturalExpertise?:
+    | T
+    | {
+        languagesSpoken?:
+          | T
+          | {
+              language?: T;
+              proficiency?: T;
+              id?: T;
+            };
+        culturalSpecializations?:
+          | T
+          | {
+              community?: T;
+              id?: T;
+            };
+        communityInvolvement?:
+          | T
+          | {
+              organization?: T;
+              role?: T;
+              id?: T;
+            };
       };
   publishedAt?: T;
   _status?: T;
@@ -5022,6 +5381,67 @@ export interface CityDataSelect<T extends boolean = true> {
     | {
         name?: T;
         industry?: T;
+        id?: T;
+      };
+  placesOfWorship?:
+    | T
+    | {
+        name?: T;
+        religion?: T;
+        address?: T;
+        website?: T;
+        id?: T;
+      };
+  culturalCenters?:
+    | T
+    | {
+        name?: T;
+        type?: T;
+        description?: T;
+        id?: T;
+      };
+  ethnicCuisine?:
+    | T
+    | {
+        cuisineType?: T;
+        popularSpots?: T;
+        id?: T;
+      };
+  culturalEvents?:
+    | T
+    | {
+        name?: T;
+        timing?: T;
+        description?: T;
+        id?: T;
+      };
+  languagesSpoken?:
+    | T
+    | {
+        language?: T;
+        percentageOfPopulation?: T;
+        id?: T;
+      };
+  demographics?:
+    | T
+    | {
+        diversityIndex?: T;
+        medianAge?: T;
+        familyHouseholds?: T;
+        ethnicBreakdown?:
+          | T
+          | {
+              ethnicity?: T;
+              percentage?: T;
+              id?: T;
+            };
+      };
+  communityAmenities?:
+    | T
+    | {
+        name?: T;
+        type?: T;
+        description?: T;
         id?: T;
       };
   lastUpdated?: T;

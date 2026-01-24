@@ -234,6 +234,262 @@ export const CityData: CollectionConfig = {
         },
       ],
     },
+    // Cultural & Community Data
+    {
+      name: 'placesOfWorship',
+      type: 'array',
+      label: 'Places of Worship',
+      admin: {
+        description: 'Religious institutions in the area (churches, temples, mosques, synagogues)',
+      },
+      maxRows: 30,
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          required: true,
+          label: 'Name',
+          admin: {
+            description: 'e.g., St. Ambrose Catholic Church',
+          },
+        },
+        {
+          name: 'religion',
+          type: 'select',
+          label: 'Religion/Denomination',
+          options: [
+            { label: 'Catholic', value: 'catholic' },
+            { label: 'Protestant', value: 'protestant' },
+            { label: 'Orthodox Christian', value: 'orthodox' },
+            { label: 'Jewish', value: 'jewish' },
+            { label: 'Muslim', value: 'muslim' },
+            { label: 'Hindu', value: 'hindu' },
+            { label: 'Buddhist', value: 'buddhist' },
+            { label: 'Sikh', value: 'sikh' },
+            { label: 'LDS (Mormon)', value: 'lds' },
+            { label: 'Non-Denominational', value: 'non-denominational' },
+            { label: 'Other', value: 'other' },
+          ],
+        },
+        {
+          name: 'address',
+          type: 'text',
+          label: 'Address',
+        },
+        {
+          name: 'website',
+          type: 'text',
+          label: 'Website URL',
+        },
+      ],
+    },
+    {
+      name: 'culturalCenters',
+      type: 'array',
+      label: 'Cultural Centers & Community Hubs',
+      admin: {
+        description: 'Cultural centers, community organizations, ethnic associations',
+      },
+      maxRows: 20,
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          required: true,
+          label: 'Name',
+          admin: {
+            description: 'e.g., Korean American Cultural Center',
+          },
+        },
+        {
+          name: 'type',
+          type: 'select',
+          label: 'Type',
+          options: [
+            { label: 'Cultural Center', value: 'cultural-center' },
+            { label: 'Community Center', value: 'community-center' },
+            { label: 'Ethnic Association', value: 'ethnic-association' },
+            { label: 'Senior Center', value: 'senior-center' },
+            { label: 'Youth Center', value: 'youth-center' },
+            { label: 'Arts Center', value: 'arts-center' },
+          ],
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description',
+        },
+      ],
+    },
+    {
+      name: 'ethnicCuisine',
+      type: 'array',
+      label: 'Ethnic Cuisine & Restaurants',
+      admin: {
+        description: 'Popular ethnic restaurants and food markets',
+      },
+      maxRows: 20,
+      fields: [
+        {
+          name: 'cuisineType',
+          type: 'text',
+          required: true,
+          label: 'Cuisine Type',
+          admin: {
+            description: 'e.g., Vietnamese, Mexican, Indian, Korean',
+          },
+        },
+        {
+          name: 'popularSpots',
+          type: 'textarea',
+          label: 'Notable Restaurants/Markets',
+          admin: {
+            description: 'List popular spots for this cuisine',
+          },
+        },
+      ],
+    },
+    {
+      name: 'culturalEvents',
+      type: 'array',
+      label: 'Cultural Events & Festivals',
+      admin: {
+        description: 'Annual cultural events, festivals, parades',
+      },
+      maxRows: 20,
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          required: true,
+          label: 'Event Name',
+          admin: {
+            description: 'e.g., Lunar New Year Festival, Diwali Celebration',
+          },
+        },
+        {
+          name: 'timing',
+          type: 'text',
+          label: 'When',
+          admin: {
+            description: 'e.g., February (varies), October',
+          },
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description',
+        },
+      ],
+    },
+    {
+      name: 'languagesSpoken',
+      type: 'array',
+      label: 'Languages Spoken',
+      admin: {
+        description: 'Languages commonly spoken in the community',
+      },
+      maxRows: 15,
+      fields: [
+        {
+          name: 'language',
+          type: 'text',
+          required: true,
+          label: 'Language',
+        },
+        {
+          name: 'percentageOfPopulation',
+          type: 'number',
+          label: 'Approximate % of Population',
+          admin: {
+            description: 'e.g., 32 for 32%',
+          },
+        },
+      ],
+    },
+    {
+      name: 'demographics',
+      type: 'group',
+      label: 'Demographics',
+      admin: {
+        description: 'Community demographic breakdown',
+      },
+      fields: [
+        {
+          name: 'diversityIndex',
+          type: 'number',
+          label: 'Diversity Index',
+          admin: {
+            description: 'Score 0-100 (higher = more diverse)',
+          },
+        },
+        {
+          name: 'medianAge',
+          type: 'number',
+          label: 'Median Age',
+        },
+        {
+          name: 'familyHouseholds',
+          type: 'number',
+          label: 'Family Households (%)',
+        },
+        {
+          name: 'ethnicBreakdown',
+          type: 'array',
+          label: 'Ethnic Breakdown',
+          maxRows: 10,
+          fields: [
+            {
+              name: 'ethnicity',
+              type: 'text',
+              required: true,
+              admin: {
+                description: 'e.g., White, Hispanic/Latino, Asian',
+              },
+            },
+            {
+              name: 'percentage',
+              type: 'number',
+              label: '%',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'communityAmenities',
+      type: 'array',
+      label: 'Community Amenities',
+      admin: {
+        description: 'Parks, recreation, libraries, etc.',
+      },
+      maxRows: 30,
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'type',
+          type: 'select',
+          options: [
+            { label: 'Park', value: 'park' },
+            { label: 'Recreation Center', value: 'recreation' },
+            { label: 'Library', value: 'library' },
+            { label: 'Museum', value: 'museum' },
+            { label: 'Sports Complex', value: 'sports' },
+            { label: 'Nature Preserve', value: 'nature' },
+            { label: 'Golf Course', value: 'golf' },
+            { label: 'Pool/Aquatic Center', value: 'aquatic' },
+          ],
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+        },
+      ],
+    },
     {
       name: 'lastUpdated',
       type: 'date',

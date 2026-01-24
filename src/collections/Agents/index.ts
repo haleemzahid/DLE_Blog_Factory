@@ -503,6 +503,303 @@ export const Agents: CollectionConfig<'agents'> = {
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
+            // SEO Keywords Section
+            {
+              name: 'keywords',
+              type: 'group',
+              label: 'SEO Keywords',
+              admin: {
+                description: 'Keyword targeting for search optimization',
+              },
+              fields: [
+                {
+                  name: 'primary',
+                  type: 'array',
+                  label: 'Primary Keywords',
+                  admin: {
+                    description: 'Main keywords (3-5 recommended)',
+                  },
+                  maxRows: 10,
+                  fields: [
+                    {
+                      name: 'keyword',
+                      type: 'text',
+                      required: true,
+                    },
+                  ],
+                },
+                {
+                  name: 'secondary',
+                  type: 'array',
+                  label: 'Secondary Keywords (LSI)',
+                  admin: {
+                    description: 'Related terms that support primary keywords',
+                  },
+                  maxRows: 20,
+                  fields: [
+                    {
+                      name: 'keyword',
+                      type: 'text',
+                    },
+                  ],
+                },
+                {
+                  name: 'geographic',
+                  type: 'array',
+                  label: 'Geographic Keywords',
+                  admin: {
+                    description: 'City, neighborhood, county terms',
+                  },
+                  maxRows: 15,
+                  fields: [
+                    {
+                      name: 'keyword',
+                      type: 'text',
+                    },
+                  ],
+                },
+                {
+                  name: 'services',
+                  type: 'array',
+                  label: 'Service Keywords',
+                  admin: {
+                    description: 'Services offered (home valuation, buyer representation)',
+                  },
+                  maxRows: 15,
+                  fields: [
+                    {
+                      name: 'keyword',
+                      type: 'text',
+                    },
+                  ],
+                },
+              ],
+            },
+            // JSON-LD Configuration
+            {
+              name: 'jsonLd',
+              type: 'group',
+              label: 'JSON-LD Schema Markup',
+              admin: {
+                description: 'Structured data for search engines and AI systems',
+              },
+              fields: [
+                {
+                  name: 'enabled',
+                  type: 'checkbox',
+                  defaultValue: true,
+                  label: 'Enable JSON-LD Schema',
+                },
+                {
+                  name: 'schemaTypes',
+                  type: 'select',
+                  hasMany: true,
+                  defaultValue: ['RealEstateAgent', 'LocalBusiness'],
+                  label: 'Schema Types',
+                  options: [
+                    { label: 'RealEstateAgent', value: 'RealEstateAgent' },
+                    { label: 'LocalBusiness', value: 'LocalBusiness' },
+                    { label: 'Person', value: 'Person' },
+                    { label: 'Organization', value: 'Organization' },
+                  ],
+                },
+                {
+                  name: 'geoCoordinates',
+                  type: 'group',
+                  label: 'Geographic Coordinates',
+                  fields: [
+                    {
+                      name: 'latitude',
+                      type: 'number',
+                      admin: {
+                        step: 0.0001,
+                        description: 'e.g., 34.0967',
+                      },
+                    },
+                    {
+                      name: 'longitude',
+                      type: 'number',
+                      admin: {
+                        step: 0.0001,
+                        description: 'e.g., -117.7198',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'priceRange',
+                  type: 'text',
+                  label: 'Price Range',
+                  admin: {
+                    description: 'e.g., "$$$" or "$500K-$2M"',
+                  },
+                },
+                {
+                  name: 'areaServed',
+                  type: 'array',
+                  label: 'Areas Served',
+                  admin: {
+                    description: 'Cities and neighborhoods the agent serves',
+                  },
+                  maxRows: 20,
+                  fields: [
+                    {
+                      name: 'name',
+                      type: 'text',
+                      required: true,
+                    },
+                    {
+                      name: 'type',
+                      type: 'select',
+                      defaultValue: 'City',
+                      options: [
+                        { label: 'City', value: 'City' },
+                        { label: 'County', value: 'AdministrativeArea' },
+                        { label: 'Neighborhood', value: 'Neighborhood' },
+                        { label: 'State', value: 'State' },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  name: 'knowsAbout',
+                  type: 'array',
+                  label: 'Expertise Topics',
+                  admin: {
+                    description: 'Topics the agent specializes in',
+                  },
+                  maxRows: 15,
+                  fields: [
+                    {
+                      name: 'topic',
+                      type: 'text',
+                    },
+                  ],
+                },
+                {
+                  name: 'sameAs',
+                  type: 'array',
+                  label: 'Authority Links (sameAs)',
+                  admin: {
+                    description: 'Links to authoritative profiles (LinkedIn, Zillow, Realtor.com)',
+                  },
+                  maxRows: 10,
+                  fields: [
+                    {
+                      name: 'url',
+                      type: 'text',
+                    },
+                  ],
+                },
+                {
+                  name: 'aggregateRating',
+                  type: 'group',
+                  label: 'Review Aggregate',
+                  fields: [
+                    {
+                      name: 'ratingValue',
+                      type: 'number',
+                      admin: {
+                        step: 0.1,
+                        description: 'e.g., 4.9',
+                      },
+                    },
+                    {
+                      name: 'reviewCount',
+                      type: 'number',
+                      admin: {
+                        description: 'Total number of reviews',
+                      },
+                    },
+                    {
+                      name: 'bestRating',
+                      type: 'number',
+                      defaultValue: 5,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        // Cultural Expertise Tab
+        {
+          label: 'Cultural Expertise',
+          fields: [
+            {
+              name: 'culturalExpertise',
+              type: 'group',
+              label: 'Cultural & Language Expertise',
+              admin: {
+                description: "Agent's ability to serve diverse communities",
+              },
+              fields: [
+                {
+                  name: 'languagesSpoken',
+                  type: 'array',
+                  label: 'Languages Spoken',
+                  maxRows: 10,
+                  fields: [
+                    {
+                      name: 'language',
+                      type: 'text',
+                      required: true,
+                    },
+                    {
+                      name: 'proficiency',
+                      type: 'select',
+                      defaultValue: 'fluent',
+                      options: [
+                        { label: 'Native', value: 'native' },
+                        { label: 'Fluent', value: 'fluent' },
+                        { label: 'Conversational', value: 'conversational' },
+                        { label: 'Basic', value: 'basic' },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  name: 'culturalSpecializations',
+                  type: 'array',
+                  label: 'Cultural Specializations',
+                  admin: {
+                    description: 'Communities the agent specializes in serving',
+                  },
+                  maxRows: 10,
+                  fields: [
+                    {
+                      name: 'community',
+                      type: 'text',
+                      admin: {
+                        description: 'e.g., Korean-American, Hispanic, Indian',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'communityInvolvement',
+                  type: 'array',
+                  label: 'Community Involvement',
+                  admin: {
+                    description: 'Organizations, events, or causes the agent supports',
+                  },
+                  maxRows: 10,
+                  fields: [
+                    {
+                      name: 'organization',
+                      type: 'text',
+                    },
+                    {
+                      name: 'role',
+                      type: 'text',
+                      admin: {
+                        description: 'e.g., Board Member, Volunteer, Sponsor',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
           ],
         },
       ],
