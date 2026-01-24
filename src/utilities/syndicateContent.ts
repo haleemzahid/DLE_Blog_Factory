@@ -170,7 +170,7 @@ export async function syndicatePostToCities(
 
         // Check if already syndicated to this agent
         const alreadySyndicated = currentSyndicatedAgents.some(
-          (a: string | { id: string }) => (typeof a === 'object' ? a.id : a) === agent.id,
+          (a) => (typeof a === 'object' ? a.id : a) === agent.id,
         )
 
         if (alreadySyndicated) {
@@ -178,7 +178,7 @@ export async function syndicatePostToCities(
 
           // Update existing override
           const overrideIndex = currentSeoOverrides.findIndex(
-            (o: { tenant: string | { id: string } }) => (typeof o.tenant === 'object' ? o.tenant.id : o.tenant) === tenantId,
+            (o) => (typeof o.tenant === 'object' ? o.tenant.id : o.tenant) === tenantId,
           )
 
           if (overrideIndex >= 0) {
