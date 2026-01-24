@@ -297,7 +297,10 @@ async function getCitiesToProcess(payload: Payload, options: SyndicationOptions)
  */
 async function findAgentByCity(payload: Payload, cityName: string, stateId?: number): Promise<Agent | null> {
   // Find agent matching city name in the 'city' field
-  const whereClause: Record<string, unknown> = {
+  const whereClause: {
+    city: { equals: string }
+    state?: { equals: number }
+  } = {
     city: {
       equals: cityName,
     },
