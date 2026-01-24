@@ -5,25 +5,43 @@ import { analyzeContentUniqueness } from './contentUniqueness'
 import { getCanonicalUrl } from './canonicalUrl'
 
 /**
- * Section override from post configuration
+ * Section override from post configuration (top-level, uses original field names)
  */
-interface SectionOverride {
+interface PostSectionOverride {
   sectionId: string
   overrideType: 'replace' | 'prepend' | 'append' | 'hide'
-  customContent?: string | { root?: unknown } // Can be rich text or plain string
+  customContent?: string | { root?: unknown } | null
 }
 
 /**
- * Tenant-specific content override configuration
+ * Section override within tenant overrides (uses shorter field names)
+ */
+interface TenantSectionOverride {
+  secId: string
+  type: 'replace' | 'prepend' | 'append' | 'hide'
+  content?: string | null
+}
+
+/**
+ * Unified section override interface for internal use
+ */
+interface NormalizedSectionOverride {
+  sectionId: string
+  overrideType: 'replace' | 'prepend' | 'append' | 'hide'
+  content: string
+}
+
+/**
+ * Tenant-specific content override configuration (uses shorter field names)
  */
 interface TenantContentOverride {
   tenant: number | Tenant
   agent?: number | Agent | null
   cityData?: number | CityDatum | null
-  sectionOverrides?: SectionOverride[]
-  customTokens?: Array<{
-    tokenName: string
-    tokenValue: string
+  sections?: TenantSectionOverride[]
+  tokens?: Array<{
+    name: string
+    value: string
   }>
 }
 
@@ -168,7 +186,7 @@ function extractFromChildren(children: unknown[]): string {
  * Get tenant-specific overrides for a post
  */
 function getTenantOverrides(post: Post, tenantId: number | string): TenantContentOverride | null {
-  const overrides = (post as any).tenantContentOverrides as TenantContentOverride[] | undefined
+  const overrides = (post as any).tenantOverrides as TenantContentOverride[] | undefined
   if (!overrides || overrides.length === 0) return null
 
   return overrides.find((override) => {
@@ -180,11 +198,41 @@ function getTenantOverrides(post: Post, tenantId: number | string): TenantConten
 }
 
 /**
+ * Normalize a post-level section override to the unified format
+ */
+function normalizePostSectionOverride(override: PostSectionOverride): NormalizedSectionOverride {
+  let content = ''
+  if (override.customContent) {
+    if (typeof override.customContent === 'string') {
+      content = override.customContent
+    } else if (override.customContent.root) {
+      content = extractTextFromRichText(override.customContent)
+    }
+  }
+  return {
+    sectionId: override.sectionId,
+    overrideType: override.overrideType,
+    content,
+  }
+}
+
+/**
+ * Normalize a tenant section override to the unified format
+ */
+function normalizeTenantSectionOverride(override: TenantSectionOverride): NormalizedSectionOverride {
+  return {
+    sectionId: override.secId,
+    overrideType: override.type,
+    content: override.content || '',
+  }
+}
+
+/**
  * Apply section overrides to generated content
  */
 function applySectionOverride(
   originalContent: string,
-  override: SectionOverride | undefined,
+  override: NormalizedSectionOverride | undefined,
   context: { agent?: Agent | null; cityData?: CityDatum | null }
 ): { content: string; wasOverridden: boolean } {
   if (!override) {
@@ -196,16 +244,9 @@ function applySectionOverride(
     return { content: '', wasOverridden: true }
   }
 
-  // Extract custom content
-  let customContent = ''
-  if (override.customContent) {
-    if (typeof override.customContent === 'string') {
-      customContent = override.customContent
-    } else {
-      customContent = extractTextFromRichText(override.customContent)
-    }
-
-    // Replace tokens in custom content
+  // Apply token replacement to custom content
+  let customContent = override.content
+  if (customContent) {
     customContent = replaceTokens(customContent, { agent: context.agent, cityData: context.cityData })
   }
 
@@ -231,8 +272,9 @@ export function renderPostForAgent(context: RenderContext): RenderResult {
   // Check if post uses template rendering
   const useTemplate = (post as any).useTemplate
 
-  // Get base section overrides from post
-  const baseSectionOverrides = ((post as any).sectionOverrides || []) as SectionOverride[]
+  // Get base section overrides from post and normalize them
+  const rawPostOverrides = ((post as any).sectionOverrides || []) as PostSectionOverride[]
+  const normalizedPostOverrides = rawPostOverrides.map(normalizePostSectionOverride)
 
   // Get tenant-specific overrides if tenant is provided
   const tenantId = tenant ? (typeof tenant === 'object' ? tenant.id : tenant) : null
@@ -244,15 +286,15 @@ export function renderPostForAgent(context: RenderContext): RenderResult {
 
   // Build custom tokens from tenant overrides
   const customTokens: Record<string, string> = {}
-  if (tenantOverrides?.customTokens) {
-    tenantOverrides.customTokens.forEach((t) => {
-      customTokens[t.tokenName] = t.tokenValue
+  if (tenantOverrides?.tokens) {
+    tenantOverrides.tokens.forEach((t) => {
+      customTokens[t.name] = t.value
     })
   }
 
   // Merge section overrides (tenant overrides take precedence)
-  const tenantSectionOverrides = tenantOverrides?.sectionOverrides || []
-  const mergedOverrides = [...baseSectionOverrides]
+  const tenantSectionOverrides = (tenantOverrides?.sections || []).map(normalizeTenantSectionOverride)
+  const mergedOverrides: NormalizedSectionOverride[] = [...normalizedPostOverrides]
 
   tenantSectionOverrides.forEach((tenantOverride) => {
     const existingIndex = mergedOverrides.findIndex((o) => o.sectionId === tenantOverride.sectionId)
