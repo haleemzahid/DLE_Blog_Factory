@@ -14,7 +14,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { AnalyticsTracker } from '@/components/Analytics'
-import { ClientOnlyRichText } from './ClientOnlyRichText'
+import { BlogContentRenderer } from '@/components/BlogContentRenderer'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -117,7 +117,12 @@ export default async function Post({ params: paramsPromise }: Args) {
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
           {post.content ? (
-            <ClientOnlyRichText content={post.content} />
+            <BlogContentRenderer
+              content={post.content}
+              enableGutter={false}
+              enableProse={true}
+              className="max-w-[48rem] mx-auto"
+            />
           ) : (
             <div className="max-w-[48rem] mx-auto">
               <p>No content available</p>

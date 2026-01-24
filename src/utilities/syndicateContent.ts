@@ -5,6 +5,7 @@
  */
 
 import type { Payload } from 'payload'
+import type { Agent } from '@/payload-types'
 import { generateCityContent } from './cityContent'
 
 // Helper function to convert string to Lexical rich text format
@@ -62,7 +63,7 @@ export interface SyndicationResult {
   citiesSucceeded: number
   citiesFailed: number
   errors: Array<{
-    cityId: string
+    cityId: number
     cityName: string
     error: string
   }>
@@ -145,7 +146,7 @@ export async function syndicatePostToCities(
 
         // Generate unique content
         console.log(`  🤖 Generating AI content...`)
-        const uniqueContent = await generateCityContent(payload, options.templatePostId, city.id)
+        const uniqueContent = await generateCityContent(payload, options.templatePostId, String(city.id))
 
         // Get agent's tenant
         const agentDoc = await payload.findByID({
@@ -170,7 +171,7 @@ export async function syndicatePostToCities(
 
         // Check if already syndicated to this agent
         const alreadySyndicated = currentSyndicatedAgents.some(
-          (a: any) => (typeof a === 'object' ? a.id : a) === agent.id,
+          (a) => (typeof a === 'object' ? a.id : a) === agent.id,
         )
 
         if (alreadySyndicated) {
@@ -178,7 +179,7 @@ export async function syndicatePostToCities(
 
           // Update existing override
           const overrideIndex = currentSeoOverrides.findIndex(
-            (o: any) => (typeof o.tenant === 'object' ? o.tenant.id : o.tenant) === tenantId,
+            (o) => (typeof o.tenant === 'object' ? o.tenant.id : o.tenant) === tenantId,
           )
 
           if (overrideIndex >= 0) {
@@ -218,13 +219,14 @@ export async function syndicatePostToCities(
 
         // Optional: Add delay to avoid rate limiting
         await sleep(500)
-      } catch (error: any) {
-        console.error(`  ❌ Failed to process ${city.cityName}:`, error.message)
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        console.error(`  ❌ Failed to process ${city.cityName}:`, errorMessage)
         result.citiesFailed++
         result.errors.push({
           cityId: city.id,
           cityName: city.cityName,
-          error: error.message,
+          error: errorMessage,
         })
       }
     }
@@ -242,7 +244,7 @@ export async function syndicatePostToCities(
     }
 
     result.success = result.citiesFailed === 0
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('💥 Syndication failed:', error)
     result.success = false
     throw error
@@ -251,10 +253,16 @@ export async function syndicatePostToCities(
   return result
 }
 
+interface CityData {
+  id: number
+  cityName: string
+  state: number | { id: number }
+}
+
 /**
  * Get list of cities to process based on options
  */
-async function getCitiesToProcess(payload: Payload, options: SyndicationOptions): Promise<any[]> {
+async function getCitiesToProcess(payload: Payload, options: SyndicationOptions): Promise<CityData[]> {
   // If specific city IDs provided, use those
   if (options.cityIds && options.cityIds.length > 0) {
     const cities = await Promise.all(
@@ -287,9 +295,12 @@ async function getCitiesToProcess(payload: Payload, options: SyndicationOptions)
 /**
  * Find agent by city name and state
  */
-async function findAgentByCity(payload: Payload, cityName: string, stateId?: string): Promise<any> {
+async function findAgentByCity(payload: Payload, cityName: string, stateId?: number): Promise<Agent | null> {
   // Find agent matching city name in the 'city' field
-  const whereClause: any = {
+  const whereClause: {
+    city: { equals: string }
+    state?: { equals: number }
+  } = {
     city: {
       equals: cityName,
     },
@@ -362,10 +373,16 @@ export async function updateCityMarketData(payload: Payload, cityId: string): Pr
   console.log('✅ City data updated')
 }
 
+interface CityPerformance {
+  totalViews: number
+  totalLeads: number
+  avgEngagement: number
+}
+
 /**
  * Get syndication analytics for a city
  */
-export async function getCityPostPerformance(payload: Payload, cityId: string): Promise<any> {
+export async function getCityPostPerformance(payload: Payload, cityId: string): Promise<CityPerformance> {
   // TODO: Implement analytics integration
   // This would pull data from PostAnalytics collection
 

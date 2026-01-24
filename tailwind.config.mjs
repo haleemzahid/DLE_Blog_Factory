@@ -118,6 +118,20 @@ const config = {
                 fontWeight: 'normal',
                 marginBottom: '0.25em',
               },
+              // Remove ::before and ::after from underlined text
+              'u::before': {
+                content: 'none !important',
+              },
+              'u::after': {
+                content: 'none !important',
+              },
+              // Remove ::before and ::after from code tags (removes decorative quotes)
+              'code::before': {
+                content: 'none !important',
+              },
+              'code::after': {
+                content: 'none !important',
+              },
             },
           ],
         },
