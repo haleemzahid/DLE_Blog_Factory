@@ -188,10 +188,17 @@ export async function POST(req: NextRequest) {
     }
 
     // Only add optional fields if they have values
+    // Convert IDs to numbers for relationship fields (Payload requires numeric IDs)
     if (event.postId) enrichedEvent.postId = event.postId
     if (event.pageId) enrichedEvent.pageId = event.pageId
-    if (event.agentId) enrichedEvent.agentId = event.agentId
-    if (event.tenantId) enrichedEvent.tenantId = event.tenantId
+    if (event.agentId) {
+      const agentIdNum = typeof event.agentId === 'string' ? parseInt(event.agentId, 10) : event.agentId
+      if (!isNaN(agentIdNum)) enrichedEvent.agentId = agentIdNum
+    }
+    if (event.tenantId) {
+      const tenantIdNum = typeof event.tenantId === 'string' ? parseInt(event.tenantId, 10) : event.tenantId
+      if (!isNaN(tenantIdNum)) enrichedEvent.tenantId = tenantIdNum
+    }
 
     if (ip) enrichedEvent.ipAddress = anonymizeIP(ip)
     if (req.headers.get('cf-ipcountry')) enrichedEvent.country = req.headers.get('cf-ipcountry')
