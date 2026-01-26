@@ -1,4 +1,4 @@
-import type { Agent, CityDatum, State, Media } from '@/payload-types'
+import type { Agent, CityDatum, State, Media, Announcement } from '@/payload-types'
 
 /**
  * Token replacement utility for content templates
@@ -14,6 +14,16 @@ interface TokenContext {
     publishedAt?: string
   } | null
   custom?: Record<string, string>
+  tenant?: {
+    name?: string
+    slug?: string
+    domain?: string
+    brandName?: string
+    tagline?: string
+    primaryColor?: string
+  } | null
+  /** Announcements filtered for this context (global, state, city, agent scoped) */
+  announcements?: Announcement[] | null
 }
 
 /**
@@ -245,6 +255,58 @@ function buildTokenMap(context: TokenContext): Record<string, string> {
     // FAQs count
     if (agent.faqs) {
       tokens['AGENT_FAQ_COUNT'] = agent.faqs.length.toString()
+    }
+
+    // Hot Deals from agent
+    const hotDeals = (agent as any).hotDeals as Array<{
+      title: string
+      description?: string
+      dealType?: string
+      price?: string
+      link?: string
+      isActive?: boolean
+      expiresAt?: string
+      priority?: number
+    }> | undefined
+
+    if (hotDeals?.length) {
+      const now = new Date()
+      const activeDeals = hotDeals
+        .filter((deal) => {
+          if (!deal.isActive) return false
+          if (deal.expiresAt && new Date(deal.expiresAt) < now) return false
+          return true
+        })
+        .sort((a, b) => (b.priority || 50) - (a.priority || 50))
+
+      if (activeDeals.length > 0) {
+        // Simple text list
+        tokens['HOT_DEALS_LIST'] = activeDeals.map((d) => d.title).join(', ')
+        tokens['HOT_DEALS_COUNT'] = activeDeals.length.toString()
+
+        // HTML formatted hot deals
+        tokens['HOT_DEALS'] = activeDeals
+          .slice(0, 5)
+          .map((deal) => {
+            const typeClass = deal.dealType || 'listing'
+            let html = `<div class="hot-deal hot-deal-${typeClass}">`
+            html += `<h4 class="hot-deal-title">${deal.title}</h4>`
+            if (deal.price) html += `<span class="hot-deal-price">${deal.price}</span>`
+            if (deal.description) html += `<p class="hot-deal-description">${deal.description}</p>`
+            if (deal.link) html += `<a href="${deal.link}" class="hot-deal-link">View Details</a>`
+            html += '</div>'
+            return html
+          })
+          .join('\n')
+      } else {
+        tokens['HOT_DEALS'] = ''
+        tokens['HOT_DEALS_LIST'] = ''
+        tokens['HOT_DEALS_COUNT'] = '0'
+      }
+    } else {
+      tokens['HOT_DEALS'] = ''
+      tokens['HOT_DEALS_LIST'] = ''
+      tokens['HOT_DEALS_COUNT'] = '0'
     }
   }
 
@@ -478,6 +540,16 @@ function buildTokenMap(context: TokenContext): Record<string, string> {
       : ''
   }
 
+  // Tenant tokens
+  if (context.tenant) {
+    const tenant = context.tenant
+    tokens['TENANT_NAME'] = tenant.name || ''
+    tokens['TENANT_SLUG'] = tenant.slug || ''
+    tokens['TENANT_DOMAIN'] = tenant.domain || ''
+    tokens['TENANT_BRAND'] = tenant.brandName || tenant.name || ''
+    tokens['TENANT_TAGLINE'] = tenant.tagline || ''
+  }
+
   // Date tokens
   tokens['CURRENT_YEAR'] = new Date().getFullYear().toString()
   tokens['CURRENT_MONTH'] = new Date().toLocaleDateString('en-US', { month: 'long' })
@@ -486,6 +558,126 @@ function buildTokenMap(context: TokenContext): Record<string, string> {
     day: 'numeric',
     year: 'numeric',
   })
+
+  // Seasonal tokens for varied content
+  const month = new Date().getMonth()
+  const seasonMessages: Record<string, { greeting: string; context: string }> = {
+    winter: {
+      greeting: 'As we enter the new year',
+      context: 'With the market typically slower in winter, buyers may find more negotiating power.',
+    },
+    spring: {
+      greeting: 'With spring in full bloom',
+      context: 'Spring is traditionally the busiest season for real estate, with more listings hitting the market.',
+    },
+    summer: {
+      greeting: 'As summer heats up',
+      context: 'Summer brings active home shopping season, especially for families wanting to move before school starts.',
+    },
+    fall: {
+      greeting: 'As the leaves begin to change',
+      context: 'Fall can be an excellent time to buy, as motivated sellers often price competitively.',
+    },
+  }
+
+  let season: 'winter' | 'spring' | 'summer' | 'fall' = 'winter'
+  if (month >= 2 && month <= 4) season = 'spring'
+  else if (month >= 5 && month <= 7) season = 'summer'
+  else if (month >= 8 && month <= 10) season = 'fall'
+
+  tokens['SEASONAL_GREETING'] = seasonMessages[season].greeting
+  tokens['SEASONAL_CONTEXT'] = seasonMessages[season].context
+  tokens['SEASON'] = season.charAt(0).toUpperCase() + season.slice(1)
+
+  // Market-based messaging tokens (combine city data with dynamic messaging)
+  if (cityData?.marketTrend) {
+    const buyerMessages: Record<string, string> = {
+      'hot-seller': 'In this competitive market, being pre-approved and ready to act quickly is essential.',
+      'moderate-seller': 'While the market favors sellers, well-prepared buyers can still find great opportunities.',
+      'balanced': 'Current market conditions offer fair opportunities for both buyers and sellers.',
+      'moderate-buyer': 'Buyers have more negotiating power in the current market.',
+      'hot-buyer': 'This is an excellent time to buy, with favorable conditions for making offers.',
+    }
+    const sellerMessages: Record<string, string> = {
+      'hot-seller': 'Sellers are in a strong position with high demand and rising prices.',
+      'moderate-seller': 'Sellers can expect good interest and reasonable time to close.',
+      'balanced': 'Pricing your home correctly is key in this balanced market.',
+      'moderate-buyer': 'Strategic pricing and presentation are important to attract buyers.',
+      'hot-buyer': 'Sellers may need to be flexible on terms to attract offers.',
+    }
+    tokens['BUYER_MARKET_MESSAGE'] = buyerMessages[cityData.marketTrend] || ''
+    tokens['SELLER_MARKET_MESSAGE'] = sellerMessages[cityData.marketTrend] || ''
+  }
+
+  // Announcement tokens (pre-filtered by scope: global, state, city, agent)
+  if (context.announcements?.length) {
+    const announcements = context.announcements
+
+    // Helper to format announcements as HTML
+    const formatAnnouncements = (anns: typeof announcements, limit: number = 3) => {
+      return anns
+        .slice(0, limit)
+        .map((ann) => {
+          const iconClass = ann.icon && ann.icon !== 'none' ? ` icon-${ann.icon}` : ''
+          const styleClass = ann.style || 'primary'
+          const typeClass = ann.type || 'news'
+
+          let html = `<div class="announcement announcement-${typeClass} announcement-${styleClass}${iconClass}">`
+          html += `<h4 class="announcement-title">${ann.title}</h4>`
+          if (ann.excerpt) html += `<p class="announcement-excerpt">${ann.excerpt}</p>`
+          if (ann.cta?.text && ann.cta?.link) {
+            const target = ann.cta.newTab ? ' target="_blank" rel="noopener"' : ''
+            html += `<a href="${ann.cta.link}" class="announcement-cta"${target}>${ann.cta.text}</a>`
+          }
+          html += '</div>'
+          return html
+        })
+        .join('\n')
+    }
+
+    // All announcements (combined)
+    tokens['ANNOUNCEMENTS'] = formatAnnouncements(announcements)
+    tokens['ANNOUNCEMENTS_COUNT'] = announcements.length.toString()
+
+    // Filter by scope for specific tokens
+    const globalAnnouncements = announcements.filter((a) => a.scope === 'global')
+    const stateAnnouncements = announcements.filter((a) => a.scope === 'state')
+    const cityAnnouncements = announcements.filter((a) => a.scope === 'city')
+    const agentAnnouncements = announcements.filter((a) => a.scope === 'agent')
+
+    tokens['GLOBAL_NEWS'] = formatAnnouncements(globalAnnouncements)
+    tokens['STATE_NEWS'] = formatAnnouncements(stateAnnouncements)
+    tokens['CITY_NEWS'] = formatAnnouncements(cityAnnouncements)
+    tokens['AGENT_NEWS'] = formatAnnouncements(agentAnnouncements)
+
+    // Filter by type
+    const promos = announcements.filter((a) => a.type === 'promo' || a.type === 'hot-deal')
+    const alerts = announcements.filter((a) => a.type === 'alert')
+    const marketUpdates = announcements.filter((a) => a.type === 'market-update')
+    const events = announcements.filter((a) => a.type === 'event')
+
+    tokens['PROMOS'] = formatAnnouncements(promos)
+    tokens['ALERTS'] = formatAnnouncements(alerts)
+    tokens['MARKET_UPDATES'] = formatAnnouncements(marketUpdates)
+    tokens['EVENTS'] = formatAnnouncements(events)
+
+    // Simple text lists
+    tokens['ANNOUNCEMENTS_TITLES'] = announcements.map((a) => a.title).join(', ')
+    tokens['PROMOS_TITLES'] = promos.map((a) => a.title).join(', ')
+  } else {
+    tokens['ANNOUNCEMENTS'] = ''
+    tokens['ANNOUNCEMENTS_COUNT'] = '0'
+    tokens['GLOBAL_NEWS'] = ''
+    tokens['STATE_NEWS'] = ''
+    tokens['CITY_NEWS'] = ''
+    tokens['AGENT_NEWS'] = ''
+    tokens['PROMOS'] = ''
+    tokens['ALERTS'] = ''
+    tokens['MARKET_UPDATES'] = ''
+    tokens['EVENTS'] = ''
+    tokens['ANNOUNCEMENTS_TITLES'] = ''
+    tokens['PROMOS_TITLES'] = ''
+  }
 
   return tokens
 }

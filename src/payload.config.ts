@@ -21,6 +21,7 @@ import { TenantHeaders } from './collections/TenantHeaders'
 import { TenantFooters } from './collections/TenantFooters'
 import { CityData } from './collections/CityData'
 import { ContentTemplates } from './collections/ContentTemplates'
+import { Announcements } from './collections/Announcements'
 // Analytics Collections
 import { AnalyticsEvents } from './collections/AnalyticsEvents'
 import { PostAnalytics } from './collections/PostAnalytics'
@@ -120,6 +121,7 @@ export default buildConfig({
     // Content Management
     CityData,
     ContentTemplates,
+    Announcements,
     // Analytics Collections
     AnalyticsEvents,
     PostAnalytics,
