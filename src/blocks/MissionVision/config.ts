@@ -33,7 +33,7 @@ export const MissionVision: Block = {
       name: 'backgroundColor',
       type: 'text',
       label: 'Background Color',
-      defaultValue: '#ffffff',
+      defaultValue: '#f5f5f5',
       admin: {
         description: 'Background color for the section',
         components: {
@@ -67,7 +67,7 @@ export const MissionVision: Block = {
               name: 'iconColor',
               type: 'text',
               label: 'Icon Color',
-              defaultValue: '#dc2626',
+              defaultValue: '#B40000',
               admin: {
                 components: {
                   Field: '@/components/ColorPickerField#ColorPickerField',
@@ -85,7 +85,7 @@ export const MissionVision: Block = {
               name: 'titleColor',
               type: 'text',
               label: 'Title Color',
-              defaultValue: '#111827',
+              defaultValue: '#000000',
               admin: {
                 components: {
                   Field: '@/components/ColorPickerField#ColorPickerField',
@@ -135,7 +135,7 @@ export const MissionVision: Block = {
               name: 'iconColor',
               type: 'text',
               label: 'Icon Color',
-              defaultValue: '#dc2626',
+              defaultValue: '#B40000',
               admin: {
                 components: {
                   Field: '@/components/ColorPickerField#ColorPickerField',
@@ -153,7 +153,7 @@ export const MissionVision: Block = {
               name: 'titleColor',
               type: 'text',
               label: 'Title Color',
-              defaultValue: '#111827',
+              defaultValue: '#000000',
               admin: {
                 components: {
                   Field: '@/components/ColorPickerField#ColorPickerField',

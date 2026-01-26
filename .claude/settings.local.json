@@ -50,7 +50,9 @@
       "Bash(node scripts/delete-posts-now.mjs:*)",
       "Bash(npx tsc:*)",
       "Bash(vercel logs:*)",
-      "Bash(pnpm tsc:*)"
+      "Bash(pnpm tsc:*)",
+      "WebFetch(domain:designatedlocalexpert.com)",
+      "Bash(pnpm drizzle-kit:*)"
     ]
   }
 }

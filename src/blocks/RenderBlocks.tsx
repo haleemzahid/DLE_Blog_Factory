@@ -33,6 +33,7 @@ import { MissionVisionBlock } from '@/blocks/MissionVision/Component'
 import { DesignationDirectoryBlock } from '@/blocks/DesignationDirectory/Component'
 import { CaliforniaBlock } from '@/blocks/California/Component'
 import { VideoLayoutBlock } from '@/blocks/VideoLayout/Component'
+import { BrandingHeroBlock } from '@/blocks/BrandingHero/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -66,6 +67,7 @@ const blockComponents = {
   designationDirectory: DesignationDirectoryBlock,
   california: CaliforniaBlock,
   videoLayout: VideoLayoutBlock,
+  brandingHero: BrandingHeroBlock,
 }
 
 export const RenderBlocks: React.FC<{

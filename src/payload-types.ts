@@ -286,6 +286,7 @@ export interface Page {
     | DesignationDirectoryBlock
     | CaliforniaBlock
     | VideoLayoutBlock
+    | BrandingHeroBlock
   )[];
   meta?: {
     title?: string | null;
@@ -3206,6 +3207,74 @@ export interface VideoLayoutBlock {
   blockType: 'videoLayout';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BrandingHeroBlock".
+ */
+export interface BrandingHeroBlock {
+  /**
+   * Background color for the section
+   */
+  backgroundColor?: string | null;
+  /**
+   * YouTube or Vimeo video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)
+   */
+  videoUrl?: string | null;
+  /**
+   * Accessibility title for the video
+   */
+  videoTitle?: string | null;
+  heading: string;
+  headingColor?: string | null;
+  headingSize?: ('small' | 'medium' | 'large' | 'xlarge') | null;
+  /**
+   * Optional supporting text below the heading
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  enableCta?: boolean | null;
+  ctaLink?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+    /**
+     * Choose a hover color for the button
+     */
+    hoverColor?: string | null;
+  };
+  ctaButtonColor?: string | null;
+  ctaTextColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'brandingHero';
+}
+/**
  * Custom navigation header for tenant sites and specific agents
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4249,6 +4318,7 @@ export interface PagesSelect<T extends boolean = true> {
         designationDirectory?: T | DesignationDirectoryBlockSelect<T>;
         california?: T | CaliforniaBlockSelect<T>;
         videoLayout?: T | VideoLayoutBlockSelect<T>;
+        brandingHero?: T | BrandingHeroBlockSelect<T>;
       };
   meta?:
     | T
@@ -4956,6 +5026,35 @@ export interface VideoLayoutBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BrandingHeroBlock_select".
+ */
+export interface BrandingHeroBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  videoUrl?: T;
+  videoTitle?: T;
+  heading?: T;
+  headingColor?: T;
+  headingSize?: T;
+  content?: T;
+  enableCta?: T;
+  ctaLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+        hoverColor?: T;
+      };
+  ctaButtonColor?: T;
+  ctaTextColor?: T;
   id?: T;
   blockName?: T;
 }

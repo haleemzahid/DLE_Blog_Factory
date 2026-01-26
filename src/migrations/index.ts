@@ -4,6 +4,8 @@ import * as migration_20251225_agent_blog_pagination from './20251225_agent_blog
 import * as migration_20260114_add_agent_to_headers_footers from './20260114_add_agent_to_headers_footers';
 import * as migration_20260124_add_agent_seo_and_citydata_cultural from './20260124_add_agent_seo_and_citydata_cultural';
 import * as migration_20260124_add_posts_template_overrides from './20260124_add_posts_template_overrides';
+import * as migration_20260126_add_branding_hero_block from './20260126_add_branding_hero_block';
+import * as migration_20260126_update_branding_hero_video from './20260126_update_branding_hero_video';
 
 export const migrations = [
   {
@@ -35,5 +37,15 @@ export const migrations = [
     up: migration_20260124_add_posts_template_overrides.up,
     down: migration_20260124_add_posts_template_overrides.down,
     name: '20260124_add_posts_template_overrides'
+  },
+  {
+    up: migration_20260126_add_branding_hero_block.up,
+    down: migration_20260126_add_branding_hero_block.down,
+    name: '20260126_add_branding_hero_block'
+  },
+  {
+    up: migration_20260126_update_branding_hero_video.up,
+    down: migration_20260126_update_branding_hero_video.down,
+    name: '20260126_update_branding_hero_video'
   },
 ];

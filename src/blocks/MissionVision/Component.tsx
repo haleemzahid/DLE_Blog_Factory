@@ -150,25 +150,36 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
 
   if (layout === 'cards') {
     return (
-      <section className="py-16 md:py-24" style={{ backgroundColor: backgroundColor || '#ffffff' }}>
+      <section className="py-12 md:py-16" style={{ backgroundColor: backgroundColor || '#1E699B' }}>
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {/* Mission Card */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-shadow">
+            <div
+              className="bg-white p-8 md:p-10"
+              style={{
+                borderTop: '7px solid #B40000',
+                borderRadius: '10px',
+                boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.5)'
+              }}
+            >
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 rounded-full bg-gray-50">
-                  {renderIcon(mission?.icon, mission?.iconColor || '#dc2626')}
+                  {renderIcon(mission?.icon, mission?.iconColor || '#B40000')}
                 </div>
                 <h3
-                  className="text-2xl font-bold"
-                  style={{ color: mission?.titleColor || '#111827' }}
+                  className="text-xl md:text-[22px] font-extrabold"
+                  style={{
+                    color: mission?.titleColor || '#000000',
+                    fontFamily: "'Roboto Slab', serif"
+                  }}
                 >
                   {mission?.title}
                 </h3>
               </div>
               {mission?.content && (
                 <BasicRichText
-                  className="prose prose-gray max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed"
+                  className="prose prose-gray max-w-none [&_p]:text-black [&_p]:leading-[25px] [&_p]:text-[17px] [&_p]:font-normal"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                   data={mission.content}
                   enableGutter={false}
                 />
@@ -176,21 +187,32 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
             </div>
 
             {/* Vision Card */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-shadow">
+            <div
+              className="bg-white p-8 md:p-10"
+              style={{
+                borderTop: '7px solid #B40000',
+                borderRadius: '10px',
+                boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.5)'
+              }}
+            >
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 rounded-full bg-gray-50">
-                  {renderIcon(vision?.icon, vision?.iconColor || '#dc2626')}
+                  {renderIcon(vision?.icon, vision?.iconColor || '#B40000')}
                 </div>
                 <h3
-                  className="text-2xl font-bold"
-                  style={{ color: vision?.titleColor || '#111827' }}
+                  className="text-xl md:text-[22px] font-extrabold"
+                  style={{
+                    color: vision?.titleColor || '#000000',
+                    fontFamily: "'Roboto Slab', serif"
+                  }}
                 >
                   {vision?.title}
                 </h3>
               </div>
               {vision?.content && (
                 <BasicRichText
-                  className="prose prose-gray max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed"
+                  className="prose prose-gray max-w-none [&_p]:text-black [&_p]:leading-[25px] [&_p]:text-[17px] [&_p]:font-normal"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                   data={vision.content}
                   enableGutter={false}
                 />
@@ -256,57 +278,65 @@ export const MissionVisionBlock: React.FC<MissionVisionBlockProps> = (props) => 
     )
   }
 
-  // Default: Side by Side
+  // Default: Side by Side (now with white cards and red top border like the image)
   return (
-    <section className="py-16 md:py-24" style={{ backgroundColor: backgroundColor || '#ffffff' }}>
+    <section className="py-12 md:py-16" style={{ backgroundColor: backgroundColor || '#f5f5f5' }}>
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Mission */}
-          <div className="relative">
-            <div className="flex items-start gap-4 mb-4">
-              <div className="p-3 rounded-xl bg-red-50 flex-shrink-0">
-                {renderIcon(mission?.icon, mission?.iconColor || '#dc2626')}
-              </div>
-              <div>
-                <h3
-                  className="text-2xl md:text-3xl font-bold mb-4"
-                  style={{ color: mission?.titleColor || '#111827' }}
-                >
-                  {mission?.title}
-                </h3>
-                {mission?.content && (
-                  <BasicRichText
-                    className="prose max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed [&_p]:text-base md:[&_p]:text-lg"
-                    data={mission.content}
-                    enableGutter={false}
-                  />
-                )}
-              </div>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          {/* Mission Card */}
+          <div
+            className="bg-white p-8 md:p-10"
+            style={{
+              borderTop: '7px solid #B40000',
+              borderRadius: '10px',
+              boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.5)'
+            }}
+          >
+            <h3
+              className="text-xl md:text-[22px] font-extrabold mb-4"
+              style={{
+                color: mission?.titleColor || '#000000',
+                fontFamily: "'Roboto Slab', serif"
+              }}
+            >
+              {mission?.title}
+            </h3>
+            {mission?.content && (
+              <BasicRichText
+                className="prose prose-gray max-w-none [&_p]:text-black [&_p]:leading-[25px] [&_p]:text-[17px] [&_p]:font-normal"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+                data={mission.content}
+                enableGutter={false}
+              />
+            )}
           </div>
 
-          {/* Vision */}
-          <div className="relative lg:border-l lg:border-gray-200 lg:pl-12">
-            <div className="flex items-start gap-4 mb-4">
-              <div className="p-3 rounded-xl bg-red-50 flex-shrink-0">
-                {renderIcon(vision?.icon, vision?.iconColor || '#dc2626')}
-              </div>
-              <div>
-                <h3
-                  className="text-2xl md:text-3xl font-bold mb-4"
-                  style={{ color: vision?.titleColor || '#111827' }}
-                >
-                  {vision?.title}
-                </h3>
-                {vision?.content && (
-                  <BasicRichText
-                    className="prose max-w-none [&_p]:text-gray-600 [&_p]:leading-relaxed [&_p]:text-base md:[&_p]:text-lg"
-                    data={vision.content}
-                    enableGutter={false}
-                  />
-                )}
-              </div>
-            </div>
+          {/* Vision Card */}
+          <div
+            className="bg-white p-8 md:p-10"
+            style={{
+              borderTop: '7px solid #B40000',
+              borderRadius: '10px',
+              boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.5)'
+            }}
+          >
+            <h3
+              className="text-xl md:text-[22px] font-extrabold mb-4"
+              style={{
+                color: vision?.titleColor || '#000000',
+                fontFamily: "'Roboto Slab', serif"
+              }}
+            >
+              {vision?.title}
+            </h3>
+            {vision?.content && (
+              <BasicRichText
+                className="prose prose-gray max-w-none [&_p]:text-black [&_p]:leading-[25px] [&_p]:text-[17px] [&_p]:font-normal"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+                data={vision.content}
+                enableGutter={false}
+              />
+            )}
           </div>
         </div>
         {renderCtaButton()}
