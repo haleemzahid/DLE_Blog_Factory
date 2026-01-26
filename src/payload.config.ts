@@ -62,7 +62,7 @@ export default buildConfig({
       // Feel free to delete this at any time. Simply remove the line below.
       beforeDashboard: ['@/components/BeforeDashboard'],
       afterNavLinks: ['@/components/Admin/AnalyticsDashboardNavLink'],
-      providers: ['@/components/DocumentVoiceButton#DocumentVoiceButton'],
+      // providers: ['@/components/DocumentVoiceButton#DocumentVoiceButton'], // Temporarily disabled
       graphics: {
         Logo: '@/components/Logo',
         Icon: '@/components/Logo/Icon',

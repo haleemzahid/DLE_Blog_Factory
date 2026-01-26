@@ -55,7 +55,8 @@ export const Posts: CollectionConfig<'posts'> = {
       url: ({ data, req }) => {
         // If post is assigned to an agent, use agent-specific URL
         if (data?.postType === 'agent' && data?.agent) {
-          const agentSlug = typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
+          const agentSlug =
+            typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
           if (agentSlug) {
             return `${req.protocol}//${req.host}/posts/${agentSlug}/${data?.slug || ''}`
           }
@@ -67,7 +68,8 @@ export const Posts: CollectionConfig<'posts'> = {
     preview: (data, { req }) => {
       // If post is assigned to an agent, use agent-specific URL
       if (data?.postType === 'agent' && data?.agent) {
-        const agentSlug = typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
+        const agentSlug =
+          typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
         if (agentSlug) {
           return `${req.protocol}//${req.host}/posts/${agentSlug}/${data?.slug || ''}`
         }
@@ -599,8 +601,7 @@ export const Posts: CollectionConfig<'posts'> = {
           type: 'richText',
           label: 'Custom Content',
           admin: {
-            condition: (_, siblingData) =>
-              siblingData?.overrideType !== 'hide',
+            condition: (_, siblingData) => siblingData?.overrideType !== 'hide',
           },
         },
       ],
@@ -695,8 +696,7 @@ export const Posts: CollectionConfig<'posts'> = {
               label: 'Custom Content',
               admin: {
                 description: 'Supports tokens like {{AGENT_NAME}}, {{CITY_NAME}}',
-                condition: (_, siblingData) =>
-                  siblingData?.type !== 'hide',
+                condition: (_, siblingData) => siblingData?.type !== 'hide',
               },
             },
           ],
