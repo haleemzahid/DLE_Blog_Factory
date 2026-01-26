@@ -191,13 +191,15 @@ export async function POST(req: NextRequest) {
     // Convert IDs to numbers for relationship fields (Payload requires numeric IDs)
     if (event.postId) enrichedEvent.postId = event.postId
     if (event.pageId) enrichedEvent.pageId = event.pageId
+    // Only set relationship IDs if they are valid positive integers
+    // Invalid or non-existent IDs will cause Payload validation errors
     if (event.agentId) {
       const agentIdNum = typeof event.agentId === 'string' ? parseInt(event.agentId, 10) : event.agentId
-      if (!isNaN(agentIdNum)) enrichedEvent.agentId = agentIdNum
+      if (!isNaN(agentIdNum) && agentIdNum > 0) enrichedEvent.agentId = agentIdNum
     }
     if (event.tenantId) {
       const tenantIdNum = typeof event.tenantId === 'string' ? parseInt(event.tenantId, 10) : event.tenantId
-      if (!isNaN(tenantIdNum)) enrichedEvent.tenantId = tenantIdNum
+      if (!isNaN(tenantIdNum) && tenantIdNum > 0) enrichedEvent.tenantId = tenantIdNum
     }
 
     if (ip) enrichedEvent.ipAddress = anonymizeIP(ip)
@@ -226,11 +228,51 @@ export async function POST(req: NextRequest) {
 }
 
 /**
+ * Validate that a relationship ID exists in the database
+ */
+async function validateRelationshipId(
+  payload: Awaited<ReturnType<typeof getPayload>>,
+  collection: string,
+  id: number,
+): Promise<boolean> {
+  try {
+    const doc = await payload.findByID({
+      collection: collection as 'tenants' | 'agents',
+      id,
+      depth: 0,
+    })
+    return doc !== null
+  } catch {
+    return false
+  }
+}
+
+/**
  * Save event to database
  */
 async function saveEvent(eventData: Record<string, unknown>): Promise<void> {
   try {
     const payload = await getPayload({ config: configPromise })
+
+    // Validate relationship fields exist before saving
+    // This prevents validation errors from Payload
+    if (eventData.tenantId) {
+      const tenantExists = await validateRelationshipId(
+        payload,
+        'tenants',
+        eventData.tenantId as number,
+      )
+      if (!tenantExists) {
+        delete eventData.tenantId
+      }
+    }
+
+    if (eventData.agentId) {
+      const agentExists = await validateRelationshipId(payload, 'agents', eventData.agentId as number)
+      if (!agentExists) {
+        delete eventData.agentId
+      }
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await payload.create({
