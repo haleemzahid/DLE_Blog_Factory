@@ -54,14 +54,14 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
   }
 
   return (
-    <section className="py-6" style={{ backgroundColor: backgroundColor || '#1E699B' }}>
-      <div className="max-w-7xl mx-auto px-0">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+    <section className="py-4 md:py-6" style={{ backgroundColor: backgroundColor || '#1E699B' }}>
+      <div className="max-w-7xl mx-auto px-3 md:px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-center">
           {/* Left Column - Text Content */}
-          <div className="text-left order-2 md:order-1 flex flex-col justify-center">
+          <div className="text-left order-2 md:order-1 flex flex-col justify-center pr-0 md:pr-3">
             {/* Heading */}
             <h2
-              className={`${getHeadingClass()} font-semibold mb-4 tracking-wide leading-tight`}
+              className={`${getHeadingClass()} font-semibold mb-3 tracking-wide leading-tight`}
               style={{
                 color: headingColor || '#ffffff',
                 fontFamily: "'Roboto Slab', serif",
@@ -74,9 +74,9 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
 
             {/* Optional Content */}
             {content && (
-              <div className="mb-0">
+              <div className="mb-0 mt-1">
                 <BasicRichText
-                  className="prose max-w-none [&_p]:text-[15px] [&_p]:md:text-[16px] [&_p]:leading-[1.4] [&_p]:font-normal [&_p]:text-white [&_p]:mb-2 [&_ul]:text-white [&_ul]:text-[15px] [&_ul]:md:text-[16px] [&_ul]:mb-2 [&_ul]:leading-[1.4] [&_ol]:text-white [&_ol]:text-[15px] [&_ol]:md:text-[16px] [&_ol]:mb-2 [&_ol]:leading-[1.4] [&_li]:text-white [&_li]:mb-0.5 [&_strong]:text-white [&_strong]:font-bold"
+                  className="prose max-w-none [&_p]:text-[15px] [&_p]:md:text-[16px] [&_p]:leading-[1.4] [&_p]:font-normal [&_p]:text-white [&_p]:mb-1.5 [&_ul]:text-white [&_ul]:text-[15px] [&_ul]:md:text-[16px] [&_ul]:mb-1.5 [&_ul]:leading-[1.3] [&_ol]:text-white [&_ol]:text-[15px] [&_ol]:md:text-[16px] [&_ol]:mb-1.5 [&_ol]:leading-[1.3] [&_li]:text-white [&_li]:mb-0.5 [&_li]:leading-[1.3] [&_strong]:text-white [&_strong]:font-bold"
                   style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 400, color: '#ffffff' }}
                   data={content}
                   enableGutter={false}
@@ -86,7 +86,7 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
           </div>
 
           {/* Right Column - Video and Button */}
-          <div className="order-1 md:order-2 flex flex-col gap-6">
+          <div className="order-1 md:order-2 flex flex-col gap-4">
             {/* Video */}
             {videoUrl && (
               <div className="relative w-full  mx-auto shadow-lg" style={{ paddingBottom: '100%' }}>
