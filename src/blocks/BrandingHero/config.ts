@@ -22,7 +22,7 @@ export const BrandingHero: Block = {
       name: 'backgroundColor',
       type: 'text',
       label: 'Background Color',
-      defaultValue: '#ffffff',
+      defaultValue: '#1E699B',
       admin: {
         description: 'Background color for the section',
         components: {
@@ -59,7 +59,7 @@ export const BrandingHero: Block = {
       name: 'headingColor',
       type: 'text',
       label: 'Heading Color',
-      defaultValue: '#000000',
+      defaultValue: '#ffffff',
       admin: {
         components: {
           Field: '@/components/ColorPickerField#ColorPickerField',
@@ -117,7 +117,7 @@ export const BrandingHero: Block = {
       name: 'ctaButtonColor',
       type: 'text',
       label: 'Button Background Color',
-      defaultValue: '#B40000',
+      defaultValue: '#ffffff',
       admin: {
         condition: (_, siblingData) => siblingData?.enableCta,
         components: {
@@ -129,7 +129,7 @@ export const BrandingHero: Block = {
       name: 'ctaTextColor',
       type: 'text',
       label: 'Button Text Color',
-      defaultValue: '#ffffff',
+      defaultValue: '#000000',
       admin: {
         condition: (_, siblingData) => siblingData?.enableCta,
         components: {

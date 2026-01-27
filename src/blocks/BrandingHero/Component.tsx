@@ -24,11 +24,11 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
       case 'medium':
         return 'text-3xl md:text-4xl'
       case 'large':
-        return 'text-4xl md:text-5xl'
+        return 'text-3xl md:text-5xl lg:text-6xl'
       case 'xlarge':
-        return 'text-5xl md:text-6xl'
+        return 'text-4xl md:text-6xl lg:text-7xl'
       default:
-        return 'text-4xl md:text-5xl'
+        return 'text-3xl md:text-5xl lg:text-6xl'
     }
   }
 
@@ -53,70 +53,77 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
   }
 
   return (
-    <section className="py-16 md:py-24" style={{ backgroundColor: backgroundColor || '#ffffff' }}>
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Video */}
-          {videoUrl && (
-            <div className="mb-8">
-              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+    <section className="py-12 md:py-[50px]" style={{ backgroundColor: backgroundColor || '#1E699B' }}>
+      <div className="container mx-auto px-4 md:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+          {/* Left Column - Text Content */}
+          <div className="text-left order-2 md:order-1">
+            {/* Heading */}
+            <h2
+              className={`${getHeadingClass()} font-semibold mb-6 tracking-wide leading-tight`}
+              style={{
+                color: headingColor || '#ffffff',
+                fontFamily: "'Roboto Slab', serif",
+                fontWeight: 600,
+                lineHeight: '1.2',
+              }}
+            >
+              {heading}
+            </h2>
+
+            {/* Optional Content */}
+            {content && (
+              <div className="mb-0">
+                <BasicRichText
+                  className="prose prose-lg max-w-none [&_p]:text-base [&_p]:md:text-lg [&_p]:leading-relaxed [&_p]:font-normal [&_p]:text-white [&_ul]:text-white [&_li]:text-white [&_strong]:text-white [&_strong]:font-bold"
+                  style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 400, color: '#ffffff' }}
+                  data={content}
+                  enableGutter={false}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Right Column - Video and Button */}
+          <div className="order-1 md:order-2 flex flex-col gap-6">
+            {/* Video */}
+            {videoUrl && (
+              <div className="relative w-full shadow-lg" style={{ paddingBottom: '56.25%' }}>
                 <iframe
                   src={getEmbedUrl(videoUrl)}
                   title={videoTitle || 'Video'}
-                  className="absolute top-0 left-0 w-full h-full rounded-lg"
+                  className="absolute top-0 left-0 w-full h-full rounded-[10px]"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Heading */}
-          <h2
-            className={`${getHeadingClass()} font-bold mb-6`}
-            style={{
-              color: headingColor || '#000000',
-              fontFamily: "'Roboto Slab', serif",
-            }}
-          >
-            {heading}
-          </h2>
-
-          {/* Optional Content */}
-          {content && (
-            <div className="mb-8">
-              <BasicRichText
-                className="prose prose-lg max-w-none mx-auto [&_p]:text-gray-700 [&_p]:leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-                data={content}
-                enableGutter={false}
-              />
-            </div>
-          )}
-
-          {/* CTA Button */}
-          {enableCta && ctaLink && (
-            <div className="mt-8">
-              <a
-                href={
-                  ctaLink.type === 'reference' && ctaLink.reference?.value
-                    ? typeof ctaLink.reference.value === 'object'
-                      ? `/${ctaLink.reference.value.slug}`
+            {/* CTA Button - Below Video in Right Column */}
+            {enableCta && ctaLink && (
+              <div className="text-center">
+                <a
+                  href={
+                    ctaLink.type === 'reference' && ctaLink.reference?.value
+                      ? typeof ctaLink.reference.value === 'object'
+                        ? `/${ctaLink.reference.value.slug}`
+                        : ctaLink.url || '#'
                       : ctaLink.url || '#'
-                    : ctaLink.url || '#'
-                }
-                target={ctaLink.newTab ? '_blank' : undefined}
-                rel={ctaLink.newTab ? 'noopener noreferrer' : undefined}
-                className="inline-flex items-center justify-center rounded-lg px-8 py-3 font-semibold text-lg transition-opacity hover:opacity-90"
-                style={{
-                  backgroundColor: ctaButtonColor || '#B40000',
-                  color: ctaTextColor || '#ffffff',
-                }}
-              >
-                {ctaLink.label}
-              </a>
-            </div>
-          )}
+                  }
+                  target={ctaLink.newTab ? '_blank' : undefined}
+                  rel={ctaLink.newTab ? 'noopener noreferrer' : undefined}
+                  className="inline-flex items-center justify-center rounded-[10px] px-8 py-3 font-bold text-base md:text-lg transition-all hover:opacity-90 shadow-md"
+                  style={{
+                    backgroundColor: ctaButtonColor || '#ffffff',
+                    color: ctaTextColor || '#000000',
+                    border: '2px solid #ffffff',
+                  }}
+                >
+                  {ctaLink.label}
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
