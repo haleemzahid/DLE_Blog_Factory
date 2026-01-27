@@ -1,4 +1,4 @@
-import type { Agent, CityDatum, Post, Tenant, Announcement } from '@/payload-types'
+import type { Agent, CityDatum, Post, Tenant } from '@/payload-types'
 import { replaceTokens, getAvailableTokens } from './replaceTokens'
 import { generators, runGenerator } from './generators'
 import { analyzeContentUniqueness } from './contentUniqueness'
@@ -43,9 +43,6 @@ interface TenantContentOverride {
     name: string
     value: string
   }>
-  // Intro/closing variation settings for content uniqueness
-  introVariant?: 'standard' | 'market' | 'community' | 'buyer' | 'investment'
-  closingVariant?: 'standard' | 'urgency' | 'value'
 }
 
 /**
@@ -57,8 +54,6 @@ interface RenderContext {
   cityData?: CityDatum | null
   tenant?: Tenant | null
   baseUrl?: string
-  /** Pre-fetched announcements for this context (use getAnnouncementsForContext to fetch) */
-  announcements?: Announcement[] | null
 }
 
 /**
@@ -94,55 +89,27 @@ interface RenderResult {
 
 /**
  * Default template sections configuration
- * The intro and closing sections use variant generators for content uniqueness
  */
 const DEFAULT_SECTIONS = [
-  { id: 'intro', name: 'Introduction', generator: 'intro_standard', condition: null, allowVariant: true },
-  { id: 'market_stats', name: 'Market Statistics', generator: 'market_stats', condition: 'cityData.medianHomePrice', allowVariant: false },
-  { id: 'cost_of_living', name: 'Cost of Living', generator: 'cost_of_living', condition: 'cityData.medianHomePrice', allowVariant: false },
-  { id: 'neighborhoods', name: 'Neighborhoods', generator: 'neighborhoods', condition: 'cityData.neighborhoods.length > 0', allowVariant: false },
-  { id: 'schools', name: 'Schools', generator: 'schools', condition: 'cityData.topSchools.length > 0', allowVariant: false },
-  { id: 'local_facts', name: 'Local Facts', generator: 'local_facts', condition: 'cityData.uniqueFacts.length > 0', allowVariant: false },
-  { id: 'employers', name: 'Key Employers', generator: 'employers', condition: 'cityData.keyEmployers.length > 0', allowVariant: false },
-  { id: 'places_of_worship', name: 'Places of Worship', generator: 'places_of_worship', condition: 'cityData.placesOfWorship', allowVariant: false },
-  { id: 'cultural_centers', name: 'Cultural Centers', generator: 'cultural_centers', condition: 'cityData.culturalCenters', allowVariant: false },
-  { id: 'cultural_events', name: 'Cultural Events', generator: 'cultural_events', condition: 'cityData.culturalEvents', allowVariant: false },
-  { id: 'diversity_overview', name: 'Demographics', generator: 'diversity_overview', condition: 'cityData.demographics', allowVariant: false },
-  { id: 'community_amenities', name: 'Community Amenities', generator: 'community_amenities', condition: 'cityData.communityAmenities', allowVariant: false },
-  { id: 'languages_spoken', name: 'Languages', generator: 'languages_spoken', condition: 'cityData.languagesSpoken', allowVariant: false },
-  { id: 'agent_expertise', name: 'Agent Expertise', generator: 'agent_expertise', condition: 'agent', allowVariant: false },
-  { id: 'agent_reviews', name: 'Agent Reviews', generator: 'agent_reviews', condition: 'agent.seo?.jsonLd?.aggregateRating', allowVariant: false },
-  { id: 'agent_languages', name: 'Agent Languages', generator: 'agent_languages', condition: 'agent.culturalExpertise?.languagesSpoken', allowVariant: false },
-  { id: 'areas_served', name: 'Areas Served', generator: 'areas_served', condition: 'agent.seo?.jsonLd?.areaServed', allowVariant: false },
-  { id: 'closing', name: 'Closing CTA', generator: 'closing_standard', condition: 'agent', allowVariant: true },
-  { id: 'faq', name: 'FAQ', generator: 'faq', condition: 'agent.faqs.length > 0', allowVariant: false },
+  { id: 'intro', name: 'Introduction', generator: null, condition: null },
+  { id: 'market_stats', name: 'Market Statistics', generator: 'market_stats', condition: 'cityData.medianHomePrice' },
+  { id: 'neighborhoods', name: 'Neighborhoods', generator: 'neighborhoods', condition: 'cityData.neighborhoods.length > 0' },
+  { id: 'schools', name: 'Schools', generator: 'schools', condition: 'cityData.topSchools.length > 0' },
+  { id: 'local_facts', name: 'Local Facts', generator: 'local_facts', condition: 'cityData.uniqueFacts.length > 0' },
+  { id: 'employers', name: 'Key Employers', generator: 'employers', condition: 'cityData.keyEmployers.length > 0' },
+  { id: 'places_of_worship', name: 'Places of Worship', generator: 'places_of_worship', condition: 'cityData.placesOfWorship' },
+  { id: 'cultural_centers', name: 'Cultural Centers', generator: 'cultural_centers', condition: 'cityData.culturalCenters' },
+  { id: 'cultural_events', name: 'Cultural Events', generator: 'cultural_events', condition: 'cityData.culturalEvents' },
+  { id: 'diversity_overview', name: 'Demographics', generator: 'diversity_overview', condition: 'cityData.demographics' },
+  { id: 'community_amenities', name: 'Community Amenities', generator: 'community_amenities', condition: 'cityData.communityAmenities' },
+  { id: 'languages_spoken', name: 'Languages', generator: 'languages_spoken', condition: 'cityData.languagesSpoken' },
+  { id: 'agent_expertise', name: 'Agent Expertise', generator: 'agent_expertise', condition: 'agent' },
+  { id: 'agent_reviews', name: 'Agent Reviews', generator: 'agent_reviews', condition: 'agent.seo?.jsonLd?.aggregateRating' },
+  { id: 'agent_languages', name: 'Agent Languages', generator: 'agent_languages', condition: 'agent.culturalExpertise?.languagesSpoken' },
+  { id: 'areas_served', name: 'Areas Served', generator: 'areas_served', condition: 'agent.seo?.jsonLd?.areaServed' },
+  { id: 'agent_cta', name: 'Contact CTA', generator: 'agent_cta', condition: 'agent' },
+  { id: 'faq', name: 'FAQ', generator: 'faq', condition: 'agent.faqs.length > 0' },
 ]
-
-/**
- * Get the appropriate intro generator based on tenant variant setting
- */
-function getIntroGenerator(variant?: string): string {
-  const introGenerators: Record<string, string> = {
-    standard: 'intro_standard',
-    market: 'intro_market',
-    community: 'intro_community',
-    buyer: 'intro_buyer',
-    investment: 'intro_investment',
-  }
-  return introGenerators[variant || 'standard'] || 'intro_standard'
-}
-
-/**
- * Get the appropriate closing generator based on tenant variant setting
- */
-function getClosingGenerator(variant?: string): string {
-  const closingGenerators: Record<string, string> = {
-    standard: 'closing_standard',
-    urgency: 'closing_urgency',
-    value: 'closing_value',
-  }
-  return closingGenerators[variant || 'standard'] || 'closing_standard'
-}
 
 /**
  * Evaluate a condition string against the context
@@ -300,7 +267,7 @@ function applySectionOverride(
  * This is the main function for render-time content assembly
  */
 export function renderPostForAgent(context: RenderContext): RenderResult {
-  const { post, agent, cityData, tenant, baseUrl = '', announcements } = context
+  const { post, agent, cityData, tenant, baseUrl = '' } = context
 
   // Check if post uses template rendering
   const useTemplate = (post as any).useTemplate
@@ -338,19 +305,6 @@ export function renderPostForAgent(context: RenderContext): RenderResult {
     }
   })
 
-  // Get intro/closing variants from tenant overrides
-  const introVariant = tenantOverrides?.introVariant
-  const closingVariant = tenantOverrides?.closingVariant
-
-  // Build tenant info for token context
-  const tenantInfo = tenant && typeof tenant === 'object' ? {
-    name: tenant.name,
-    slug: tenant.slug,
-    domain: (tenant as any).domain,
-    brandName: (tenant as any).brandName,
-    tagline: (tenant as any).tagline,
-  } : null
-
   // Build token context
   const tokenContext = {
     agent: effectiveAgent,
@@ -361,8 +315,6 @@ export function renderPostForAgent(context: RenderContext): RenderResult {
       publishedAt: post.publishedAt || undefined,
     },
     custom: customTokens,
-    tenant: tenantInfo,
-    announcements: announcements || null,
   }
 
   // Render sections
@@ -389,23 +341,12 @@ export function renderPostForAgent(context: RenderContext): RenderResult {
       // Find override for this section
       const override = mergedOverrides.find((o) => o.sectionId === section.id)
 
-      // Determine which generator to use (handle intro/closing variants)
-      let generatorName = section.generator
-      if (section.allowVariant) {
-        if (section.id === 'intro' && introVariant) {
-          generatorName = getIntroGenerator(introVariant)
-        } else if (section.id === 'closing' && closingVariant) {
-          generatorName = getClosingGenerator(closingVariant)
-        }
-      }
-
       // Generate base content
       let baseContent = ''
-      if (generatorName && generators[generatorName]) {
-        baseContent = runGenerator(generatorName, {
+      if (section.generator && generators[section.generator]) {
+        baseContent = runGenerator(section.generator, {
           agent: effectiveAgent,
           cityData: effectiveCityData,
-          announcements: announcements || null,
         })
       }
 
@@ -490,17 +431,16 @@ export function renderPostForAgent(context: RenderContext): RenderResult {
  */
 export function renderPostForMultipleTenants(
   post: Post,
-  tenants: Array<{ tenant: Tenant; agent?: Agent | null; cityData?: CityDatum | null; announcements?: Announcement[] | null }>,
+  tenants: Array<{ tenant: Tenant; agent?: Agent | null; cityData?: CityDatum | null }>,
   baseUrl: string = ''
 ): Array<RenderResult & { tenantId: number }> {
-  return tenants.map(({ tenant, agent, cityData, announcements }) => {
+  return tenants.map(({ tenant, agent, cityData }) => {
     const result = renderPostForAgent({
       post,
       agent,
       cityData,
       tenant,
       baseUrl,
-      announcements,
     })
 
     return {

@@ -7,12 +7,7 @@ import { payloadAiPlugin } from '@ai-stack/payloadcms'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+import { FixedToolbarFeature, HeadingFeature, InlineToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
@@ -78,7 +73,7 @@ export const plugins: Plugin[] = [
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    // PayloadAiPluginLexicalEditorFeature(), // Temporarily disabled
+                    PayloadAiPluginLexicalEditorFeature(),
                   ]
                 },
               }),

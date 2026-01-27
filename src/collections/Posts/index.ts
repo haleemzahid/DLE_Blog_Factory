@@ -55,8 +55,7 @@ export const Posts: CollectionConfig<'posts'> = {
       url: ({ data, req }) => {
         // If post is assigned to an agent, use agent-specific URL
         if (data?.postType === 'agent' && data?.agent) {
-          const agentSlug =
-            typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
+          const agentSlug = typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
           if (agentSlug) {
             return `${req.protocol}//${req.host}/posts/${agentSlug}/${data?.slug || ''}`
           }
@@ -68,8 +67,7 @@ export const Posts: CollectionConfig<'posts'> = {
     preview: (data, { req }) => {
       // If post is assigned to an agent, use agent-specific URL
       if (data?.postType === 'agent' && data?.agent) {
-        const agentSlug =
-          typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
+        const agentSlug = typeof data.agent === 'object' ? (data.agent as { slug: string }).slug : null
         if (agentSlug) {
           return `${req.protocol}//${req.host}/posts/${agentSlug}/${data?.slug || ''}`
         }
@@ -601,7 +599,8 @@ export const Posts: CollectionConfig<'posts'> = {
           type: 'richText',
           label: 'Custom Content',
           admin: {
-            condition: (_, siblingData) => siblingData?.overrideType !== 'hide',
+            condition: (_, siblingData) =>
+              siblingData?.overrideType !== 'hide',
           },
         },
       ],
@@ -642,37 +641,6 @@ export const Posts: CollectionConfig<'posts'> = {
             description: 'Use this city data for token replacement',
           },
         },
-        // Intro/Closing variants for content uniqueness
-        {
-          name: 'introVariant',
-          type: 'select',
-          label: 'Intro Style',
-          defaultValue: 'standard',
-          admin: {
-            description: 'Choose the writing style for the introduction (increases content uniqueness)',
-          },
-          options: [
-            { label: 'Standard Welcome', value: 'standard' },
-            { label: 'Market-Focused', value: 'market' },
-            { label: 'Community-Focused', value: 'community' },
-            { label: 'Buyer-Focused', value: 'buyer' },
-            { label: 'Investment-Focused', value: 'investment' },
-          ],
-        },
-        {
-          name: 'closingVariant',
-          type: 'select',
-          label: 'Closing Style',
-          defaultValue: 'standard',
-          admin: {
-            description: 'Choose the writing style for the closing CTA (increases content uniqueness)',
-          },
-          options: [
-            { label: 'Standard CTA', value: 'standard' },
-            { label: 'Urgency-Based', value: 'urgency' },
-            { label: 'Value Proposition', value: 'value' },
-          ],
-        },
         {
           name: 'sections',
           type: 'array',
@@ -690,13 +658,10 @@ export const Posts: CollectionConfig<'posts'> = {
               options: [
                 { label: 'Introduction', value: 'intro' },
                 { label: 'Market Statistics', value: 'market_stats' },
-                { label: 'Cost of Living', value: 'cost_of_living' },
                 { label: 'Neighborhoods', value: 'neighborhoods' },
                 { label: 'Schools', value: 'schools' },
                 { label: 'Local Facts', value: 'local_facts' },
                 { label: 'Key Employers', value: 'employers' },
-                { label: 'Transportation', value: 'transportation' },
-                { label: 'Healthcare', value: 'healthcare' },
                 { label: 'Places of Worship', value: 'places_of_worship' },
                 { label: 'Cultural Centers', value: 'cultural_centers' },
                 { label: 'Cultural Events', value: 'cultural_events' },
@@ -707,7 +672,7 @@ export const Posts: CollectionConfig<'posts'> = {
                 { label: 'Agent Reviews', value: 'agent_reviews' },
                 { label: 'Agent Languages', value: 'agent_languages' },
                 { label: 'Areas Served', value: 'areas_served' },
-                { label: 'Closing CTA', value: 'closing' },
+                { label: 'Contact CTA', value: 'agent_cta' },
                 { label: 'FAQ', value: 'faq' },
               ],
             },
@@ -730,7 +695,8 @@ export const Posts: CollectionConfig<'posts'> = {
               label: 'Custom Content',
               admin: {
                 description: 'Supports tokens like {{AGENT_NAME}}, {{CITY_NAME}}',
-                condition: (_, siblingData) => siblingData?.type !== 'hide',
+                condition: (_, siblingData) =>
+                  siblingData?.type !== 'hide',
               },
             },
           ],

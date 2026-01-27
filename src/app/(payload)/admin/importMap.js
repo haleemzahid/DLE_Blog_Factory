@@ -40,6 +40,7 @@ import { default as default_2b7e2e151f989fb419ce3009e56b903e } from '@/component
 import { default as default_b64a11c6fdb2a96fb12229e90d8db821 } from '@/components/Admin/AnalyticsDashboardNavLink'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
+import { DocumentVoiceButton as DocumentVoiceButton_ad5f1fec2f7c95aa2d7022c0816ab469 } from '@/components/DocumentVoiceButton'
 import { InstructionsProvider as InstructionsProvider_4490b89d4413c1ffaecdacfe72efaf73 } from '@ai-stack/payloadcms/client'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { default as default_1d0aa86d6f358faa32692d4bd1fd39b2 } from '@/components/Admin/AnalyticsDashboardView'
@@ -87,6 +88,7 @@ export const importMap = {
   "@/components/Admin/AnalyticsDashboardNavLink#default": default_b64a11c6fdb2a96fb12229e90d8db821,
   "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
   "@/components/BeforeLogin#default": default_8a7ab0eb7ab5c511aba12e68480bfe5e,
+  "@/components/DocumentVoiceButton#DocumentVoiceButton": DocumentVoiceButton_ad5f1fec2f7c95aa2d7022c0816ab469,
   "@ai-stack/payloadcms/client#InstructionsProvider": InstructionsProvider_4490b89d4413c1ffaecdacfe72efaf73,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "@/components/Admin/AnalyticsDashboardView#default": default_1d0aa86d6f358faa32692d4bd1fd39b2
