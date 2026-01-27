@@ -1116,25 +1116,6 @@ export interface Agent {
    * Order within directory listings (lower = first)
    */
   directoryOrder?: number | null;
-  /**
-   * Import existing schema data from external sources
-   */
-  jsonLdImport?: {
-    importMethod?: ('url' | 'raw') | null;
-    /**
-     * Google Business Profile, Zillow, or any page with JSON-LD
-     */
-    importUrl?: string | null;
-    /**
-     * Paste the JSON-LD schema markup here
-     */
-    rawJsonLd?: string | null;
-    lastImported?: string | null;
-    /**
-     * URL or source of last import
-     */
-    importSource?: string | null;
-  };
   updatedAt: string;
   createdAt: string;
 }
@@ -5557,15 +5538,6 @@ export interface AgentsSelect<T extends boolean = true> {
   territoryExclusive?: T;
   showInDirectory?: T;
   directoryOrder?: T;
-  jsonLdImport?:
-    | T
-    | {
-        importMethod?: T;
-        importUrl?: T;
-        rawJsonLd?: T;
-        lastImported?: T;
-        importSource?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
 }
