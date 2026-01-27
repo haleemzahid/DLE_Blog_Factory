@@ -287,6 +287,7 @@ export interface Page {
     | CaliforniaBlock
     | VideoLayoutBlock
     | BrandingHeroBlock
+    | PresentationEmbedBlock
   )[];
   meta?: {
     title?: string | null;
@@ -3275,6 +3276,40 @@ export interface BrandingHeroBlock {
   blockType: 'brandingHero';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PresentationEmbedBlock".
+ */
+export interface PresentationEmbedBlock {
+  /**
+   * Background color for the section
+   */
+  backgroundColor?: string | null;
+  /**
+   * Optional heading above the presentation
+   */
+  heading?: string | null;
+  headingColor?: string | null;
+  /**
+   * PowerPoint Online embed URL (from Office 365), Google Slides embed URL, or other presentation platform embed URL. For PowerPoint: Share > Embed, then copy the src URL from the iframe code.
+   */
+  presentationUrl: string;
+  /**
+   * Accessible title for the presentation (for screen readers)
+   */
+  presentationTitle?: string | null;
+  aspectRatio?: ('16:9' | '4:3' | '16:10') | null;
+  /**
+   * Direct link to download the presentation file (e.g., .pptx file hosted on your server or cloud storage)
+   */
+  downloadLink?: string | null;
+  downloadButtonText?: string | null;
+  downloadButtonColor?: string | null;
+  downloadButtonTextColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'presentationEmbed';
+}
+/**
  * Custom navigation header for tenant sites and specific agents
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4319,6 +4354,7 @@ export interface PagesSelect<T extends boolean = true> {
         california?: T | CaliforniaBlockSelect<T>;
         videoLayout?: T | VideoLayoutBlockSelect<T>;
         brandingHero?: T | BrandingHeroBlockSelect<T>;
+        presentationEmbed?: T | PresentationEmbedBlockSelect<T>;
       };
   meta?:
     | T
@@ -5055,6 +5091,24 @@ export interface BrandingHeroBlockSelect<T extends boolean = true> {
       };
   ctaButtonColor?: T;
   ctaTextColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PresentationEmbedBlock_select".
+ */
+export interface PresentationEmbedBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  heading?: T;
+  headingColor?: T;
+  presentationUrl?: T;
+  presentationTitle?: T;
+  aspectRatio?: T;
+  downloadLink?: T;
+  downloadButtonText?: T;
+  downloadButtonColor?: T;
+  downloadButtonTextColor?: T;
   id?: T;
   blockName?: T;
 }

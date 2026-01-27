@@ -6,6 +6,7 @@ import * as migration_20260124_add_agent_seo_and_citydata_cultural from './20260
 import * as migration_20260124_add_posts_template_overrides from './20260124_add_posts_template_overrides';
 import * as migration_20260126_add_branding_hero_block from './20260126_add_branding_hero_block';
 import * as migration_20260126_update_branding_hero_video from './20260126_update_branding_hero_video';
+import * as migration_20260127_add_presentation_embed_block from './20260127_add_presentation_embed_block';
 
 export const migrations = [
   {
@@ -47,5 +48,10 @@ export const migrations = [
     up: migration_20260126_update_branding_hero_video.up,
     down: migration_20260126_update_branding_hero_video.down,
     name: '20260126_update_branding_hero_video'
+  },
+  {
+    up: migration_20260127_add_presentation_embed_block.up,
+    down: migration_20260127_add_presentation_embed_block.down,
+    name: '20260127_add_presentation_embed_block'
   },
 ];

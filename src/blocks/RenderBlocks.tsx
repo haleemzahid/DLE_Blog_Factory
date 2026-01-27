@@ -34,6 +34,7 @@ import { DesignationDirectoryBlock } from '@/blocks/DesignationDirectory/Compone
 import { CaliforniaBlock } from '@/blocks/California/Component'
 import { VideoLayoutBlock } from '@/blocks/VideoLayout/Component'
 import { BrandingHeroBlock } from '@/blocks/BrandingHero/Component'
+import { PresentationEmbedBlock } from '@/blocks/PresentationEmbed/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -68,6 +69,7 @@ const blockComponents = {
   california: CaliforniaBlock,
   videoLayout: VideoLayoutBlock,
   brandingHero: BrandingHeroBlock,
+  presentationEmbed: PresentationEmbedBlock,
 }
 
 export const RenderBlocks: React.FC<{
