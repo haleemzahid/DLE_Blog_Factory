@@ -52,8 +52,7 @@
       "Bash(vercel logs:*)",
       "Bash(pnpm tsc:*)",
       "WebFetch(domain:designatedlocalexpert.com)",
-      "Bash(pnpm drizzle-kit:*)",
-      "WebFetch(domain:localhost)"
+      "Bash(pnpm drizzle-kit:*)"
     ]
   }
 }

@@ -3216,10 +3216,6 @@ export interface BrandingHeroBlock {
    */
   backgroundColor?: string | null;
   /**
-   * Optional background image (e.g., wave pattern)
-   */
-  backgroundImage?: (number | null) | Media;
-  /**
    * YouTube or Vimeo video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)
    */
   videoUrl?: string | null;
@@ -5039,7 +5035,6 @@ export interface VideoLayoutBlockSelect<T extends boolean = true> {
  */
 export interface BrandingHeroBlockSelect<T extends boolean = true> {
   backgroundColor?: T;
-  backgroundImage?: T;
   videoUrl?: T;
   videoTitle?: T;
   heading?: T;
