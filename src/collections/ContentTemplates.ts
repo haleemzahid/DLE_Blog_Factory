@@ -168,24 +168,52 @@ export const ContentTemplates: CollectionConfig = {
             description: 'Select which generator to use for dynamic content',
           },
           options: [
+            // Market Data
             { label: 'Market Statistics', value: 'market_stats' },
+            { label: 'Price Comparison', value: 'price_comparison' },
+            { label: 'Cost of Living', value: 'cost_of_living' },
+
+            // Location & Neighborhood
             { label: 'Neighborhoods', value: 'neighborhoods' },
             { label: 'Schools', value: 'schools' },
-            { label: 'Agent Bio & CTA', value: 'agent_cta' },
             { label: 'Local Facts', value: 'local_facts' },
             { label: 'Key Employers', value: 'employers' },
-            { label: 'Price Comparison', value: 'price_comparison' },
-            { label: 'FAQ Section', value: 'faq' },
+            { label: 'Transportation', value: 'transportation' },
+            { label: 'Healthcare', value: 'healthcare' },
+
+            // Cultural & Community
             { label: 'Places of Worship', value: 'places_of_worship' },
             { label: 'Cultural Centers', value: 'cultural_centers' },
             { label: 'Cultural Events', value: 'cultural_events' },
             { label: 'Demographics Overview', value: 'diversity_overview' },
             { label: 'Community Amenities', value: 'community_amenities' },
             { label: 'Languages Spoken', value: 'languages_spoken' },
+
+            // Agent Sections
+            { label: 'Agent Bio & CTA', value: 'agent_cta' },
             { label: 'Agent Expertise', value: 'agent_expertise' },
             { label: 'Agent Reviews', value: 'agent_reviews' },
             { label: 'Agent Languages', value: 'agent_languages' },
             { label: 'Areas Served', value: 'areas_served' },
+            { label: 'FAQ Section', value: 'faq' },
+
+            // Intro Variants (for uniqueness)
+            { label: 'Intro - Standard', value: 'intro_standard' },
+            { label: 'Intro - Market Focused', value: 'intro_market' },
+            { label: 'Intro - Community Focused', value: 'intro_community' },
+            { label: 'Intro - Buyer Focused', value: 'intro_buyer' },
+            { label: 'Intro - Investment Focused', value: 'intro_investment' },
+
+            // Closing Variants (for uniqueness)
+            { label: 'Closing - Standard CTA', value: 'closing_standard' },
+            { label: 'Closing - Urgency Based', value: 'closing_urgency' },
+            { label: 'Closing - Value Proposition', value: 'closing_value' },
+
+            // Hot Deals & Announcements
+            { label: 'Hot Deals', value: 'hot_deals' },
+            { label: 'Announcements', value: 'announcements' },
+            { label: 'Market Updates', value: 'market_updates' },
+            { label: 'Promotions', value: 'promotions' },
           ],
         },
         // Conditional rendering

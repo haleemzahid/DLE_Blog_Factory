@@ -483,6 +483,103 @@ export const Agents: CollectionConfig<'agents'> = {
           ],
         },
         {
+          label: 'Hot Deals',
+          fields: [
+            {
+              name: 'hotDeals',
+              type: 'array',
+              label: 'Hot Deals & Featured Listings',
+              admin: {
+                description: 'Featured properties and promotions that appear via {{HOT_DEALS}} token',
+              },
+              maxRows: 10,
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                  label: 'Title',
+                  admin: {
+                    description: 'e.g., "Luxury Lakefront Home - Below Market!"',
+                  },
+                },
+                {
+                  name: 'description',
+                  type: 'textarea',
+                  label: 'Description',
+                  admin: {
+                    rows: 3,
+                  },
+                },
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  label: 'Image',
+                },
+                {
+                  name: 'dealType',
+                  type: 'select',
+                  label: 'Deal Type',
+                  defaultValue: 'listing',
+                  options: [
+                    { label: 'Featured Listing', value: 'listing' },
+                    { label: 'Promotion', value: 'promo' },
+                    { label: 'Special Offer', value: 'offer' },
+                    { label: 'Open House', value: 'open-house' },
+                    { label: 'Price Reduction', value: 'price-drop' },
+                    { label: 'Event', value: 'event' },
+                  ],
+                },
+                {
+                  name: 'price',
+                  type: 'text',
+                  label: 'Price',
+                  admin: {
+                    description: 'e.g., "$1,250,000" or "Starting at $500K"',
+                  },
+                },
+                {
+                  name: 'link',
+                  type: 'text',
+                  label: 'Link URL',
+                  admin: {
+                    description: 'Link to listing or more info',
+                  },
+                },
+                {
+                  name: 'isActive',
+                  type: 'checkbox',
+                  defaultValue: true,
+                  label: 'Active',
+                },
+                {
+                  name: 'expiresAt',
+                  type: 'date',
+                  label: 'Expires At',
+                  admin: {
+                    description: 'When this deal expires (leave blank for no expiration)',
+                    date: {
+                      pickerAppearance: 'dayAndTime',
+                    },
+                  },
+                },
+                {
+                  name: 'priority',
+                  type: 'number',
+                  label: 'Priority',
+                  defaultValue: 50,
+                  min: 1,
+                  max: 100,
+                  admin: {
+                    description: 'Higher priority deals shown first (1-100)',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
           name: 'meta',
           label: 'SEO',
           fields: [

@@ -81,6 +81,7 @@ export interface Config {
     'tenant-footers': TenantFooter;
     cityData: CityDatum;
     contentTemplates: ContentTemplate;
+    announcements: Announcement;
     'analytics-events': AnalyticsEvent;
     'post-analytics': PostAnalytic;
     'agent-analytics': AgentAnalytic;
@@ -120,6 +121,7 @@ export interface Config {
     'tenant-footers': TenantFootersSelect<false> | TenantFootersSelect<true>;
     cityData: CityDataSelect<false> | CityDataSelect<true>;
     contentTemplates: ContentTemplatesSelect<false> | ContentTemplatesSelect<true>;
+    announcements: AnnouncementsSelect<false> | AnnouncementsSelect<true>;
     'analytics-events': AnalyticsEventsSelect<false> | AnalyticsEventsSelect<true>;
     'post-analytics': PostAnalyticsSelect<false> | PostAnalyticsSelect<true>;
     'agent-analytics': AgentAnalyticsSelect<false> | AgentAnalyticsSelect<true>;
@@ -530,6 +532,14 @@ export interface Post {
          */
         cityData?: (number | null) | CityDatum;
         /**
+         * Choose the writing style for the introduction (increases content uniqueness)
+         */
+        introVariant?: ('standard' | 'market' | 'community' | 'buyer' | 'investment') | null;
+        /**
+         * Choose the writing style for the closing CTA (increases content uniqueness)
+         */
+        closingVariant?: ('standard' | 'urgency' | 'value') | null;
+        /**
          * Override specific sections for this tenant
          */
         sections?:
@@ -537,10 +547,13 @@ export interface Post {
               secId:
                 | 'intro'
                 | 'market_stats'
+                | 'cost_of_living'
                 | 'neighborhoods'
                 | 'schools'
                 | 'local_facts'
                 | 'employers'
+                | 'transportation'
+                | 'healthcare'
                 | 'places_of_worship'
                 | 'cultural_centers'
                 | 'cultural_events'
@@ -551,7 +564,7 @@ export interface Post {
                 | 'agent_reviews'
                 | 'agent_languages'
                 | 'areas_served'
-                | 'agent_cta'
+                | 'closing'
                 | 'faq';
               type: 'replace' | 'prepend' | 'append' | 'hide';
               /**
@@ -919,6 +932,38 @@ export interface Agent {
           };
           [k: string]: unknown;
         };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Featured properties and promotions that appear via {{HOT_DEALS}} token
+   */
+  hotDeals?:
+    | {
+        /**
+         * e.g., "Luxury Lakefront Home - Below Market!"
+         */
+        title: string;
+        description?: string | null;
+        image?: (number | null) | Media;
+        dealType?: ('listing' | 'promo' | 'offer' | 'open-house' | 'price-drop' | 'event') | null;
+        /**
+         * e.g., "$1,250,000" or "Starting at $500K"
+         */
+        price?: string | null;
+        /**
+         * Link to listing or more info
+         */
+        link?: string | null;
+        isActive?: boolean | null;
+        /**
+         * When this deal expires (leave blank for no expiration)
+         */
+        expiresAt?: string | null;
+        /**
+         * Higher priority deals shown first (1-100)
+         */
+        priority?: number | null;
         id?: string | null;
       }[]
     | null;
@@ -1491,23 +1536,34 @@ export interface ContentTemplate {
     generator?:
       | (
           | 'market_stats'
+          | 'price_comparison'
+          | 'cost_of_living'
           | 'neighborhoods'
           | 'schools'
-          | 'agent_cta'
           | 'local_facts'
           | 'employers'
-          | 'price_comparison'
-          | 'faq'
+          | 'transportation'
+          | 'healthcare'
           | 'places_of_worship'
           | 'cultural_centers'
           | 'cultural_events'
           | 'diversity_overview'
           | 'community_amenities'
           | 'languages_spoken'
+          | 'agent_cta'
           | 'agent_expertise'
           | 'agent_reviews'
           | 'agent_languages'
           | 'areas_served'
+          | 'faq'
+          | 'intro_standard'
+          | 'intro_market'
+          | 'intro_community'
+          | 'intro_buyer'
+          | 'intro_investment'
+          | 'closing_standard'
+          | 'closing_urgency'
+          | 'closing_value'
         )
       | null;
     /**
@@ -3448,6 +3504,116 @@ export interface TenantFooter {
   createdAt: string;
 }
 /**
+ * Announcements, alerts, and promotions that can be injected into posts via tokens
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "announcements".
+ */
+export interface Announcement {
+  id: number;
+  /**
+   * Announcement headline
+   */
+  title: string;
+  /**
+   * Unique identifier for this announcement
+   */
+  slug: string;
+  /**
+   * Main announcement content (supports tokens like {{CITY_NAME}})
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Short summary for cards/previews
+   */
+  excerpt?: string | null;
+  type: 'banner' | 'alert' | 'news' | 'promo' | 'hot-deal' | 'market-update' | 'event';
+  style?: ('primary' | 'secondary' | 'urgent' | 'success' | 'warning' | 'info' | 'subtle') | null;
+  /**
+   * Optional image for the announcement
+   */
+  image?: (number | null) | Media;
+  icon?:
+    | (
+        | 'none'
+        | 'info'
+        | 'warning'
+        | 'success'
+        | 'fire'
+        | 'star'
+        | 'bell'
+        | 'megaphone'
+        | 'calendar'
+        | 'dollar'
+        | 'home'
+        | 'chart-up'
+        | 'chart-down'
+      )
+    | null;
+  /**
+   * Global = shows on ALL posts. State/City/Agent = shows only on matching posts.
+   */
+  scope: 'global' | 'state' | 'city' | 'agent';
+  /**
+   * Select which states should see this announcement
+   */
+  targetStates?: (number | State)[] | null;
+  /**
+   * Select which cities should see this announcement
+   */
+  targetCities?: (number | CityDatum)[] | null;
+  /**
+   * Select which agents should see this announcement
+   */
+  targetAgents?: (number | Agent)[] | null;
+  /**
+   * Agents who should NOT see this announcement (overrides targeting)
+   */
+  excludeAgents?: (number | Agent)[] | null;
+  /**
+   * When this announcement becomes active
+   */
+  startDate?: string | null;
+  /**
+   * When this announcement expires
+   */
+  endDate?: string | null;
+  /**
+   * Inactive announcements will not be displayed
+   */
+  isActive?: boolean | null;
+  /**
+   * Higher priority announcements are shown first (1-100)
+   */
+  priority?: number | null;
+  cta?: {
+    text?: string | null;
+    link?: string | null;
+    linkType?: ('internal' | 'external') | null;
+    newTab?: boolean | null;
+  };
+  analytics?: {
+    impressions?: number | null;
+    clicks?: number | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Raw analytics events collected from the website
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4162,6 +4328,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contentTemplates';
         value: number | ContentTemplate;
+      } | null)
+    | ({
+        relationTo: 'announcements';
+        value: number | Announcement;
       } | null)
     | ({
         relationTo: 'analytics-events';
@@ -5141,6 +5311,8 @@ export interface PostsSelect<T extends boolean = true> {
         tenant?: T;
         agent?: T;
         cityData?: T;
+        introVariant?: T;
+        closingVariant?: T;
         sections?:
           | T
           | {
@@ -5394,6 +5566,20 @@ export interface AgentsSelect<T extends boolean = true> {
     | {
         question?: T;
         answer?: T;
+        id?: T;
+      };
+  hotDeals?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        dealType?: T;
+        price?: T;
+        link?: T;
+        isActive?: T;
+        expiresAt?: T;
+        priority?: T;
         id?: T;
       };
   meta?:
@@ -5896,6 +6082,45 @@ export interface ContentTemplatesSelect<T extends boolean = true> {
   usageCount?: T;
   generatedCount?: T;
   lastGenerated?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "announcements_select".
+ */
+export interface AnnouncementsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  content?: T;
+  excerpt?: T;
+  type?: T;
+  style?: T;
+  image?: T;
+  icon?: T;
+  scope?: T;
+  targetStates?: T;
+  targetCities?: T;
+  targetAgents?: T;
+  excludeAgents?: T;
+  startDate?: T;
+  endDate?: T;
+  isActive?: T;
+  priority?: T;
+  cta?:
+    | T
+    | {
+        text?: T;
+        link?: T;
+        linkType?: T;
+        newTab?: T;
+      };
+  analytics?:
+    | T
+    | {
+        impressions?: T;
+        clicks?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

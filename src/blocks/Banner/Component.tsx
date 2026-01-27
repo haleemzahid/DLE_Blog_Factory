@@ -11,7 +11,6 @@ type Props = {
 } & BannerBlockProps
 
 export const BannerBlock: React.FC<Props> = ({ className, content, style }) => {
-  console.log('🎨 BannerBlock rendering with props:', { className, content, style })
   return (
     <div className={cn('mx-auto my-8 w-full', className)}>
       <div
@@ -27,5 +26,3 @@ export const BannerBlock: React.FC<Props> = ({ className, content, style }) => {
     </div>
   )
 }
-
-console.log('✅ BannerBlock component defined:', BannerBlock)

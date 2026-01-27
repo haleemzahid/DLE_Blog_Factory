@@ -21,6 +21,7 @@ import { TenantHeaders } from './collections/TenantHeaders'
 import { TenantFooters } from './collections/TenantFooters'
 import { CityData } from './collections/CityData'
 import { ContentTemplates } from './collections/ContentTemplates'
+import { Announcements } from './collections/Announcements'
 // Analytics Collections
 import { AnalyticsEvents } from './collections/AnalyticsEvents'
 import { PostAnalytics } from './collections/PostAnalytics'
@@ -62,7 +63,7 @@ export default buildConfig({
       // Feel free to delete this at any time. Simply remove the line below.
       beforeDashboard: ['@/components/BeforeDashboard'],
       afterNavLinks: ['@/components/Admin/AnalyticsDashboardNavLink'],
-      providers: ['@/components/DocumentVoiceButton#DocumentVoiceButton'],
+      // providers: ['@/components/DocumentVoiceButton#DocumentVoiceButton'], // Temporarily disabled
       graphics: {
         Logo: '@/components/Logo',
         Icon: '@/components/Logo/Icon',
@@ -120,6 +121,7 @@ export default buildConfig({
     // Content Management
     CityData,
     ContentTemplates,
+    Announcements,
     // Analytics Collections
     AnalyticsEvents,
     PostAnalytics,
