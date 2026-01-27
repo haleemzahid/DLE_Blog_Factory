@@ -20,15 +20,15 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
   const getHeadingClass = () => {
     switch (headingSize) {
       case 'small':
-        return 'text-2xl md:text-3xl'
+        return 'text-lg md:text-xl'
       case 'medium':
-        return 'text-3xl md:text-4xl'
+        return 'text-xl md:text-[22px]'
       case 'large':
-        return 'text-3xl md:text-5xl lg:text-6xl'
+        return 'text-[22px]'
       case 'xlarge':
-        return 'text-4xl md:text-6xl lg:text-7xl'
+        return 'text-2xl md:text-3xl'
       default:
-        return 'text-3xl md:text-5xl lg:text-6xl'
+        return 'text-[22px]'
     }
   }
 
@@ -36,7 +36,8 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
     if (!url) return ''
 
     // YouTube
-    const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
+    const youtubeRegex =
+      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
     const youtubeMatch = url.match(youtubeRegex)
     if (youtubeMatch) {
       return `https://www.youtube.com/embed/${youtubeMatch[1]}`
@@ -53,19 +54,19 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
   }
 
   return (
-    <section className="py-12 md:py-[50px]" style={{ backgroundColor: backgroundColor || '#1E699B' }}>
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+    <section className="py-6" style={{ backgroundColor: backgroundColor || '#1E699B' }}>
+      <div className="max-w-7xl mx-auto px-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
           {/* Left Column - Text Content */}
-          <div className="text-left order-2 md:order-1">
+          <div className="text-left order-2 md:order-1 flex flex-col justify-center">
             {/* Heading */}
             <h2
-              className={`${getHeadingClass()} font-semibold mb-6 tracking-wide leading-tight`}
+              className={`${getHeadingClass()} font-semibold mb-4 tracking-wide leading-tight`}
               style={{
                 color: headingColor || '#ffffff',
                 fontFamily: "'Roboto Slab', serif",
                 fontWeight: 600,
-                lineHeight: '1.2',
+                lineHeight: '1.1',
               }}
             >
               {heading}
@@ -75,7 +76,7 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
             {content && (
               <div className="mb-0">
                 <BasicRichText
-                  className="prose prose-lg max-w-none [&_p]:text-base [&_p]:md:text-lg [&_p]:leading-relaxed [&_p]:font-normal [&_p]:text-white [&_ul]:text-white [&_li]:text-white [&_strong]:text-white [&_strong]:font-bold"
+                  className="prose max-w-none [&_p]:text-[15px] [&_p]:md:text-[16px] [&_p]:leading-[1.4] [&_p]:font-normal [&_p]:text-white [&_p]:mb-2 [&_ul]:text-white [&_ul]:text-[15px] [&_ul]:md:text-[16px] [&_ul]:mb-2 [&_ul]:leading-[1.4] [&_li]:text-white [&_li]:mb-0.5 [&_strong]:text-white [&_strong]:font-bold"
                   style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 400, color: '#ffffff' }}
                   data={content}
                   enableGutter={false}
@@ -88,7 +89,7 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
           <div className="order-1 md:order-2 flex flex-col gap-6">
             {/* Video */}
             {videoUrl && (
-              <div className="relative w-full shadow-lg" style={{ paddingBottom: '56.25%' }}>
+              <div className="relative w-full  mx-auto shadow-lg" style={{ paddingBottom: '100%' }}>
                 <iframe
                   src={getEmbedUrl(videoUrl)}
                   title={videoTitle || 'Video'}
