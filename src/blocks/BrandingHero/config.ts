@@ -6,6 +6,21 @@ import {
   lexicalEditor,
   BoldFeature,
   ItalicFeature,
+  UnderlineFeature,
+  StrikethroughFeature,
+  SubscriptFeature,
+  SuperscriptFeature,
+  InlineCodeFeature,
+  LinkFeature,
+  UnorderedListFeature,
+  OrderedListFeature,
+  ChecklistFeature,
+  HeadingFeature,
+  BlockquoteFeature,
+  AlignFeature,
+  IndentFeature,
+  HorizontalRuleFeature,
+  ParagraphFeature,
 } from '@payloadcms/richtext-lexical'
 import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
 import { link } from '@/fields/link'
@@ -88,14 +103,37 @@ export const BrandingHero: Block = {
             ...rootFeatures,
             FixedToolbarFeature(),
             InlineToolbarFeature(),
+            // Text Formatting
             BoldFeature(),
             ItalicFeature(),
+            UnderlineFeature(),
+            StrikethroughFeature(),
+            SubscriptFeature(),
+            SuperscriptFeature(),
+            InlineCodeFeature(),
+            // Links
+            LinkFeature({}),
+            // Lists
+            UnorderedListFeature(),
+            OrderedListFeature(),
+            ChecklistFeature(),
+            // Block Elements
+            HeadingFeature({
+              enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+            }),
+            ParagraphFeature(),
+            BlockquoteFeature(),
+            HorizontalRuleFeature(),
+            // Layout
+            AlignFeature(),
+            IndentFeature(),
+            // AI
             PayloadAiPluginLexicalEditorFeature(),
           ]
         },
       }),
       admin: {
-        description: 'Optional supporting text below the heading',
+        description: 'Rich text editor with full formatting options',
       },
     },
     {

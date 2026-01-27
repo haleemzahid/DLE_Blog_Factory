@@ -76,7 +76,7 @@ export const BrandingHeroBlock: React.FC<BrandingHeroBlockProps> = (props) => {
             {content && (
               <div className="mb-0">
                 <BasicRichText
-                  className="prose max-w-none [&_p]:text-[15px] [&_p]:md:text-[16px] [&_p]:leading-[1.4] [&_p]:font-normal [&_p]:text-white [&_p]:mb-2 [&_ul]:text-white [&_ul]:text-[15px] [&_ul]:md:text-[16px] [&_ul]:mb-2 [&_ul]:leading-[1.4] [&_li]:text-white [&_li]:mb-0.5 [&_strong]:text-white [&_strong]:font-bold"
+                  className="prose max-w-none [&_p]:text-[15px] [&_p]:md:text-[16px] [&_p]:leading-[1.4] [&_p]:font-normal [&_p]:text-white [&_p]:mb-2 [&_ul]:text-white [&_ul]:text-[15px] [&_ul]:md:text-[16px] [&_ul]:mb-2 [&_ul]:leading-[1.4] [&_ol]:text-white [&_ol]:text-[15px] [&_ol]:md:text-[16px] [&_ol]:mb-2 [&_ol]:leading-[1.4] [&_li]:text-white [&_li]:mb-0.5 [&_strong]:text-white [&_strong]:font-bold"
                   style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 400, color: '#ffffff' }}
                   data={content}
                   enableGutter={false}

@@ -3227,7 +3227,7 @@ export interface BrandingHeroBlock {
   headingColor?: string | null;
   headingSize?: ('small' | 'medium' | 'large' | 'xlarge') | null;
   /**
-   * Optional supporting text below the heading
+   * Rich text editor with full formatting options
    */
   content?: {
     root: {
