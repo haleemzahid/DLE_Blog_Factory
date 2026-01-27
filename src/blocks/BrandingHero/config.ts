@@ -22,12 +22,22 @@ export const BrandingHero: Block = {
       name: 'backgroundColor',
       type: 'text',
       label: 'Background Color',
-      defaultValue: '#ffffff',
+      defaultValue: '#1E699B',
       admin: {
         description: 'Background color for the section',
         components: {
           Field: '@/components/ColorPickerField#ColorPickerField',
         },
+      },
+    },
+    {
+      name: 'backgroundImage',
+      type: 'upload',
+      label: 'Background Image',
+      relationTo: 'media',
+      required: false,
+      admin: {
+        description: 'Optional background image (e.g., wave pattern)',
       },
     },
     {
