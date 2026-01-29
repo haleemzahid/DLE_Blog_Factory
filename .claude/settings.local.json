@@ -53,7 +53,12 @@
       "Bash(pnpm tsc:*)",
       "WebFetch(domain:designatedlocalexpert.com)",
       "Bash(pnpm drizzle-kit:*)",
-      "Bash(timeout 10 cmd:*)"
+      "Bash(timeout 10 cmd:*)",
+      "Bash(PGPASSWORD=\"npg_YGuXBs9VTg4e\" psql:*)",
+      "Bash(timeout /t 15)",
+      "Bash(node test-tables.js:*)",
+      "Bash(node test-tables.mjs:*)",
+      "Bash(pnpm run dev)"
     ]
   }
 }
